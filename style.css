@@ -6,6 +6,7 @@ div>div {
     display: inline-block;
     width: 36px;
     height: 36px;
+    border: 1px dashed lightgray;
 }
 
 .touch {
