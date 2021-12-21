@@ -19,10 +19,19 @@ let handleClick = function (event) {
     if(!oPlanet) {
         oPlanet = createPlanet(x, y);
     }
-    oPlanet.mass = oPlanet.mass < 16 ? oPlanet.mass + 1 : 0;
+    if (oPlanet.mass < 16) {
+        oPlanet.mass++;
+    } else {
+        oPlanet = null;
+    }
     aGridModel[y][x] = oPlanet;
-    let nMassColor = 255 - oPlanet.mass * 16;
+    let nMassColor = 255;
+    if (oPlanet) {
+        nMassColor = 255 - oPlanet.mass * 16;
+    }
     oTarget.style.backgroundColor = `rgb(${nMassColor}, ${nMassColor}, ${nMassColor})`;
+
+    calculateAllGravity();
 
 };
 
@@ -33,7 +42,45 @@ let createPlanet = function (x, y) {
     };
 };
 
+let calculateAllGravity = function () {
+
+    for (let y1 = 0; y1 < aGridModel.length; y1++) {
+        for (let x1 = 0; x1 < aGridModel[y1].length; x1++) {
+            let oBody1 = aGridModel[y1][x1];
+            if (oBody1) {
+                for (let y2 = 0; y2 < aGridModel.length; y2++) {
+                    for (let x2 = 0; x2 < aGridModel[y2].length; x2++) {
+                        let oBody2 = aGridModel[y2][x2];
+                        if (oBody2 && oBody2.id !== oBody1.id) {
+                            calculateGravity(oBody1, oBody2);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+};
+
 let calculateGravity = function (body1, body2) {
+
+    let oBody1XY = getXYFromID(body1.id);
+    let oBody2XY = getXYFromID(body2.id);
+    let nDistanceSquared = (oBody1XY.x - oBody2XY.x) ** 2 + (oBody1XY.y - oBody2XY.y) ** 2;
+    let nForce = body1.mass * body2.mass / nDistanceSquared;
+    console.log(nForce);
+
+};
+
+let getXYFromID = function (sId) {
+
+    let aCoordinates = sId.split(':');
+    let sX = aCoordinates[0];
+    let sY = aCoordinates[1];
+    return {
+        x: Number(sX),
+        y: Number(sY)
+    };
 
 };
 
