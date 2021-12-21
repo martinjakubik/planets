@@ -17,14 +17,23 @@ let handleClick = function (event) {
     let y = Number(sY);
     let oPlanet = aGridModel[y][x];
     if(!oPlanet) {
-        oPlanet = {
-            mass: 1
-        };
+        oPlanet = createPlanet(x, y);
     }
     oPlanet.mass = oPlanet.mass < 16 ? oPlanet.mass + 1 : 0;
     aGridModel[y][x] = oPlanet;
     let nMassColor = 255 - oPlanet.mass * 16;
     oTarget.style.backgroundColor = `rgb(${nMassColor}, ${nMassColor}, ${nMassColor})`;
+
+};
+
+let createPlanet = function (x, y) {
+    return {
+        id: `${x}:${y}`,
+        mass: 1
+    };
+};
+
+let calculateGravity = function (body1, body2) {
 
 };
 
