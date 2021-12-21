@@ -68,7 +68,8 @@ let calculateGravity = function (body1, body2) {
     let oBody2XY = getXYFromID(body2.id);
     let nDistanceSquared = (oBody1XY.x - oBody2XY.x) ** 2 + (oBody1XY.y - oBody2XY.y) ** 2;
     let nForce = body1.mass * body2.mass / nDistanceSquared;
-    console.log(nForce);
+    let nAngle = Math.atan2(oBody1XY.x - oBody2XY.x, oBody1XY.y - oBody2XY.y);
+    console.log(nForce, nAngle);
 
 };
 
