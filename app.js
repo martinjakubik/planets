@@ -137,6 +137,14 @@ let makeGrid = function (numberOfRows) {
 
 };
 
+let makeButton = function () {
+
+    const oButton = document.createElement('button');
+    oButton.innerText = '>';
+    document.body.appendChild(oButton);
+
+};
+
 let oAppConfiguration = {
     gridSize: 0
 };
@@ -144,3 +152,4 @@ let oAppConfiguration = {
 let aGridModel = [];
 
 makeGrid(20);
+makeButton();
