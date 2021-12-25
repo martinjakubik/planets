@@ -159,7 +159,27 @@ let handleTimeButtonClick = function () {
         for (let x = 0; x < aGridModel[y].length; x++) {
             let oBody = aGridModel[y][x];
             if (oBody) {
-                console.log(calculatePosition(oBody, nTime));
+
+                let nMassColor = 255;
+                nMassColor = 255 - oBody.mass * 16;
+                let oPosition = calculatePosition(oBody, nTime);
+                let newX = Math.floor(oPosition.x);
+                let newY = Math.floor(oPosition.y);
+                if (newX !== x || newY !== y) {
+                    if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
+                        let oOldTarget = document.getElementById(`${x}:${y}`);
+                        oOldTarget.style.backgroundColor = 'rgb(255, 255, 255)';
+                        aGridModel[y][x] = null;
+                    }
+                    if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
+                        let oNewTarget = document.getElementById(`${newX}:${newY}`);
+                        oNewTarget.style.backgroundColor = `rgb(${nMassColor}, ${nMassColor}, ${nMassColor})`;
+                        aGridModel[newY][newX] = oBody;
+                    }
+                }
+
+                console.log(oPosition);
+
             }
         }
     }
