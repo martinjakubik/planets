@@ -34,7 +34,9 @@ let handleClick = function (event) {
 let createPlanet = function (x, y) {
     return {
         id: `${x}:${y}`,
-        mass: 1
+        mass: 1,
+        force: 0,
+        angle: 0
     };
 };
 
