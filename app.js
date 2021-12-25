@@ -1,11 +1,3 @@
-let handleHover = function (event) {
-
-    const oTarget = event.currentTarget;
-    oTarget.classList.add('touch');
-    setTimeout(() => {oTarget.classList.remove('touch');}, 500);
-
-};
-
 let handleSpaceClick = function (event) {
 
     const oTarget = event.currentTarget;
@@ -159,7 +151,6 @@ let makeBox = function (parentBox, sizeOfBox, x, y) {
     parentBox.appendChild(box);
 
     box.id = `${x}:${y}`;
-    box.onmouseover = handleHover;
     box.onclick = handleSpaceClick;
     box.style.height = sizeOfBox;
     box.style.width = sizeOfBox;
