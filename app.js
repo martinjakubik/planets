@@ -89,8 +89,10 @@ let calculatePosition = function (body, time) {
     let v0 = 0;
     let acceleration = body.force / body.mass;
     let displacement = v0 * time + 1/2 * acceleration * time * time;
-    let x = x0.x + displacement;
-    let y = x0.y + displacement;
+    let xDisplacement = Math.sin(body.angle) * displacement * -1;
+    let yDisplacement = Math.cos(body.angle) * displacement * -1;
+    let x = x0.x + xDisplacement;
+    let y = x0.y + yDisplacement;
     body.position = {x: x, y: y};
     return body.position;
 
