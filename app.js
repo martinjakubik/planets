@@ -11,7 +11,7 @@ let handleSpaceClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
-    let oBody = aGridModel[oCoordinates.y][oCoordinates.x];
+    let oBody = aSpaceTimeModel[oCoordinates.y][oCoordinates.x];
     if(!oBody) {
         oBody = createBody(oCoordinates.x, oCoordinates.y);
     }
@@ -20,7 +20,7 @@ let handleSpaceClick = function (event) {
     } else {
         oBody = null;
     }
-    aGridModel[oCoordinates.y][oCoordinates.x] = oBody;
+    aSpaceTimeModel[oCoordinates.y][oCoordinates.x] = oBody;
     let nMassColor = 255;
     if (oBody) {
         nMassColor = 255 - oBody.mass * 16;
@@ -52,13 +52,13 @@ let createBody = function (x, y) {
 
 let calculateAllGravity = function () {
 
-    for (let y1 = 0; y1 < aGridModel.length; y1++) {
-        for (let x1 = 0; x1 < aGridModel[y1].length; x1++) {
-            let oBody1 = aGridModel[y1][x1];
+    for (let y1 = 0; y1 < aSpaceTimeModel.length; y1++) {
+        for (let x1 = 0; x1 < aSpaceTimeModel[y1].length; x1++) {
+            let oBody1 = aSpaceTimeModel[y1][x1];
             if (oBody1) {
-                for (let y2 = 0; y2 < aGridModel.length; y2++) {
-                    for (let x2 = 0; x2 < aGridModel[y2].length; x2++) {
-                        let oBody2 = aGridModel[y2][x2];
+                for (let y2 = 0; y2 < aSpaceTimeModel.length; y2++) {
+                    for (let x2 = 0; x2 < aSpaceTimeModel[y2].length; x2++) {
+                        let oBody2 = aSpaceTimeModel[y2][x2];
                         if (oBody2 && oBody2.id !== oBody1.id) {
                             calculateGravity(oBody1, oBody2);
                         }
@@ -101,9 +101,9 @@ let calculatePosition = function (body, time) {
 let handleTimeButtonClick = function () {
 
     nTime++;
-    for (let y = 0; y < aGridModel.length; y++) {
-        for (let x = 0; x < aGridModel[y].length; x++) {
-            let oBody = aGridModel[y][x];
+    for (let y = 0; y < aSpaceTimeModel.length; y++) {
+        for (let x = 0; x < aSpaceTimeModel[y].length; x++) {
+            let oBody = aSpaceTimeModel[y][x];
             if (oBody) {
 
                 let nMassColor = 255;
@@ -115,12 +115,12 @@ let handleTimeButtonClick = function () {
                     if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
                         let oOldTarget = document.getElementById(`${x}:${y}`);
                         oOldTarget.style.backgroundColor = 'rgb(255, 255, 255)';
-                        aGridModel[y][x] = null;
+                        aSpaceTimeModel[y][x] = null;
                     }
                     if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
                         let oNewTarget = document.getElementById(`${newX}:${newY}`);
                         oNewTarget.style.backgroundColor = `rgb(${nMassColor}, ${nMassColor}, ${nMassColor})`;
-                        aGridModel[newY][newX] = oBody;
+                        aSpaceTimeModel[newY][newX] = oBody;
                     }
                 }
 
@@ -169,7 +169,7 @@ let makeBox = function (parentBox, sizeOfBox, x, y) {
 
 };
 
-let makeGrid = function (numberOfRows) {
+let makeSpaceTimeGrid = function (numberOfRows) {
 
     oAppConfiguration.gridSize = numberOfRows;
     let nSizeOfBox = Math.floor(720 / oAppConfiguration.gridSize);
@@ -183,12 +183,12 @@ let makeGrid = function (numberOfRows) {
 
     while (y < numberOfRows) {
 
-        aGridModel[y] = [];
+        aSpaceTimeModel[y] = [];
         x = 0;
         rowBox = makeOuterBox(spaceTimeBox);
         while (x < numberOfColumns) {
 
-            aGridModel[y].push(null);
+            aSpaceTimeModel[y].push(null);
             makeBox(rowBox, nSizeOfBox, x, y);
             x = x + 1;
 
@@ -200,7 +200,7 @@ let makeGrid = function (numberOfRows) {
 
 };
 
-let makeButton = function () {
+let makeTimeButton = function () {
 
     let buttonBox = makeOuterBox(document.body);
 
@@ -217,8 +217,8 @@ let oAppConfiguration = {
     gridSize: 0
 };
 
-let aGridModel = [];
+let aSpaceTimeModel = [];
 let nTime = 0;
 
-makeGrid(40);
-makeButton();
+makeSpaceTimeGrid(40);
+makeTimeButton();
