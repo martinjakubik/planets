@@ -83,7 +83,8 @@ let calculateGravity = function (body1, body2) {
 
 let calculatePosition = function (body, time) {
 
-    // x(t) = x0 + v0 * t + 1/2 at^2
+    // x(t) = x0 + v0 * t + 1/2 at^2,
+    // see: https://phys.libretexts.org/Bookshelves/University_Physics/Book%3A_University_Physics_%28OpenStax%29/Book%3A_University_Physics_I_-_Mechanics_Sound_Oscillations_and_Waves_%28OpenStax%29/03%3A_Motion_Along_a_Straight_Line/3.08%3A_Finding_Velocity_and_Displacement_from_Acceleration
     let x0 = body.initialPosition;
     let v0 = 0;
     let acceleration = body.force / body.mass;
