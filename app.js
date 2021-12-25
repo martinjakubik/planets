@@ -1,3 +1,6 @@
+const WHITE_COLOR = 255;
+const CSS_RGB_WHITE_COLOR = 'rgb(255, 255, 255)';
+
 let handleSpaceClick = function (event) {
 
     const oTarget = event.currentTarget;
@@ -13,9 +16,9 @@ let handleSpaceClick = function (event) {
         oBody = null;
     }
     aSpaceTimeModel[oCoordinates.y][oCoordinates.x] = oBody;
-    let nMassColor = 255;
+    let nMassColor = WHITE_COLOR;
     if (oBody) {
-        nMassColor = 255 - oBody.mass * 16;
+        nMassColor = WHITE_COLOR - oBody.mass * 16;
     }
     oTarget.style.backgroundColor = `rgb(${nMassColor}, ${nMassColor}, ${nMassColor})`;
 
@@ -98,15 +101,15 @@ let handleTimeButtonClick = function () {
             let oBody = aSpaceTimeModel[y][x];
             if (oBody) {
 
-                let nMassColor = 255;
-                nMassColor = 255 - oBody.mass * 16;
+                let nMassColor = WHITE_COLOR;
+                nMassColor = WHITE_COLOR - oBody.mass * 16;
                 let oPosition = calculatePosition(oBody, nTime);
                 let newX = Math.floor(oPosition.x);
                 let newY = Math.floor(oPosition.y);
                 if (newX !== x || newY !== y) {
                     if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
                         let oOldTarget = document.getElementById(`${x}:${y}`);
-                        oOldTarget.style.backgroundColor = 'rgb(255, 255, 255)';
+                        oOldTarget.style.backgroundColor = CSS_RGB_WHITE_COLOR;
                         aSpaceTimeModel[y][x] = null;
                     }
                     if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
@@ -154,7 +157,7 @@ let makeBox = function (parentBox, sizeOfBox, x, y) {
     box.onclick = handleSpaceClick;
     box.style.height = sizeOfBox;
     box.style.width = sizeOfBox;
-    box.style.backgroundColor = 'rgb(255, 255, 255)';
+    box.style.backgroundColor = CSS_RGB_WHITE_COLOR;
 
     return box;
 
