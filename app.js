@@ -40,6 +40,10 @@ let createBody = function (x, y) {
             x: x,
             y: y
         },
+        position: {
+            x: x,
+            y: y
+        },
         force: 0,
         angle: 0
     };
@@ -68,9 +72,9 @@ let calculateAllGravity = function () {
 
 let calculateGravity = function (body1, body2) {
 
-    let nDistanceSquared = (body1.initialPosition.x - body2.initialPosition.x) ** 2 + (body1.initialPosition.y - body2.initialPosition.y) ** 2;
+    let nDistanceSquared = (body1.position.x - body2.position.x) ** 2 + (body1.position.y - body2.position.y) ** 2;
     let nForce = body1.mass * body2.mass / nDistanceSquared;
-    let nAngle = Math.atan2(body1.initialPosition.x - body2.initialPosition.x, body1.initialPosition.y - body2.initialPosition.y);
+    let nAngle = Math.atan2(body1.position.x - body2.position.x, body1.position.y - body2.position.y);
     body1.force = nForce;
     body1.angle = nAngle;
     console.log(nForce, nAngle);
@@ -86,7 +90,8 @@ let calculatePosition = function (body, time) {
     let displacement = v0 * time + 1/2 * acceleration * time * time;
     let x = x0.x + displacement;
     let y = x0.y + displacement;
-    return {x: x, y: y};
+    body.position = {x: x, y: y};
+    return body.position;
 
 };
 
