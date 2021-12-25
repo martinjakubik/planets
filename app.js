@@ -36,7 +36,7 @@ let createBody = function (x, y) {
     return {
         id: `${x}:${y}`,
         mass: 1,
-        position: {
+        initialPosition: {
             x: x,
             y: y
         },
@@ -68,9 +68,9 @@ let calculateAllGravity = function () {
 
 let calculateGravity = function (body1, body2) {
 
-    let nDistanceSquared = (body1.position.x - body2.position.x) ** 2 + (body1.position.y - body2.position.y) ** 2;
+    let nDistanceSquared = (body1.initialPosition.x - body2.initialPosition.x) ** 2 + (body1.initialPosition.y - body2.initialPosition.y) ** 2;
     let nForce = body1.mass * body2.mass / nDistanceSquared;
-    let nAngle = Math.atan2(body1.position.x - body2.position.x, body1.position.y - body2.position.y);
+    let nAngle = Math.atan2(body1.initialPosition.x - body2.initialPosition.x, body1.initialPosition.y - body2.initialPosition.y);
     body1.force = nForce;
     body1.angle = nAngle;
     console.log(nForce, nAngle);
@@ -80,7 +80,7 @@ let calculateGravity = function (body1, body2) {
 let calculatePosition = function (body, time) {
 
     // x(t) = x0 + v0 * t + 1/2 at^2
-    let x0 = body.position;
+    let x0 = body.initialPosition;
     let v0 = 0;
     let acceleration = body.force / body.mass;
     let displacement = v0 * time + 1/2 * acceleration * time * time;
@@ -176,7 +176,6 @@ let handleTimeButtonClick = function () {
                     if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
                         let oNewTarget = document.getElementById(`${newX}:${newY}`);
                         oNewTarget.style.backgroundColor = `rgb(${nMassColor}, ${nMassColor}, ${nMassColor})`;
-                        oBody.position = {x: newX, y: newY};
                         aGridModel[newY][newX] = oBody;
                     }
                 }
