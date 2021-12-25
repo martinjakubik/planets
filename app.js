@@ -13,7 +13,7 @@ let handleSpaceClick = function (event) {
     let oCoordinates = getXYFromID(sId);
     let oBody = aGridModel[oCoordinates.y][oCoordinates.x];
     if(!oBody) {
-        oBody = createPlanet(oCoordinates.x, oCoordinates.y);
+        oBody = createBody(oCoordinates.x, oCoordinates.y);
     }
     if (oBody.mass < 16) {
         oBody.mass++;
@@ -31,7 +31,7 @@ let handleSpaceClick = function (event) {
 
 };
 
-let createPlanet = function (x, y) {
+let createBody = function (x, y) {
 
     return {
         id: `${x}:${y}`,
