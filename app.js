@@ -102,7 +102,7 @@ let getXYFromID = function (sId) {
 
 };
 
-let makeRowBox = function (parentBox) {
+let makeOuterBox = function (parentBox) {
 
     let box = document.createElement('div');
     parentBox.appendChild(box);
@@ -133,13 +133,14 @@ let makeGrid = function (numberOfRows) {
 
     let y = 0;
     let x = 0;
+    let spaceTimeBox = makeOuterBox(document.body);
     let rowBox;
 
     while (y < numberOfRows) {
 
         aGridModel[y] = [];
         x = 0;
-        rowBox = makeRowBox(document.body);
+        rowBox = makeOuterBox(spaceTimeBox);
         while (x < numberOfColumns) {
 
             aGridModel[y].push(null);
@@ -190,10 +191,14 @@ let handleTimeButtonClick = function () {
 
 let makeButton = function () {
 
+    let buttonBox = makeOuterBox(document.body);
+
     const oButton = document.createElement('button');
+    oButton.id = 'timeButton';
     oButton.innerText = '>';
     oButton.onclick = handleTimeButtonClick;
-    document.body.appendChild(oButton);
+    buttonBox.appendChild(oButton);
+    document.body.appendChild(buttonBox);
 
 };
 

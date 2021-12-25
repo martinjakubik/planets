@@ -1,8 +1,13 @@
 div {
+    margin: 0 20% 0 20%;
+}
+
+div>div {
+    margin: 0;
     white-space : nowrap; 
     overflow : hidden;
 }
-div>div {
+div>div>div {
     display: inline-block;
     width: 36px;
     height: 36px;
@@ -11,4 +16,8 @@ div>div {
 
 .touch {
     background-color: rgb(147, 223, 145);
+}
+
+.timebutton {
+    margin: 
 }
