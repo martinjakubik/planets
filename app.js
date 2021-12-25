@@ -65,7 +65,22 @@ let calculateGravity = function (body1, body2) {
     let nDistanceSquared = (oBody1XY.x - oBody2XY.x) ** 2 + (oBody1XY.y - oBody2XY.y) ** 2;
     let nForce = body1.mass * body2.mass / nDistanceSquared;
     let nAngle = Math.atan2(oBody1XY.x - oBody2XY.x, oBody1XY.y - oBody2XY.y);
+    body1.force = nForce;
+    body1.angle = nAngle;
     console.log(nForce, nAngle);
+
+};
+
+let calculatePosition = function (body, time) {
+
+    // x(t) = x0 + v0 * t + 1/2 at^2
+    let x0 = getXYFromID(body.id);
+    let v0 = 0;
+    let acceleration = body.force / body.mass;
+    let displacement = v0 * time + 1/2 * acceleration * time * time;
+    let x = x0.x + displacement;
+    let y = x0.y + displacement;
+    return {x: x, y: y};
 
 };
 
@@ -133,10 +148,25 @@ let makeGrid = function (numberOfRows) {
 
 };
 
+let handleTimeButtonClick = function () {
+
+    nTime++;
+    for (let y = 0; y < aGridModel.length; y++) {
+        for (let x = 0; x < aGridModel[y].length; x++) {
+            let oBody = aGridModel[y][x];
+            if (oBody) {
+                console.log(calculatePosition(oBody, nTime));
+            }
+        }
+    }
+
+};
+
 let makeButton = function () {
 
     const oButton = document.createElement('button');
     oButton.innerText = '>';
+    oButton.onclick = handleTimeButtonClick;
     document.body.appendChild(oButton);
 
 };
@@ -146,6 +176,7 @@ let oAppConfiguration = {
 };
 
 let aGridModel = [];
+let nTime = 0;
 
 makeGrid(20);
 makeButton();
