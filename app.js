@@ -11,19 +11,19 @@ let handleClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
-    let oPlanet = aGridModel[oCoordinates.y][oCoordinates.x];
-    if(!oPlanet) {
-        oPlanet = createPlanet(oCoordinates.x, oCoordinates.y);
+    let oBody = aGridModel[oCoordinates.y][oCoordinates.x];
+    if(!oBody) {
+        oBody = createPlanet(oCoordinates.x, oCoordinates.y);
     }
-    if (oPlanet.mass < 16) {
-        oPlanet.mass++;
+    if (oBody.mass < 16) {
+        oBody.mass++;
     } else {
-        oPlanet = null;
+        oBody = null;
     }
-    aGridModel[oCoordinates.y][oCoordinates.x] = oPlanet;
+    aGridModel[oCoordinates.y][oCoordinates.x] = oBody;
     let nMassColor = 255;
-    if (oPlanet) {
-        nMassColor = 255 - oPlanet.mass * 16;
+    if (oBody) {
+        nMassColor = 255 - oBody.mass * 16;
     }
     oTarget.style.backgroundColor = `rgb(${nMassColor}, ${nMassColor}, ${nMassColor})`;
 
