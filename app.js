@@ -6,7 +6,7 @@ let handleHover = function (event) {
 
 };
 
-let handleClick = function (event) {
+let handleSpaceClick = function (event) {
 
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
@@ -116,7 +116,7 @@ let makeBox = function (parentBox, sizeOfBox, x, y) {
 
     box.id = `${x}:${y}`;
     box.onmouseover = handleHover;
-    box.onclick = handleClick;
+    box.onclick = handleSpaceClick;
     box.style.backgroundColor = 'rgb(255, 255, 255)';
 
     return box;
