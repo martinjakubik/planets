@@ -161,6 +161,8 @@ let makeBox = function (parentBox, sizeOfBox, x, y) {
     box.id = `${x}:${y}`;
     box.onmouseover = handleHover;
     box.onclick = handleSpaceClick;
+    box.style.height = sizeOfBox;
+    box.style.width = sizeOfBox;
     box.style.backgroundColor = 'rgb(255, 255, 255)';
 
     return box;
@@ -170,6 +172,7 @@ let makeBox = function (parentBox, sizeOfBox, x, y) {
 let makeGrid = function (numberOfRows) {
 
     oAppConfiguration.gridSize = numberOfRows;
+    let nSizeOfBox = Math.floor(720 / oAppConfiguration.gridSize);
 
     let numberOfColumns = numberOfRows;
 
@@ -186,7 +189,7 @@ let makeGrid = function (numberOfRows) {
         while (x < numberOfColumns) {
 
             aGridModel[y].push(null);
-            makeBox(rowBox, 16, x, y);
+            makeBox(rowBox, nSizeOfBox, x, y);
             x = x + 1;
 
         }
@@ -217,5 +220,5 @@ let oAppConfiguration = {
 let aGridModel = [];
 let nTime = 0;
 
-makeGrid(20);
+makeGrid(40);
 makeButton();
