@@ -214,5 +214,5 @@ let oAppConfiguration = {
 let aSpaceTimeModel = [];
 let nTime = 0;
 
-makeSpaceTimeGrid(40);
+makeSpaceTimeGrid(80);
 makeTimeButton();
