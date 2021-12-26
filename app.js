@@ -70,9 +70,22 @@ let calculateGravity = function (body1, body2) {
     let nDistanceSquared = (body1.position.x - body2.position.x) ** 2 + (body1.position.y - body2.position.y) ** 2;
     let nForce = body1.mass * body2.mass / nDistanceSquared;
     let nAngle = Math.atan2(body1.position.x - body2.position.x, body1.position.y - body2.position.y);
-    body1.force = nForce;
-    body1.angle = nAngle;
-    console.log(nForce, nAngle);
+
+    let xForce = Math.cos(nAngle) * nForce * -1;
+    let yForce = Math.sin(nAngle) * nForce * -1;
+
+    let body1force = body1.force ? body1.force : nForce;
+    let body1angle = body1.angle ? body1.angle : nAngle;
+
+    let body1xForce = Math.cos(body1angle) * body1force * -1;
+    let body1yForce = Math.sin(body1angle) * body1force * -1;
+
+    let totalXForce = body1xForce + xForce;
+    let totalYForce = body1yForce + yForce;
+
+    body1.force = Math.sqrt((totalXForce * totalXForce) + (totalYForce * totalYForce));
+    body1.angle = Math.atan(totalYForce / totalXForce);
+    console.log(body1.force, body1.angle);
 
 };
 
