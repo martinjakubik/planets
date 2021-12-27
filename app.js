@@ -7,12 +7,19 @@ let getMassColor = function (mass) {
 };
 
 let getCssMassColor = function (body) {
-    let nMassColor = BACKGROUND_COLOR;
+    let sMassColor = BACKGROUND_COLOR;
     if (body && body.mass) {
-        nMassColor = getMassColor(body.mass);
-        return `rgb(${nMassColor}, ${nMassColor}, ${nMassColor})`;
+        sMassColor = getMassColor(body.mass);
+        return `rgb(${sMassColor}, ${sMassColor}, ${sMassColor})`;
     }
     return CSS_RGB_BACKGROUND_COLOR;
+};
+
+let getCssShineColor = function (pen) {
+    if (pen === CSS_RGB_BACKGROUND_COLOR) {
+        return CSS_RGB_BACKGROUND_COLOR;
+    }
+    return `rgb(205, 205, 255)`;
 };
 
 let handleSpaceClick = function (event) {
@@ -117,13 +124,11 @@ let handleTimeButtonClick = function () {
                 let newY = Math.floor(oPosition.y);
                 if (newX !== x || newY !== y) {
                     if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
-                        let oOldTarget = document.getElementById(`${x}:${y}`);
-                        oOldTarget.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
+                        drawBody({x: x, y: y}, CSS_RGB_BACKGROUND_COLOR);
                         aSpaceTimeModel[y][x] = null;
                     }
                     if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
-                        let oNewTarget = document.getElementById(`${newX}:${newY}`);
-                        oNewTarget.style.backgroundColor = getCssMassColor(oBody);
+                        drawBody({x: newX, y: newY}, getCssMassColor(oBody));
                         aSpaceTimeModel[newY][newX] = oBody;
                     }
                 }
@@ -145,6 +150,45 @@ let getXYFromID = function (sId) {
         x: Number(sX),
         y: Number(sY)
     };
+
+};
+
+let drawBody = function (position, pen) {
+
+    let xy = {x: Math.floor(position.x), y: Math.floor(position.y)};
+    let oNewTarget = document.getElementById(`${xy.x}:${xy.y}`);
+    oNewTarget.style.backgroundColor = pen;
+    drawShininess(position, getCssShineColor(pen));
+
+};
+
+let drawShininess = function (position, pen) {
+
+    let xy = {x: Math.floor(position.x), y: Math.floor(position.y)};
+    const aNeighborBoxes = getNeighborBoxes(xy);
+    aNeighborBoxes.forEach(position => {
+        let target = document.getElementById(`${position.x}:${position.y}`);
+        target.style.backgroundColor = pen;
+    });
+
+};
+
+let getNeighborBoxes = function (position) {
+
+    const aNeighborBoxes = [];
+    if (position.x > 0) {
+        aNeighborBoxes.push({x: position.x - 1, y: position.y});
+    }
+    if (position.y > 0) {
+        aNeighborBoxes.push({x: position.x, y: position.y - 1});
+    }
+    if (position.x < oAppConfiguration.gridSize - 1) {
+        aNeighborBoxes.push({x: position.x + 1, y: position.y});
+    }
+    if (position.y < oAppConfiguration.gridSize - 1) {
+        aNeighborBoxes.push({x: position.x, y: position.y + 1});
+    }
+    return aNeighborBoxes;
 
 };
 
