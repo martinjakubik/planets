@@ -37,8 +37,7 @@ let handleSpaceClick = function (event) {
         oBody = null;
     }
     aSpaceTimeModel[oCoordinates.y][oCoordinates.x] = oBody;
-    const sMassColor = getCssMassColor(oBody);
-    oTarget.style.backgroundColor = sMassColor;
+    drawBody({x: oCoordinates.x, y:oCoordinates.y}, getCssMassColor(oBody));
 
     calculateAllGravity();
 
@@ -155,8 +154,7 @@ let getXYFromID = function (sId) {
 
 let drawBody = function (position, pen) {
 
-    let xy = {x: Math.floor(position.x), y: Math.floor(position.y)};
-    let oNewTarget = document.getElementById(`${xy.x}:${xy.y}`);
+    let oNewTarget = document.getElementById(`${position.x}:${position.y}`);
     oNewTarget.style.backgroundColor = pen;
     drawShininess(position, getCssShineColor(pen));
 
@@ -164,10 +162,9 @@ let drawBody = function (position, pen) {
 
 let drawShininess = function (position, pen) {
 
-    let xy = {x: Math.floor(position.x), y: Math.floor(position.y)};
-    const aNeighborBoxes = getNeighborBoxes(xy);
-    aNeighborBoxes.forEach(position => {
-        let target = document.getElementById(`${position.x}:${position.y}`);
+    const aNeighborBoxes = getNeighborBoxes(position);
+    aNeighborBoxes.forEach(neighborPosition => {
+        let target = document.getElementById(`${neighborPosition.x}:${neighborPosition.y}`);
         target.style.backgroundColor = pen;
     });
 
