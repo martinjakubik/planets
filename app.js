@@ -37,7 +37,7 @@ let handleSpaceClick = function (event) {
         oBody = null;
     }
     aSpaceTimeModel[oCoordinates.y][oCoordinates.x] = oBody;
-    drawBody({x: oCoordinates.x, y:oCoordinates.y}, getCssMassColor(oBody));
+    drawBody(oCoordinates, getCssMassColor(oBody));
 
     calculateAllGravity();
 
