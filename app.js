@@ -1,13 +1,13 @@
-const BACKGROUND_COLOR = 0;
+const DARKEST_COLOR = 0;
 const LIGHTEST_COLOR = 255;
-const CSS_RGB_BACKGROUND_COLOR = `rgb(${BACKGROUND_COLOR}, ${BACKGROUND_COLOR}, ${BACKGROUND_COLOR + 40})`;
+const CSS_RGB_BACKGROUND_COLOR = `rgb(${DARKEST_COLOR}, ${DARKEST_COLOR}, ${DARKEST_COLOR + 40})`;
 
 let getMassColor = function (mass) {
     return LIGHTEST_COLOR - mass * 16 + 1;
 };
 
 let getCssMassColor = function (body) {
-    let sMassColor = BACKGROUND_COLOR;
+    let sMassColor = DARKEST_COLOR;
     if (body && body.mass) {
         sMassColor = getMassColor(body.mass);
         return `rgb(${sMassColor}, ${sMassColor}, ${sMassColor})`;
