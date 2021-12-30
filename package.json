@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/martinjakubik/planets/issues"
   },
-  "homepage": "https://github.com/martinjakubik/planets#readme"
+  "homepage": "https://github.com/martinjakubik/planets#readme",
+  "devDependencies": {
+    "qunit": "^2.17.2"
+  }
 }
