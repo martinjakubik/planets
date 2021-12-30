@@ -10,4 +10,6 @@ div>div {
 
 div>div>div {
     display: inline-block;
+    border: 1px dotted grey;
+
 }

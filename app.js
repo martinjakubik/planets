@@ -39,8 +39,6 @@ let handleSpaceClick = function (event) {
     aSpaceTimeModel[oCoordinates.y][oCoordinates.x] = oBody;
     drawBody(oCoordinates, getCssMassColor(oBody));
 
-    calculateAllGravity();
-
 };
 
 let createBody = function (x, y) {
@@ -82,14 +80,52 @@ let calculateAllGravity = function () {
 
 };
 
-let calculateGravity = function (body1, body2) {
+let calculateGravity = function (body, neighbour) {
 
-    let nDistanceSquared = (body1.position.x - body2.position.x) ** 2 + (body1.position.y - body2.position.y) ** 2;
-    let nForce = body1.mass * body2.mass / nDistanceSquared;
-    let nAngle = Math.atan2(body1.position.x - body2.position.x, body1.position.y - body2.position.y);
-    body1.force = nForce;
-    body1.angle = nAngle;
-    console.log(nForce, nAngle);
+    let nDistanceSquared = (body.position.x - neighbour.position.x) ** 2 + (body.position.y - neighbour.position.y) ** 2;
+    let neighbourVector = {
+        force: body.mass * neighbour.mass / nDistanceSquared,
+        angle: Math.atan2(neighbour.position.y - body.position.y, neighbour.position.x - body.position.x)
+    };
+    let vectorSum = addVectors(body, neighbourVector);
+    let sumOfMagnitudes = vectorSum.magnitude;
+    let sumOfAngles = vectorSum.angle;
+    console.table({
+        'body id': body.id,
+        'neighbour id': neighbour.id,
+        'add vector magnitudes': sumOfMagnitudes,
+        'sumOfAngles': sumOfAngles
+    });
+    body.angle = sumOfAngles;
+    body.force = sumOfMagnitudes;
+
+    console.log(body);
+
+};
+
+let addVectors = function (v1, v2) {
+
+    let v1Cartesian = convertRadialVectorToCartesian(v1);
+    let v2Cartesian = convertRadialVectorToCartesian(v2);
+
+    let resultant = {
+        x: v1Cartesian.x + v2Cartesian.x,
+        y: v1Cartesian.y + v2Cartesian.y
+    };
+
+    return {
+        magnitude: Math.sqrt(resultant.x * resultant.x, resultant.y * resultant.y),
+        angle: Math.atan2(resultant.y, resultant.x)
+    };
+
+};
+
+let convertRadialVectorToCartesian = function (v) {
+
+    return {
+        x: Math.cos(v.angle) * v.force,
+        y: Math.sin(v.angle) * v.force
+    };
 
 };
 
@@ -101,8 +137,8 @@ let calculatePosition = function (body, time) {
     let v0 = 0;
     let acceleration = body.force / body.mass;
     let displacementMagnitude = v0 * time + 1/2 * acceleration * time * time;
-    let xDisplacement = Math.sin(body.angle) * displacementMagnitude * -1;
-    let yDisplacement = Math.cos(body.angle) * displacementMagnitude * -1;
+    let xDisplacement = Math.cos(body.angle) * displacementMagnitude;
+    let yDisplacement = Math.sin(body.angle) * displacementMagnitude;
     let x = x0.x + xDisplacement;
     let y = x0.y + yDisplacement;
     body.position = {x: x, y: y};
@@ -112,7 +148,9 @@ let calculatePosition = function (body, time) {
 
 let handleTimeButtonClick = function () {
 
+    calculateAllGravity();
     nTime++;
+
     for (let y = 0; y < aSpaceTimeModel.length; y++) {
         for (let x = 0; x < aSpaceTimeModel[y].length; x++) {
             let oBody = aSpaceTimeModel[y][x];
@@ -220,12 +258,12 @@ let makeSpaceTimeGrid = function (numberOfRows) {
 
     let numberOfColumns = numberOfRows;
 
-    let y = 0;
+    let y = numberOfRows - 1;
     let x = 0;
     let spaceTimeBox = makeOuterBox(document.body);
     let rowBox;
 
-    while (y < numberOfRows) {
+    while (y >= 0) {
 
         aSpaceTimeModel[y] = [];
         x = 0;
@@ -238,7 +276,7 @@ let makeSpaceTimeGrid = function (numberOfRows) {
 
         }
 
-        y = y + 1;
+        y = y - 1;
 
     }
 
@@ -257,6 +295,19 @@ let makeTimeButton = function () {
 
 };
 
+let makeRecalculateButton = function () {
+
+    let buttonBox = makeOuterBox(document.body);
+
+    const oButton = document.createElement('button');
+    oButton.id = 'recalculateButton';
+    oButton.innerText = 're-calculate';
+    oButton.onclick = calculateAllGravity;
+    buttonBox.appendChild(oButton);
+    document.body.appendChild(buttonBox);
+
+};
+
 let oAppConfiguration = {
     gridSize: 0
 };
@@ -264,5 +315,6 @@ let oAppConfiguration = {
 let aSpaceTimeModel = [];
 let nTime = 0;
 
-makeSpaceTimeGrid(80);
+makeSpaceTimeGrid(20);
 makeTimeButton();
+makeRecalculateButton();
