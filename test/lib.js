@@ -18,6 +18,13 @@ QUnit.test('calculate position', assert => {
         force: 0.04,
         angle: -Math.PI / 2
     };
-    assert.equal(calculatePosition(body, 10), 3);
+
+    const expected = {
+        x: 4,
+        y: 15
+    };
+    const actual = calculatePosition(body, 10);
+
+    assert.equal(actual, expected);
 
 });
