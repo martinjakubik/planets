@@ -1,0 +1,19 @@
+{
+  "name": "planets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinjakubik/planets.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martinjakubik/planets/issues"
+  },
+  "homepage": "https://github.com/martinjakubik/planets#readme"
+}
