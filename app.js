@@ -1,5 +1,5 @@
 import { makeSpaceTimeGrid, makeTimeButton, makeRecalculateButton } from './lib.mjs';
 
-makeSpaceTimeGrid(20);
+makeSpaceTimeGrid(80);
 makeTimeButton();
 makeRecalculateButton();
