@@ -99,7 +99,7 @@ let calculateGravity = function (body, neighbour) {
     body.angle = sumOfAngles;
     body.force = sumOfMagnitudes;
 
-    console.log(body);
+    return body;
 
 };
 
@@ -114,7 +114,7 @@ let addVectors = function (v1, v2) {
     };
 
     return {
-        magnitude: Math.sqrt(resultant.x * resultant.x, resultant.y * resultant.y),
+        magnitude: Math.sqrt(resultant.x * resultant.x + resultant.y * resultant.y),
         angle: Math.atan2(resultant.y, resultant.x)
     };
 
