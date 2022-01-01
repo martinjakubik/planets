@@ -46,10 +46,6 @@ let createBody = function (x, y) {
     return {
         id: `${x}:${y}`,
         mass: 1,
-        initialPosition: {
-            x: x,
-            y: y
-        },
         position: {
             x: x,
             y: y
