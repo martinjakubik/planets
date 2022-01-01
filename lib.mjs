@@ -90,12 +90,6 @@ let calculateGravity = function (body, neighbour) {
     let vectorSum = addVectors(body, neighbourVector);
     let sumOfMagnitudes = vectorSum.magnitude;
     let sumOfAngles = vectorSum.angle;
-    console.table({
-        'body id': body.id,
-        'neighbour id': neighbour.id,
-        'add vector magnitudes': sumOfMagnitudes,
-        'sumOfAngles': sumOfAngles
-    });
     body.angle = sumOfAngles;
     body.force = sumOfMagnitudes;
 
@@ -170,9 +164,6 @@ let handleTimeButtonClick = function () {
                         aSpaceTimeModel[newY][newX] = oBody;
                     }
                 }
-
-                console.log(oPosition);
-
             }
         }
     }
@@ -296,19 +287,6 @@ let makeTimeButton = function () {
 
 };
 
-let makeRecalculateButton = function () {
-
-    let buttonBox = makeOuterBox(document.body);
-
-    const oButton = document.createElement('button');
-    oButton.id = 'recalculateButton';
-    oButton.innerText = 're-calculate';
-    oButton.onclick = calculateAllGravity;
-    buttonBox.appendChild(oButton);
-    document.body.appendChild(buttonBox);
-
-};
-
 let oAppConfiguration = {
     gridSize: 0
 };
@@ -316,4 +294,4 @@ let oAppConfiguration = {
 let aSpaceTimeModel = [];
 let nTime = 0;
 
-export { makeSpaceTimeGrid, makeTimeButton, makeRecalculateButton, calculateGravity, calculatePosition };
+export { makeSpaceTimeGrid, makeTimeButton, calculateGravity, calculatePosition };
