@@ -30,6 +30,24 @@ let calculateGravity = function (body, neighbour) {
 
 };
 
+let calculatePosition = function (body, time) {
+
+    // x(t) = x0 + v0 * t + 1/2 at^2,
+    // see: https://phys.libretexts.org/Bookshelves/University_Physics/Book%3A_University_Physics_%28OpenStax%29/Book%3A_University_Physics_I_-_Mechanics_Sound_Oscillations_and_Waves_%28OpenStax%29/03%3A_Motion_Along_a_Straight_Line/3.08%3A_Finding_Velocity_and_Displacement_from_Acceleration
+    let initialPosition = body.position;
+    let v0 = 0;
+    let acceleration = body.force / body.mass;
+    let displacementMagnitude = v0 * time + 1/2 * acceleration;
+    let xDisplacement = Math.cos(body.angle) * displacementMagnitude;
+    let yDisplacement = Math.sin(body.angle) * displacementMagnitude;
+    body.position = {
+        x: initialPosition.x + xDisplacement,
+        y: initialPosition.y + yDisplacement
+    };
+    return body.position;
+
+};
+
 let addVectors = function (v1, v2) {
 
     let v1Cartesian = convertRadialVectorToCartesian(v1);
@@ -53,24 +71,6 @@ let convertRadialVectorToCartesian = function (v) {
         x: Math.cos(v.angle) * v.force,
         y: Math.sin(v.angle) * v.force
     };
-
-};
-
-let calculatePosition = function (body, time) {
-
-    // x(t) = x0 + v0 * t + 1/2 at^2,
-    // see: https://phys.libretexts.org/Bookshelves/University_Physics/Book%3A_University_Physics_%28OpenStax%29/Book%3A_University_Physics_I_-_Mechanics_Sound_Oscillations_and_Waves_%28OpenStax%29/03%3A_Motion_Along_a_Straight_Line/3.08%3A_Finding_Velocity_and_Displacement_from_Acceleration
-    let initialPosition = body.position;
-    let v0 = 0;
-    let acceleration = body.force / body.mass;
-    let displacementMagnitude = v0 * time + 1/2 * acceleration;
-    let xDisplacement = Math.cos(body.angle) * displacementMagnitude;
-    let yDisplacement = Math.sin(body.angle) * displacementMagnitude;
-    body.position = {
-        x: initialPosition.x + xDisplacement,
-        y: initialPosition.y + yDisplacement
-    };
-    return body.position;
 
 };
 
