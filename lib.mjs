@@ -47,13 +47,13 @@ let calculateAllGravity = function () {
 
     for (let y1 = 0; y1 < aSpaceTimeModel.length; y1++) {
         for (let x1 = 0; x1 < aSpaceTimeModel[y1].length; x1++) {
-            let oBody1 = aSpaceTimeModel[y1][x1];
-            if (oBody1) {
+            let oBody = aSpaceTimeModel[y1][x1];
+            if (oBody) {
                 for (let y2 = 0; y2 < aSpaceTimeModel.length; y2++) {
                     for (let x2 = 0; x2 < aSpaceTimeModel[y2].length; x2++) {
-                        let oBody2 = aSpaceTimeModel[y2][x2];
-                        if (oBody2 && oBody2.id !== oBody1.id) {
-                            calculateGravity(oBody1, oBody2);
+                        let oNeighbour = aSpaceTimeModel[y2][x2];
+                        if (oNeighbour && oNeighbour.id !== oBody.id) {
+                            calculateGravity(oBody, oNeighbour);
                         }
                     }
                 }
