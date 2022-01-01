@@ -29,37 +29,30 @@ let handleSpaceClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
-    let oBody = aSpaceTimeModel[oCoordinates.y][oCoordinates.x];
+    let oBody = oSpaceTime[sId];
     if(!oBody) {
         oBody = createBody(oCoordinates.x, oCoordinates.y);
     }
     if (oBody.mass < 16) {
         oBody.mass++;
+        oSpaceTime[sId] = oBody;
     } else {
-        oBody = null;
+        delete oSpaceTime[sId];
     }
-    aSpaceTimeModel[oCoordinates.y][oCoordinates.x] = oBody;
     drawBody(oCoordinates, getCssMassColor(oBody));
 
 };
 
 let calculateAllGravity = function () {
 
-    for (let y1 = 0; y1 < aSpaceTimeModel.length; y1++) {
-        for (let x1 = 0; x1 < aSpaceTimeModel[y1].length; x1++) {
-            let oBody = aSpaceTimeModel[y1][x1];
-            if (oBody) {
-                for (let y2 = 0; y2 < aSpaceTimeModel.length; y2++) {
-                    for (let x2 = 0; x2 < aSpaceTimeModel[y2].length; x2++) {
-                        let oNeighbour = aSpaceTimeModel[y2][x2];
-                        if (oNeighbour && oNeighbour.id !== oBody.id) {
-                            calculateGravity(oBody, oNeighbour);
-                        }
-                    }
-                }
+    const aBodies = Object.entries(oSpaceTime);
+    aBodies.forEach(([oBodyKey, oBody]) => {
+        aBodies.forEach(([oNeighbourKey, oNeighbour]) => {
+            if (oNeighbourKey !== oBodyKey) {
+                calculateGravity(oBody, oNeighbour);
             }
-        }
-    }
+        });
+    });
 
 };
 
@@ -68,27 +61,22 @@ let handleTimeButtonClick = function () {
     calculateAllGravity();
     nTime++;
 
-    for (let y = 0; y < aSpaceTimeModel.length; y++) {
-        for (let x = 0; x < aSpaceTimeModel[y].length; x++) {
-            let oBody = aSpaceTimeModel[y][x];
-            if (oBody) {
-
-                let oPosition = calculatePosition(oBody, nTime);
-                let newX = Math.floor(oPosition.x);
-                let newY = Math.floor(oPosition.y);
-                if (newX !== x || newY !== y) {
-                    if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
-                        drawBody({x: x, y: y}, CSS_RGB_BACKGROUND_COLOR);
-                        aSpaceTimeModel[y][x] = null;
-                    }
-                    if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
-                        drawBody({x: newX, y: newY}, getCssMassColor(oBody));
-                        aSpaceTimeModel[newY][newX] = oBody;
-                    }
-                }
+    const aBodies = Object.values(oSpaceTime);
+    aBodies.forEach(oBody => {
+        const x = oBody.position.x;
+        const y = oBody.position.y;
+        const oNewPosition = calculatePosition(oBody, nTime);
+        const newX = Math.floor(oNewPosition.x);
+        const newY = Math.floor(oNewPosition.y);
+        if (newX !== x || newY !== y) {
+            if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
+                drawBody({x: x, y: y}, CSS_RGB_BACKGROUND_COLOR);
+            }
+            if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
+                drawBody({x: newX, y: newY}, getCssMassColor(oBody));
             }
         }
-    }
+    });
 
 };
 
@@ -106,17 +94,21 @@ let getXYFromID = function (sId) {
 
 let drawBody = function (position, pen) {
 
-    let oNewTarget = document.getElementById(`${position.x}:${position.y}`);
+    const floorPosition = {
+        x: Math.floor(position.x),
+        y: Math.floor(position.y)
+    };
+    const oNewTarget = document.getElementById(`${floorPosition.x}:${floorPosition.y}`);
     oNewTarget.style.backgroundColor = pen;
-    drawShininess(position, getCssShineColor(pen));
+    drawShininess(floorPosition, getCssShineColor(pen));
 
 };
 
 let drawShininess = function (position, pen) {
 
     const aNeighborBoxes = getNeighborBoxes(position);
-    aNeighborBoxes.forEach(neighborPosition => {
-        let target = document.getElementById(`${neighborPosition.x}:${neighborPosition.y}`);
+    aNeighborBoxes.forEach(neighborBoxPosition => {
+        let target = document.getElementById(`${neighborBoxPosition.x}:${neighborBoxPosition.y}`);
         target.style.backgroundColor = pen;
     });
 
@@ -177,14 +169,14 @@ let makeSpaceTimeGrid = function (numberOfRows) {
     let spaceTimeBox = makeOuterBox(document.body);
     let rowBox;
 
+    oSpaceTime = {};
+
     while (y >= 0) {
 
-        aSpaceTimeModel[y] = [];
         x = 0;
         rowBox = makeOuterBox(spaceTimeBox);
         while (x < numberOfColumns) {
 
-            aSpaceTimeModel[y].push(null);
             makeBox(rowBox, nSizeOfBox, x, y);
             x = x + 1;
 
@@ -214,7 +206,7 @@ let oAppConfiguration = {
     gridSize: 0
 };
 
-let aSpaceTimeModel = [];
+let oSpaceTime;
 let nTime = 0;
 
 export { makeSpaceTimeGrid, makeTimeButton, calculateGravity, calculatePosition };
