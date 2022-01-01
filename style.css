@@ -7,3 +7,7 @@ div {
 div>div>div {
     border: 1px dotted grey;
 }
+
+#buttonBox {
+    justify-content: left;
+}

@@ -277,6 +277,7 @@ let makeSpaceTimeGrid = function (numberOfRows) {
 let makeTimeButton = function () {
 
     let buttonBox = makeOuterBox(document.body);
+    buttonBox.id = 'buttonBox';
 
     const oButton = document.createElement('button');
     oButton.id = 'timeButton';
