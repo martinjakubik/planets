@@ -29,7 +29,6 @@ const handleSpaceTimeClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
-    aPositionHistory.push(oCoordinates);
     let oBody = oSpaceTime[sId];
     if(oBody) {
         oBody.mass++;
@@ -38,10 +37,15 @@ const handleSpaceTimeClick = function (event) {
     }
     if (oBody.mass < 16) {
         oSpaceTime[sId] = oBody;
+        if (!aSpaceTimeHistory[nTime]) {
+            aSpaceTimeHistory[nTime] = [];
+        }
     } else {
         delete oSpaceTime[sId];
         oBody = null;
     }
+    const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
+    aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
     drawBody(oCoordinates, getCssMassColor(oBody));
     console.log(oCoordinates);
 };
@@ -66,7 +70,6 @@ const handleTimeButtonClick = function () {
         const x = oBody.position.x;
         const y = oBody.position.y;
         const oNewPosition = calculatePosition(oBody, nTime);
-        aPositionHistory.push(oNewPosition);
         const newX = Math.floor(oNewPosition.x);
         const newY = Math.floor(oNewPosition.y);
         if (newX !== x || newY !== y) {
@@ -78,6 +81,8 @@ const handleTimeButtonClick = function () {
             }
         }
     });
+    const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
+    aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
 };
 
 const getXYFromID = function (sId) {
@@ -88,6 +93,15 @@ const getXYFromID = function (sId) {
         x: Number(sX),
         y: Number(sY)
     };
+};
+
+const copySpaceTimeSnapshot = function (oSpaceTime) {
+    let oSpaceTimeSnapshot = {};
+    const aSpaceTimeEntries = Object.entries(oSpaceTime);
+    aSpaceTimeEntries.forEach(([key, value]) => {
+        oSpaceTimeSnapshot[key] = Object.assign({}, value);
+    });
+    return oSpaceTimeSnapshot;
 };
 
 const drawBody = function (position, pen) {
@@ -210,6 +224,6 @@ const oAppConfiguration = {
 let oSpaceTime;
 let nTime = 0;
 
-const aPositionHistory = [];
+const aSpaceTimeHistory = [];
 
 export { makeSpaceTimeGrid, makeButtonBar, calculateGravity, calculatePosition };
