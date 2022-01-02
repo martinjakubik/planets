@@ -5,10 +5,6 @@ QUnit.module('lib');
 const BODY_1 = {
     id: '1:1',
     mass: 1,
-    initialPosition: {
-        x: 10,
-        y: 10
-    },
     position: {
         x: 10,
         y: 10
@@ -20,10 +16,6 @@ const BODY_1 = {
 const BODY_2 = {
     id: '1:2',
     mass: 1,
-    initialPosition: {
-        x: 10,
-        y: 10
-    },
     position: {
         x: 10,
         y: 10
@@ -35,10 +27,6 @@ const BODY_2 = {
 const BODY_3 = {
     id: '1:3',
     mass: 1,
-    initialPosition: {
-        x: 10,
-        y: 10
-    },
     position: {
         x: 10,
         y: 10
@@ -50,10 +38,6 @@ const BODY_3 = {
 const NEIGHBOUR_1 = {
     id: '2:2',
     mass: 1,
-    initialPosition: {
-        x: 20,
-        y: 10
-    },
     position: {
         x: 20,
         y: 10
@@ -105,10 +89,6 @@ QUnit.test('calculate position', assert => {
     const body = {
         id: '100:100',
         mass: 1,
-        initialPosition: {
-            x: 1,
-            y: 18
-        },
         position: {
             x: 3,
             y: 15
