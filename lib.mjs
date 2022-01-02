@@ -99,26 +99,26 @@ const drawBody = function (position, pen) {
 };
 
 const drawShininess = function (position, pen) {
-    const aNeighborBoxes = getNeighborBoxes(position);
+    const aNeighborBoxes = getNeighborBoxes(position, 1);
     aNeighborBoxes.forEach(neighborBoxPosition => {
         let target = document.getElementById(`${neighborBoxPosition.x}:${neighborBoxPosition.y}`);
         target.style.backgroundColor = pen;
     });
 };
 
-const getNeighborBoxes = function (position) {
+const getNeighborBoxes = function (position, radius) {
     const aNeighborBoxes = [];
-    if (position.x > 0) {
-        aNeighborBoxes.push({x: position.x - 1, y: position.y});
+    if ((position.x - radius) >= 0) {
+        aNeighborBoxes.push({x: position.x - radius, y: position.y});
     }
-    if (position.y > 0) {
+    if ((position.y - radius) >= 0) {
         aNeighborBoxes.push({x: position.x, y: position.y - 1});
     }
-    if (position.x < oAppConfiguration.gridSize - 1) {
-        aNeighborBoxes.push({x: position.x + 1, y: position.y});
+    if ((position.x + radius) < oAppConfiguration.gridSize) {
+        aNeighborBoxes.push({x: position.x + radius, y: position.y});
     }
-    if (position.y < oAppConfiguration.gridSize - 1) {
-        aNeighborBoxes.push({x: position.x, y: position.y + 1});
+    if ((position.y + radius) < oAppConfiguration.gridSize) {
+        aNeighborBoxes.push({x: position.x, y: position.y + radius});
     }
     return aNeighborBoxes;
 };
