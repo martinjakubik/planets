@@ -36,13 +36,6 @@ const calculateAllGravity = function () {
     });
 };
 
-const calculateAllPositions = function () {
-    const aBodies = Object.values(oSpaceTime);
-    aBodies.forEach(oBody => {
-        calculatePosition(oBody, nTime);
-    });
-};
-
 const handleSpaceTimeClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
@@ -68,15 +61,14 @@ const handleSpaceTimeClick = function (event) {
 };
 
 const handleTimeButtonClick = function () {
+    calculateAllGravity();
     const clear = true;
     drawSpaceTime(nTime, clear);
-
     nTime++;
-    calculateAllGravity();
-    calculateAllPositions();
+    drawSpaceTime(nTime);
+
     const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
     aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
-    drawSpaceTime(nTime);
 };
 
 const getXYFromID = function (sId) {
@@ -99,21 +91,21 @@ const copySpaceTimeSnapshot = function (oSpaceTime) {
 };
 
 const drawSpaceTime = function (nTime, bClear) {
-    const oSpaceTimeSnapshot = aSpaceTimeHistory[nTime];
-    if (oSpaceTimeSnapshot) {
-        const aBodies = Object.values(oSpaceTimeSnapshot);
-        aBodies.forEach(oBody => {
-            const floorX = Math.floor(oBody.position.x);
-            const floorY = Math.floor(oBody.position.y);
-            if (floorX > 0 && floorX < oAppConfiguration.gridSize && floorY > 0 && floorY < oAppConfiguration.gridSize) {
-                if (bClear) {
-                    drawBody({x: floorX, y: floorY}, CSS_RGB_BACKGROUND_COLOR);
-                } else {
-                    drawBody({x: floorX, y: floorY}, getCssMassColor(oBody));
-                }
+    const aBodies = Object.values(oSpaceTime);
+    aBodies.forEach(oBody => {
+        const x = oBody.position.x;
+        const y = oBody.position.y;
+        const oNewPosition = calculatePosition(oBody, nTime);
+        const newX = Math.floor(oNewPosition.x);
+        const newY = Math.floor(oNewPosition.y);
+        if (newX !== x || newY !== y) {
+            if (bClear && x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
+                drawBody({x: x, y: y}, CSS_RGB_BACKGROUND_COLOR);
+            } else if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
+                drawBody({x: newX, y: newY}, getCssMassColor(oBody));
             }
-        });
-    }
+        }
+    });
 };
 
 const drawBody = function (position, pen) {
