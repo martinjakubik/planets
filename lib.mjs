@@ -25,7 +25,6 @@ let getCssShineColor = function (pen) {
 };
 
 let handleSpaceTimeClick = function (event) {
-
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
@@ -40,11 +39,9 @@ let handleSpaceTimeClick = function (event) {
         delete oSpaceTime[sId];
     }
     drawBody(oCoordinates, getCssMassColor(oBody));
-
 };
 
 let calculateAllGravity = function () {
-
     const aBodies = Object.entries(oSpaceTime);
     aBodies.forEach(([oBodyKey, oBody]) => {
         aBodies.forEach(([oNeighbourKey, oNeighbour]) => {
@@ -53,11 +50,9 @@ let calculateAllGravity = function () {
             }
         });
     });
-
 };
 
 let handleTimeButtonClick = function () {
-
     calculateAllGravity();
     nTime++;
 
@@ -77,11 +72,9 @@ let handleTimeButtonClick = function () {
             }
         }
     });
-
 };
 
 let getXYFromID = function (sId) {
-
     let aCoordinates = sId.split(':');
     let sX = aCoordinates[0];
     let sY = aCoordinates[1];
@@ -89,11 +82,9 @@ let getXYFromID = function (sId) {
         x: Number(sX),
         y: Number(sY)
     };
-
 };
 
 let drawBody = function (position, pen) {
-
     const floorPosition = {
         x: Math.floor(position.x),
         y: Math.floor(position.y)
@@ -101,21 +92,17 @@ let drawBody = function (position, pen) {
     const oNewTarget = document.getElementById(`${floorPosition.x}:${floorPosition.y}`);
     oNewTarget.style.backgroundColor = pen;
     drawShininess(floorPosition, getCssShineColor(pen));
-
 };
 
 let drawShininess = function (position, pen) {
-
     const aNeighborBoxes = getNeighborBoxes(position);
     aNeighborBoxes.forEach(neighborBoxPosition => {
         let target = document.getElementById(`${neighborBoxPosition.x}:${neighborBoxPosition.y}`);
         target.style.backgroundColor = pen;
     });
-
 };
 
 let getNeighborBoxes = function (position) {
-
     const aNeighborBoxes = [];
     if (position.x > 0) {
         aNeighborBoxes.push({x: position.x - 1, y: position.y});
@@ -130,20 +117,16 @@ let getNeighborBoxes = function (position) {
         aNeighborBoxes.push({x: position.x, y: position.y + 1});
     }
     return aNeighborBoxes;
-
 };
 
 let makeOuterBox = function (parentBox) {
-
     let box = document.createElement('div');
     parentBox.appendChild(box);
 
     return box;
-
 };
 
 let makeBox = function (parentBox, sizeOfBox, x, y) {
-
     let box = document.createElement('div');
     parentBox.appendChild(box);
 
@@ -154,11 +137,9 @@ let makeBox = function (parentBox, sizeOfBox, x, y) {
     box.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
 
     return box;
-
 };
 
 let makeSpaceTimeGrid = function (numberOfRows) {
-
     oAppConfiguration.gridSize = numberOfRows;
     let nSizeOfBox = Math.floor(720 / oAppConfiguration.gridSize);
 
@@ -172,24 +153,18 @@ let makeSpaceTimeGrid = function (numberOfRows) {
     oSpaceTime = {};
 
     while (y >= 0) {
-
         x = 0;
         rowBox = makeOuterBox(spaceTimeBox);
         while (x < numberOfColumns) {
-
             makeBox(rowBox, nSizeOfBox, x, y);
             x = x + 1;
-
         }
 
         y = y - 1;
-
     }
-
 };
 
 let makeTimeButton = function () {
-
     let buttonBox = makeOuterBox(document.body);
     buttonBox.id = 'buttonBox';
 
@@ -199,7 +174,6 @@ let makeTimeButton = function () {
     oButton.onclick = handleTimeButtonClick;
     buttonBox.appendChild(oButton);
     document.body.appendChild(buttonBox);
-
 };
 
 let oAppConfiguration = {
