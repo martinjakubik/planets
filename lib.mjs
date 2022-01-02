@@ -28,6 +28,7 @@ const handleSpaceTimeClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
+    aPositionHistory.push(oCoordinates);
     let oBody = oSpaceTime[sId];
     if(!oBody) {
         oBody = createBody(oCoordinates.x, oCoordinates.y);
@@ -62,6 +63,7 @@ const handleTimeButtonClick = function () {
         const x = oBody.position.x;
         const y = oBody.position.y;
         const oNewPosition = calculatePosition(oBody, nTime);
+        aPositionHistory.push(oNewPosition);
         const newX = Math.floor(oNewPosition.x);
         const newY = Math.floor(oNewPosition.y);
         if (newX !== x || newY !== y) {
@@ -203,5 +205,7 @@ const oAppConfiguration = {
 
 let oSpaceTime;
 let nTime = 0;
+
+const aPositionHistory = [];
 
 export { makeSpaceTimeGrid, makeButtonBar, calculateGravity, calculatePosition };
