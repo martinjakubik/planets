@@ -4,11 +4,11 @@ const DARKEST_COLOR = 0;
 const LIGHTEST_COLOR = 255;
 const CSS_RGB_BACKGROUND_COLOR = `rgb(${DARKEST_COLOR}, ${DARKEST_COLOR}, ${DARKEST_COLOR + 40})`;
 
-let getMassColor = function (mass) {
+const getMassColor = function (mass) {
     return LIGHTEST_COLOR - mass * 16 + 1;
 };
 
-let getCssMassColor = function (body) {
+const getCssMassColor = function (body) {
     let sMassColor = DARKEST_COLOR;
     if (body && body.mass) {
         sMassColor = getMassColor(body.mass);
@@ -17,14 +17,14 @@ let getCssMassColor = function (body) {
     return CSS_RGB_BACKGROUND_COLOR;
 };
 
-let getCssShineColor = function (pen) {
+const getCssShineColor = function (pen) {
     if (pen === CSS_RGB_BACKGROUND_COLOR) {
         return CSS_RGB_BACKGROUND_COLOR;
     }
     return `rgb(205, 205, 255)`;
 };
 
-let handleSpaceTimeClick = function (event) {
+const handleSpaceTimeClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
@@ -42,7 +42,7 @@ let handleSpaceTimeClick = function (event) {
     console.log(oCoordinates);
 };
 
-let calculateAllGravity = function () {
+const calculateAllGravity = function () {
     const aBodies = Object.entries(oSpaceTime);
     aBodies.forEach(([oBodyKey, oBody]) => {
         aBodies.forEach(([oNeighbourKey, oNeighbour]) => {
@@ -53,7 +53,7 @@ let calculateAllGravity = function () {
     });
 };
 
-let handleTimeButtonClick = function () {
+const handleTimeButtonClick = function () {
     calculateAllGravity();
     nTime++;
 
@@ -75,7 +75,7 @@ let handleTimeButtonClick = function () {
     });
 };
 
-let getXYFromID = function (sId) {
+const getXYFromID = function (sId) {
     let aCoordinates = sId.split(':');
     let sX = aCoordinates[0];
     let sY = aCoordinates[1];
@@ -85,7 +85,7 @@ let getXYFromID = function (sId) {
     };
 };
 
-let drawBody = function (position, pen) {
+const drawBody = function (position, pen) {
     const floorPosition = {
         x: Math.floor(position.x),
         y: Math.floor(position.y)
@@ -95,7 +95,7 @@ let drawBody = function (position, pen) {
     drawShininess(floorPosition, getCssShineColor(pen));
 };
 
-let drawShininess = function (position, pen) {
+const drawShininess = function (position, pen) {
     const aNeighborBoxes = getNeighborBoxes(position);
     aNeighborBoxes.forEach(neighborBoxPosition => {
         let target = document.getElementById(`${neighborBoxPosition.x}:${neighborBoxPosition.y}`);
@@ -103,7 +103,7 @@ let drawShininess = function (position, pen) {
     });
 };
 
-let getNeighborBoxes = function (position) {
+const getNeighborBoxes = function (position) {
     const aNeighborBoxes = [];
     if (position.x > 0) {
         aNeighborBoxes.push({x: position.x - 1, y: position.y});
@@ -120,19 +120,19 @@ let getNeighborBoxes = function (position) {
     return aNeighborBoxes;
 };
 
-let handleGridToggleButtonClick = function () {
+const handleGridToggleButtonClick = function () {
     const spaceTimeBox = document.getElementById('spaceTime');
     spaceTimeBox.classList.toggle('grid');
 };
 
-let makeOuterBox = function (parentBox) {
+const makeOuterBox = function (parentBox) {
     let box = document.createElement('div');
     parentBox.appendChild(box);
 
     return box;
 };
 
-let makeBox = function (parentBox, sizeOfBox, x, y) {
+const makeBox = function (parentBox, sizeOfBox, x, y) {
     let box = document.createElement('div');
     parentBox.appendChild(box);
 
@@ -145,7 +145,7 @@ let makeBox = function (parentBox, sizeOfBox, x, y) {
     return box;
 };
 
-let makeSpaceTimeGrid = function (numberOfRows) {
+const makeSpaceTimeGrid = function (numberOfRows) {
     oAppConfiguration.gridSize = numberOfRows;
     let nSizeOfBox = Math.floor(720 / oAppConfiguration.gridSize);
 
@@ -171,7 +171,7 @@ let makeSpaceTimeGrid = function (numberOfRows) {
     }
 };
 
-let makeTimeButton = function (parentBox) {
+const makeTimeButton = function (parentBox) {
     const oButton = document.createElement('button');
     oButton.id = 'timeButton';
     oButton.innerText = '>';
@@ -179,7 +179,7 @@ let makeTimeButton = function (parentBox) {
     parentBox.appendChild(oButton);
 };
 
-let makeGridToggleButton = function (parentBox) {
+const makeGridToggleButton = function (parentBox) {
     const oButton = document.createElement('button');
     oButton.id = 'gridToggleButton';
     oButton.innerText = 'grid';
@@ -187,7 +187,7 @@ let makeGridToggleButton = function (parentBox) {
     parentBox.appendChild(oButton);
 };
 
-let makeButtonBar = function () {
+const makeButtonBar = function () {
     const buttonBar = makeOuterBox(document.body);
     buttonBar.id = 'buttonBar';
 
@@ -197,7 +197,7 @@ let makeButtonBar = function () {
     document.body.appendChild(buttonBar);
 };
 
-let oAppConfiguration = {
+const oAppConfiguration = {
     gridSize: 0
 };
 
