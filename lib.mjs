@@ -39,6 +39,7 @@ let handleSpaceTimeClick = function (event) {
         delete oSpaceTime[sId];
     }
     drawBody(oCoordinates, getCssMassColor(oBody));
+    console.log(oCoordinates);
 };
 
 let calculateAllGravity = function () {
@@ -119,6 +120,11 @@ let getNeighborBoxes = function (position) {
     return aNeighborBoxes;
 };
 
+let handleGridToggleButtonClick = function () {
+    const spaceTimeBox = document.getElementById('spaceTime');
+    spaceTimeBox.classList.toggle('grid');
+};
+
 let makeOuterBox = function (parentBox) {
     let box = document.createElement('div');
     parentBox.appendChild(box);
@@ -148,6 +154,7 @@ let makeSpaceTimeGrid = function (numberOfRows) {
     let y = numberOfRows - 1;
     let x = 0;
     let spaceTimeBox = makeOuterBox(document.body);
+    spaceTimeBox.id = 'spaceTime';
     let rowBox;
 
     oSpaceTime = {};
@@ -164,16 +171,30 @@ let makeSpaceTimeGrid = function (numberOfRows) {
     }
 };
 
-let makeTimeButton = function () {
-    let buttonBox = makeOuterBox(document.body);
-    buttonBox.id = 'buttonBox';
-
+let makeTimeButton = function (parentBox) {
     const oButton = document.createElement('button');
     oButton.id = 'timeButton';
     oButton.innerText = '>';
     oButton.onclick = handleTimeButtonClick;
-    buttonBox.appendChild(oButton);
-    document.body.appendChild(buttonBox);
+    parentBox.appendChild(oButton);
+};
+
+let makeGridToggleButton = function (parentBox) {
+    const oButton = document.createElement('button');
+    oButton.id = 'gridToggleButton';
+    oButton.innerText = 'grid';
+    oButton.onclick = handleGridToggleButtonClick;
+    parentBox.appendChild(oButton);
+};
+
+let makeButtonBar = function () {
+    const buttonBar = makeOuterBox(document.body);
+    buttonBar.id = 'buttonBar';
+
+    makeTimeButton(buttonBar);
+    makeGridToggleButton(buttonBar);
+
+    document.body.appendChild(buttonBar);
 };
 
 let oAppConfiguration = {
@@ -183,4 +204,4 @@ let oAppConfiguration = {
 let oSpaceTime;
 let nTime = 0;
 
-export { makeSpaceTimeGrid, makeTimeButton, calculateGravity, calculatePosition };
+export { makeSpaceTimeGrid, makeButtonBar, calculateGravity, calculatePosition };

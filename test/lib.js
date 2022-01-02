@@ -2,6 +2,13 @@ import { calculateGravity, calculatePosition } from '../lib.mjs';
 
 QUnit.module('lib');
 
+// note: good braid without collision
+/*
+{x: 16, y: 28}
+{x: 24, y: 46}
+{x: 46, y: 45}
+*/
+
 const BODY_1 = {
     id: '1:1',
     mass: 1,

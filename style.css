@@ -1,18 +1,19 @@
-div {
+div#spaceTime {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
 }
 
-div>div>div {
-    border: 1px dotted grey;
+div.grid>div>div {
+    outline: 1px dotted grey;
 }
 
-#buttonBox {
+#buttonBar {
+    display: flex;
     justify-content: center;
 }
 
-#timeButton {
+#buttonBar>button {
     width: 240px;
     height: 60px;
 }
