@@ -58,7 +58,6 @@ const handleSpaceTimeClick = function (event) {
     const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
     aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
     drawBody(oCoordinates, getCssMassColor(oBody));
-    console.log(oCoordinates);
 };
 
 const handleTimeButtonClick = function () {
