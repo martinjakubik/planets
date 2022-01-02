@@ -24,7 +24,7 @@ let getCssShineColor = function (pen) {
     return `rgb(205, 205, 255)`;
 };
 
-let handleSpaceClick = function (event) {
+let handleSpaceTimeClick = function (event) {
 
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
@@ -148,7 +148,7 @@ let makeBox = function (parentBox, sizeOfBox, x, y) {
     parentBox.appendChild(box);
 
     box.id = `${x}:${y}`;
-    box.onclick = handleSpaceClick;
+    box.onclick = handleSpaceTimeClick;
     box.style.height = sizeOfBox;
     box.style.width = sizeOfBox;
     box.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
