@@ -25,6 +25,17 @@ const getCssShineColor = function (pen) {
     return CSS_RGBA_SHINY_COLOR;
 };
 
+const calculateAllGravity = function () {
+    const aBodies = Object.entries(oSpaceTime);
+    aBodies.forEach(([oBodyKey, oBody]) => {
+        aBodies.forEach(([oNeighbourKey, oNeighbour]) => {
+            if (oNeighbourKey !== oBodyKey) {
+                calculateGravity(oBody, oNeighbour);
+            }
+        });
+    });
+};
+
 const handleSpaceTimeClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
@@ -48,17 +59,6 @@ const handleSpaceTimeClick = function (event) {
     aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
     drawBody(oCoordinates, getCssMassColor(oBody));
     console.log(oCoordinates);
-};
-
-const calculateAllGravity = function () {
-    const aBodies = Object.entries(oSpaceTime);
-    aBodies.forEach(([oBodyKey, oBody]) => {
-        aBodies.forEach(([oNeighbourKey, oNeighbour]) => {
-            if (oNeighbourKey !== oBodyKey) {
-                calculateGravity(oBody, oNeighbour);
-            }
-        });
-    });
 };
 
 const handleTimeButtonClick = function () {
