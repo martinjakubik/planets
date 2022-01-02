@@ -3,6 +3,7 @@ import { createBody, calculateGravity, calculatePosition } from './gravity.mjs';
 const DARKEST_COLOR = 0;
 const LIGHTEST_COLOR = 255;
 const CSS_RGB_BACKGROUND_COLOR = `rgb(${DARKEST_COLOR}, ${DARKEST_COLOR}, ${DARKEST_COLOR + 40})`;
+const CSS_RGBA_SHINY_COLOR = `rgba(${LIGHTEST_COLOR}, ${LIGHTEST_COLOR}, ${LIGHTEST_COLOR}, 0.5)`;
 
 const getMassColor = function (mass) {
     return LIGHTEST_COLOR - mass * 16 + 1;
@@ -21,7 +22,7 @@ const getCssShineColor = function (pen) {
     if (pen === CSS_RGB_BACKGROUND_COLOR) {
         return CSS_RGB_BACKGROUND_COLOR;
     }
-    return `rgb(205, 205, 255)`;
+    return CSS_RGBA_SHINY_COLOR;
 };
 
 const handleSpaceTimeClick = function (event) {
@@ -157,6 +158,7 @@ const makeSpaceTimeGrid = function (numberOfRows) {
     let x = 0;
     let spaceTimeBox = makeOuterBox(document.body);
     spaceTimeBox.id = 'spaceTime';
+    spaceTimeBox.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
     let rowBox;
 
     oSpaceTime = {};
