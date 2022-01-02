@@ -59,8 +59,6 @@ oHttp.createServer(function (oRequest, oResponse) {
         let sFinalPath = getDefaultIfBlankPath(sFSPath);
         let sContentType = getContentType(sFinalPath);
 
-        console.log(`final path: '${sFinalPath}'; content type: '${sContentType}'`);
-
         let oHeaders =  {
             'Content-Type': sContentType
         };
