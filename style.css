@@ -9,5 +9,10 @@ div>div>div {
 }
 
 #buttonBox {
-    justify-content: left;
+    justify-content: center;
+}
+
+#timeButton {
+    width: 240px;
+    height: 60px;
 }
