@@ -31,14 +31,16 @@ const handleSpaceTimeClick = function (event) {
     let oCoordinates = getXYFromID(sId);
     aPositionHistory.push(oCoordinates);
     let oBody = oSpaceTime[sId];
-    if(!oBody) {
+    if(oBody) {
+        oBody.mass++;
+    } else {
         oBody = createBody(oCoordinates.x, oCoordinates.y);
     }
     if (oBody.mass < 16) {
-        oBody.mass++;
         oSpaceTime[sId] = oBody;
     } else {
         delete oSpaceTime[sId];
+        oBody = null;
     }
     drawBody(oCoordinates, getCssMassColor(oBody));
     console.log(oCoordinates);
