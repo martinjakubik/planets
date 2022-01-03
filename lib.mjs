@@ -64,22 +64,8 @@ const handleTimeButtonClick = function () {
     calculateAllGravity();
     nTime++;
 
-    const aBodies = Object.values(oSpaceTime);
-    aBodies.forEach(oBody => {
-        const x = oBody.position.x;
-        const y = oBody.position.y;
-        const oNewPosition = calculatePosition(oBody, nTime);
-        const newX = Math.floor(oNewPosition.x);
-        const newY = Math.floor(oNewPosition.y);
-        if (newX !== x || newY !== y) {
-            if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
-                drawBody({x: x, y: y}, CSS_RGB_BACKGROUND_COLOR);
-            }
-            if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
-                drawBody({x: newX, y: newY}, getCssMassColor(oBody));
-            }
-        }
-    });
+    drawSpaceTime(nTime);
+
     const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
     aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
 };
@@ -101,6 +87,25 @@ const copySpaceTimeSnapshot = function (oSpaceTime) {
         oSpaceTimeSnapshot[key] = Object.assign({}, value);
     });
     return oSpaceTimeSnapshot;
+};
+
+const drawSpaceTime = function (nTime) {
+    const aBodies = Object.values(oSpaceTime);
+    aBodies.forEach(oBody => {
+        const x = oBody.position.x;
+        const y = oBody.position.y;
+        const oNewPosition = calculatePosition(oBody, nTime);
+        const newX = Math.floor(oNewPosition.x);
+        const newY = Math.floor(oNewPosition.y);
+        if (newX !== x || newY !== y) {
+            if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
+                drawBody({x: x, y: y}, CSS_RGB_BACKGROUND_COLOR);
+            }
+            if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
+                drawBody({x: newX, y: newY}, getCssMassColor(oBody));
+            }
+        }
+    });
 };
 
 const drawBody = function (position, pen) {
