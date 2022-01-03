@@ -62,8 +62,9 @@ const handleSpaceTimeClick = function (event) {
 
 const handleTimeButtonClick = function () {
     calculateAllGravity();
+    const clear = true;
+    drawSpaceTime(nTime, clear);
     nTime++;
-
     drawSpaceTime(nTime);
 
     const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
@@ -89,7 +90,7 @@ const copySpaceTimeSnapshot = function (oSpaceTime) {
     return oSpaceTimeSnapshot;
 };
 
-const drawSpaceTime = function (nTime) {
+const drawSpaceTime = function (nTime, bClear) {
     const aBodies = Object.values(oSpaceTime);
     aBodies.forEach(oBody => {
         const x = oBody.position.x;
