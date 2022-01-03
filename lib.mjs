@@ -99,9 +99,10 @@ const drawSpaceTime = function (nTime, bClear) {
         const newX = Math.floor(oNewPosition.x);
         const newY = Math.floor(oNewPosition.y);
         if (newX !== x || newY !== y) {
-            if (bClear && x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
+            if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
                 drawBody({x: x, y: y}, CSS_RGB_BACKGROUND_COLOR);
-            } else if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
+            }
+            if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
                 drawBody({x: newX, y: newY}, getCssMassColor(oBody));
             }
         }
