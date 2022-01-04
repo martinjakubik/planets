@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(0, 0, 40);
+}
+
 div#spaceTime {
     display: flex;
     flex-flow: row wrap;
