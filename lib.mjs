@@ -26,7 +26,7 @@ const getCssShineColor = function (pen) {
 };
 
 const calculateAllGravity = function () {
-    const aBodies = Object.entries(oSpaceTime);
+    const aBodies = Object.entries(oSpace);
     aBodies.forEach(([oBodyKey, oBody]) => {
         aBodies.forEach(([oNeighbourKey, oNeighbour]) => {
             if (oNeighbourKey !== oBodyKey) {
@@ -36,52 +36,76 @@ const calculateAllGravity = function () {
     });
 };
 
-const handleSpaceTimeClick = function (event) {
+const calculateAllPositions = function () {
+    const aBodies = Object.values(oSpace);
+    aBodies.forEach(oBody => {
+        calculatePosition(oBody, nTime);
+    });
+};
+
+const handleSpaceClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
-    let oBody = oSpaceTime[sId];
+    let oBody = oSpace[sId];
     if(oBody) {
         oBody.mass++;
     } else {
         oBody = createBody(oCoordinates.x, oCoordinates.y);
     }
     if (oBody.mass < 16) {
-        oSpaceTime[sId] = oBody;
-        if (!aSpaceTimeHistory[nTime]) {
-            aSpaceTimeHistory[nTime] = [];
+        oSpace[sId] = oBody;
+        if (!aSpaceTime[nTime]) {
+            aSpaceTime[nTime] = [];
         }
     } else {
-        delete oSpaceTime[sId];
+        delete oSpace[sId];
         oBody = null;
     }
-    const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
-    aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
+    const oSpaceSnapshot = copySpaceSnapshot(oSpace);
+    aSpaceTime[nTime] = oSpaceSnapshot;
     drawBody(oCoordinates, getCssMassColor(oBody));
 };
 
-const handleTimeButtonClick = function () {
-    calculateAllGravity();
-    nTime++;
+const handleTimeFwdButtonClick = function () {
+    const clear = true;
+    drawSpace(nTime, clear);
 
-    const aBodies = Object.values(oSpaceTime);
-    aBodies.forEach(oBody => {
-        const x = oBody.position.x;
-        const y = oBody.position.y;
-        const oNewPosition = calculatePosition(oBody, nTime);
-        const newX = Math.floor(oNewPosition.x);
-        const newY = Math.floor(oNewPosition.y);
-        if (newX !== x || newY !== y) {
-            if (x > 0 && x < oAppConfiguration.gridSize && y > 0 && y < oAppConfiguration.gridSize) {
-                drawBody({x: x, y: y}, CSS_RGB_BACKGROUND_COLOR);
-            }
-            if (newX > 0 && newX < oAppConfiguration.gridSize && newY > 0 && newY < oAppConfiguration.gridSize) {
-                drawBody({x: newX, y: newY}, getCssMassColor(oBody));
-            }
-        }
-    });
-    const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
-    aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
+    if (nSpaceTimeSize < oAppConfiguration.maxSpaceTimeSize) {
+        nTime++;
+    } else {
+        const oTimeFwdButton = document.getElementById('timeFwdButton');
+        oTimeFwdButton.disabled = true;
+    }
+
+    const oTimeBackButton = document.getElementById('timeBackButton');
+    oTimeBackButton.disabled = false;
+
+    if (!aSpaceTime[nTime]) {
+        calculateAllGravity();
+        calculateAllPositions();
+        const oSpaceSnapshot = copySpaceSnapshot(oSpace);
+        aSpaceTime[nTime] = oSpaceSnapshot;
+        const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
+        nSpaceTimeSize = nSpaceTimeSize + nSnapshotSize;
+    }
+
+    drawSpace(nTime);
+};
+
+const handleTimeBackButtonClick = function () {
+    const clear = true;
+    drawSpace(nTime, clear);
+
+    const oTimeBackButton = document.getElementById('timeBackButton');
+    if (nTime === 0) {
+        oTimeBackButton.disabled = true;
+    } else {
+        nTime--;
+        const oTimeFwdButton = document.getElementById('timeFwdButton');
+        oTimeFwdButton.disabled = false;
+    }
+    drawSpace(nTime);
 };
 
 const getXYFromID = function (sId) {
@@ -94,13 +118,31 @@ const getXYFromID = function (sId) {
     };
 };
 
-const copySpaceTimeSnapshot = function (oSpaceTime) {
-    let oSpaceTimeSnapshot = {};
-    const aSpaceTimeEntries = Object.entries(oSpaceTime);
-    aSpaceTimeEntries.forEach(([key, value]) => {
-        oSpaceTimeSnapshot[key] = Object.assign({}, value);
+const copySpaceSnapshot = function (oSpace) {
+    let oSpaceSnapshot = {};
+    const aSpaceSnapshots = Object.entries(oSpace);
+    aSpaceSnapshots.forEach(([key, value]) => {
+        oSpaceSnapshot[key] = Object.assign({}, value);
     });
-    return oSpaceTimeSnapshot;
+    return oSpaceSnapshot;
+};
+
+const drawSpace = function (nTime, bClear) {
+    const oSpaceSnapshot = aSpaceTime[nTime];
+    if (oSpaceSnapshot) {
+        const aBodies = Object.values(oSpaceSnapshot);
+        aBodies.forEach(oBody => {
+            const floorX = Math.floor(oBody.position.x);
+            const floorY = Math.floor(oBody.position.y);
+            if (floorX > 0 && floorX < oAppConfiguration.gridSize && floorY > 0 && floorY < oAppConfiguration.gridSize) {
+                if (bClear) {
+                    drawBody({x: floorX, y: floorY}, CSS_RGB_BACKGROUND_COLOR);
+                } else {
+                    drawBody({x: floorX, y: floorY}, getCssMassColor(oBody));
+                }
+            }
+        });
+    }
 };
 
 const drawBody = function (position, pen) {
@@ -155,7 +197,7 @@ const makeBox = function (parentBox, sizeOfBox, x, y) {
     parentBox.appendChild(box);
 
     box.id = `${x}:${y}`;
-    box.onclick = handleSpaceTimeClick;
+    box.onclick = handleSpaceClick;
     box.style.height = sizeOfBox;
     box.style.width = sizeOfBox;
     box.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
@@ -163,7 +205,7 @@ const makeBox = function (parentBox, sizeOfBox, x, y) {
     return box;
 };
 
-const makeSpaceTimeGrid = function (numberOfRows) {
+const makeSpaceGrid = function (numberOfRows) {
     oAppConfiguration.gridSize = numberOfRows;
     let nSizeOfBox = Math.floor(720 / oAppConfiguration.gridSize);
 
@@ -176,7 +218,7 @@ const makeSpaceTimeGrid = function (numberOfRows) {
     spaceTimeBox.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
     let rowBox;
 
-    oSpaceTime = {};
+    oSpace = {};
 
     while (y >= 0) {
         x = 0;
@@ -190,11 +232,20 @@ const makeSpaceTimeGrid = function (numberOfRows) {
     }
 };
 
-const makeTimeButton = function (parentBox) {
+const makeTimeFwdButton = function (parentBox) {
     const oButton = document.createElement('button');
-    oButton.id = 'timeButton';
+    oButton.id = 'timeFwdButton';
     oButton.innerText = '>';
-    oButton.onclick = handleTimeButtonClick;
+    oButton.onclick = handleTimeFwdButtonClick;
+    parentBox.appendChild(oButton);
+};
+
+const makeTimeBackButton = function (parentBox) {
+    const oButton = document.createElement('button');
+    oButton.id = 'timeBackButton';
+    oButton.innerText = '<';
+    oButton.onclick = handleTimeBackButtonClick;
+    oButton.disabled = true;
     parentBox.appendChild(oButton);
 };
 
@@ -210,19 +261,22 @@ const makeButtonBar = function () {
     const buttonBar = makeOuterBox(document.body);
     buttonBar.id = 'buttonBar';
 
-    makeTimeButton(buttonBar);
+    makeTimeBackButton(buttonBar);
+    makeTimeFwdButton(buttonBar);
     makeGridToggleButton(buttonBar);
 
     document.body.appendChild(buttonBar);
 };
 
 const oAppConfiguration = {
-    gridSize: 0
+    gridSize: 0,
+    maxSpaceTimeSize: 10 ** 6
 };
 
-let oSpaceTime;
+let oSpace;
 let nTime = 0;
+let nSpaceTimeSize = 0;
 
-const aSpaceTimeHistory = [];
+const aSpaceTime = [];
 
-export { makeSpaceTimeGrid, makeButtonBar, calculateGravity, calculatePosition };
+export { makeSpaceGrid, makeButtonBar, calculateGravity, calculatePosition };
