@@ -67,15 +67,34 @@ const handleSpaceTimeClick = function (event) {
     drawBody(oCoordinates, getCssMassColor(oBody));
 };
 
-const handleTimeButtonClick = function () {
+const handleTimeFwdButtonClick = function () {
     const clear = true;
     drawSpaceTime(nTime, clear);
 
     nTime++;
-    calculateAllGravity();
-    calculateAllPositions();
-    const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
-    aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
+    const oTimeBackButton = document.getElementById('timeBackButton');
+    oTimeBackButton.disabled = false;
+
+    if (!aSpaceTimeHistory[nTime]) {
+        calculateAllGravity();
+        calculateAllPositions();
+        const oSpaceTimeSnapshot = copySpaceTimeSnapshot(oSpaceTime);
+        aSpaceTimeHistory[nTime] = oSpaceTimeSnapshot;
+    }
+
+    drawSpaceTime(nTime);
+};
+
+const handleTimeBackButtonClick = function () {
+    const clear = true;
+    drawSpaceTime(nTime, clear);
+
+    const oTimeBackButton = document.getElementById('timeBackButton');
+    if (nTime === 0) {
+        oTimeBackButton.disabled = true;
+    } else {
+        nTime--;
+    }
     drawSpaceTime(nTime);
 };
 
@@ -203,11 +222,20 @@ const makeSpaceTimeGrid = function (numberOfRows) {
     }
 };
 
-const makeTimeButton = function (parentBox) {
+const makeTimeFwdButton = function (parentBox) {
     const oButton = document.createElement('button');
-    oButton.id = 'timeButton';
+    oButton.id = 'timeFwdButton';
     oButton.innerText = '>';
-    oButton.onclick = handleTimeButtonClick;
+    oButton.onclick = handleTimeFwdButtonClick;
+    parentBox.appendChild(oButton);
+};
+
+const makeTimeBackButton = function (parentBox) {
+    const oButton = document.createElement('button');
+    oButton.id = 'timeBackButton';
+    oButton.innerText = '<';
+    oButton.onclick = handleTimeBackButtonClick;
+    oButton.disabled = true;
     parentBox.appendChild(oButton);
 };
 
@@ -223,7 +251,8 @@ const makeButtonBar = function () {
     const buttonBar = makeOuterBox(document.body);
     buttonBar.id = 'buttonBar';
 
-    makeTimeButton(buttonBar);
+    makeTimeBackButton(buttonBar);
+    makeTimeFwdButton(buttonBar);
     makeGridToggleButton(buttonBar);
 
     document.body.appendChild(buttonBar);
