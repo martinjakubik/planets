@@ -71,7 +71,13 @@ const handleTimeFwdButtonClick = function () {
     const clear = true;
     drawSpace(nTime, clear);
 
-    nTime++;
+    if (nSpaceTimeSize < oAppConfiguration.maxSpaceTimeSize) {
+        nTime++;
+    } else {
+        const oTimeFwdButton = document.getElementById('timeFwdButton');
+        oTimeFwdButton.disabled = true;
+    }
+
     const oTimeBackButton = document.getElementById('timeBackButton');
     oTimeBackButton.disabled = false;
 
@@ -80,6 +86,8 @@ const handleTimeFwdButtonClick = function () {
         calculateAllPositions();
         const oSpaceSnapshot = copySpaceSnapshot(oSpace);
         aSpaceTime[nTime] = oSpaceSnapshot;
+        const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
+        nSpaceTimeSize = nSpaceTimeSize + nSnapshotSize;
     }
 
     drawSpace(nTime);
@@ -94,6 +102,8 @@ const handleTimeBackButtonClick = function () {
         oTimeBackButton.disabled = true;
     } else {
         nTime--;
+        const oTimeFwdButton = document.getElementById('timeFwdButton');
+        oTimeFwdButton.disabled = false;
     }
     drawSpace(nTime);
 };
@@ -259,11 +269,13 @@ const makeButtonBar = function () {
 };
 
 const oAppConfiguration = {
-    gridSize: 0
+    gridSize: 0,
+    maxSpaceTimeSize: 10 ** 6
 };
 
 let oSpace;
 let nTime = 0;
+let nSpaceTimeSize = 0;
 
 const aSpaceTime = [];
 
