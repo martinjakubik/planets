@@ -73,21 +73,19 @@ const handleTimeFwdButtonClick = function () {
 
     if (nSpaceTimeSize < oAppConfiguration.maxSpaceTimeSize) {
         nTime++;
+        const oTimeBackButton = document.getElementById('timeBackButton');
+        oTimeBackButton.disabled = false;
+        if (!aSpaceTime[nTime]) {
+            calculateAllGravity();
+            calculateAllPositions();
+            const oSpaceSnapshot = copySpaceSnapshot(oSpace);
+            aSpaceTime[nTime] = oSpaceSnapshot;
+            const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
+            nSpaceTimeSize = nSpaceTimeSize + nSnapshotSize;
+        }
     } else {
         const oTimeFwdButton = document.getElementById('timeFwdButton');
         oTimeFwdButton.disabled = true;
-    }
-
-    const oTimeBackButton = document.getElementById('timeBackButton');
-    oTimeBackButton.disabled = false;
-
-    if (!aSpaceTime[nTime]) {
-        calculateAllGravity();
-        calculateAllPositions();
-        const oSpaceSnapshot = copySpaceSnapshot(oSpace);
-        aSpaceTime[nTime] = oSpaceSnapshot;
-        const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
-        nSpaceTimeSize = nSpaceTimeSize + nSnapshotSize;
     }
 
     drawSpace(nTime);
