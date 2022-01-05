@@ -67,7 +67,7 @@ const handleSpaceClick = function (event) {
     drawBody(oCoordinates, getCssMassColor(oBody));
 };
 
-const handleTimeFwdButtonClick = function () {
+const moveTimeForward = function (increment = 1) {
     const clear = true;
     drawSpace(nTime, clear);
 
@@ -91,7 +91,7 @@ const handleTimeFwdButtonClick = function () {
     drawSpace(nTime);
 };
 
-const handleTimeBackButtonClick = function () {
+const moveTimeBackward = function (increment = 1) {
     const clear = true;
     drawSpace(nTime, clear);
 
@@ -104,6 +104,14 @@ const handleTimeBackButtonClick = function () {
         oTimeFwdButton.disabled = false;
     }
     drawSpace(nTime);
+};
+
+const handleTimeFwdButtonClick = function () {
+    moveTimeForward();
+};
+
+const handleTimeBackButtonClick = function () {
+    moveTimeBackward();
 };
 
 const getXYFromID = function (sId) {
