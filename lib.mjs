@@ -274,6 +274,17 @@ const makeButtonBar = function () {
     document.body.appendChild(buttonBar);
 };
 
+const handleKeyUp = function (event) {
+    const keyCode = event.keyCode;
+    if (keyCode === 39) {
+        moveTimeForward();
+    } else    if (keyCode === 37) {
+        moveTimeBackward();
+    }
+};
+
+document.addEventListener('keyup', handleKeyUp);
+
 const oAppConfiguration = {
     gridSize: 0,
     maxSpaceTimeSize: 10 ** 6
