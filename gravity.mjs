@@ -1,3 +1,5 @@
+const G = 6.674 * 10 ** -1;
+
 const createBody = function (x, y) {
     return {
         id: `${x}:${y}`,
@@ -14,7 +16,7 @@ const createBody = function (x, y) {
 const calculateGravity = function (body, neighbour) {
     let nDistanceSquared = (body.position.x - neighbour.position.x) ** 2 + (body.position.y - neighbour.position.y) ** 2;
     let neighbourVector = {
-        force: body.mass * neighbour.mass / nDistanceSquared,
+        force: G * body.mass * neighbour.mass / nDistanceSquared,
         angle: Math.atan2(neighbour.position.y - body.position.y, neighbour.position.x - body.position.x)
     };
     let vectorSum = addVectors(body, neighbourVector);
