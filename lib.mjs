@@ -1,4 +1,5 @@
 import { createBody, calculateGravity, calculatePosition } from './gravity.mjs';
+import { createDiv, createButton } from './lib/js/learnhypertext.mjs';
 
 const DARKEST_COLOR = 0;
 const LIGHTEST_COLOR = 255;
@@ -191,26 +192,6 @@ const handleGridToggleButtonClick = function () {
     spaceTimeBox.classList.toggle('grid');
 };
 
-const makeOuterBox = function (parentBox) {
-    let box = document.createElement('div');
-    parentBox.appendChild(box);
-
-    return box;
-};
-
-const makeBox = function (parentBox, sizeOfBox, x, y) {
-    let box = document.createElement('div');
-    parentBox.appendChild(box);
-
-    box.id = `${x}:${y}`;
-    box.onclick = handleSpaceClick;
-    box.style.height = sizeOfBox;
-    box.style.width = sizeOfBox;
-    box.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
-
-    return box;
-};
-
 const makeSpaceGrid = function (numberOfRows) {
     oAppConfiguration.gridSize = numberOfRows;
     let nSizeOfBox = Math.floor(720 / oAppConfiguration.gridSize);
@@ -219,18 +200,24 @@ const makeSpaceGrid = function (numberOfRows) {
 
     let y = numberOfRows - 1;
     let x = 0;
-    let spaceTimeBox = makeOuterBox(document.body);
-    spaceTimeBox.id = 'spaceTime';
+    let spaceTimeBox = createDiv('spaceTime');
     spaceTimeBox.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
     let rowBox;
 
     oSpace = {};
 
+    let sBoxId = '';
+    let box = null;
     while (y >= 0) {
         x = 0;
-        rowBox = makeOuterBox(spaceTimeBox);
+        rowBox = createDiv('', spaceTimeBox);
         while (x < numberOfColumns) {
-            makeBox(rowBox, nSizeOfBox, x, y);
+            sBoxId = `${x}:${y}`;
+            box = createDiv(sBoxId, rowBox);
+            box.onclick = handleSpaceClick;
+            box.style.height = nSizeOfBox;
+            box.style.width = nSizeOfBox;
+            box.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
             x = x + 1;
         }
 
@@ -239,39 +226,27 @@ const makeSpaceGrid = function (numberOfRows) {
 };
 
 const makeTimeFwdButton = function (parentBox) {
-    const oButton = document.createElement('button');
-    oButton.id = 'timeFwdButton';
-    oButton.innerText = '>';
+    const oButton = createButton('timeFwdButton', '>', parentBox);
     oButton.onclick = handleTimeFwdButtonClick;
-    parentBox.appendChild(oButton);
 };
 
 const makeTimeBackButton = function (parentBox) {
-    const oButton = document.createElement('button');
-    oButton.id = 'timeBackButton';
-    oButton.innerText = '<';
+    const oButton = createButton('timeBackButton', '<', parentBox);
     oButton.onclick = handleTimeBackButtonClick;
     oButton.disabled = true;
-    parentBox.appendChild(oButton);
 };
 
 const makeGridToggleButton = function (parentBox) {
-    const oButton = document.createElement('button');
-    oButton.id = 'gridToggleButton';
-    oButton.innerText = 'grid';
+    const oButton = createButton('gridToggleButton', 'grid', parentBox);
     oButton.onclick = handleGridToggleButtonClick;
-    parentBox.appendChild(oButton);
 };
 
 const makeSpaceTimeButtonBar = function () {
-    const buttonBar = makeOuterBox(document.body);
-    buttonBar.id = 'buttonBar';
+    const buttonBar = createDiv('buttonBar');
 
     makeTimeBackButton(buttonBar);
     makeTimeFwdButton(buttonBar);
     makeGridToggleButton(buttonBar);
-
-    document.body.appendChild(buttonBar);
 };
 
 const handleKeyDown = function (event) {
