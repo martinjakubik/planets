@@ -1,4 +1,6 @@
-import { makeSpaceGrid, makeButtonBar } from './lib.mjs';
+import { makeSpaceGrid, makeSpaceTimeButtonBar } from './lib.mjs';
+import { makeDataButtonBar } from './data.mjs';
 
 makeSpaceGrid(80);
-makeButtonBar();
+makeSpaceTimeButtonBar();
+makeDataButtonBar();

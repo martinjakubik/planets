@@ -263,7 +263,7 @@ const makeGridToggleButton = function (parentBox) {
     parentBox.appendChild(oButton);
 };
 
-const makeButtonBar = function () {
+const makeSpaceTimeButtonBar = function () {
     const buttonBar = makeOuterBox(document.body);
     buttonBar.id = 'buttonBar';
 
@@ -296,4 +296,4 @@ let nSpaceTimeSize = 0;
 
 const aSpaceTime = [];
 
-export { makeSpaceGrid, makeButtonBar, calculateGravity, calculatePosition };
+export { makeSpaceGrid, makeSpaceTimeButtonBar, calculateGravity, calculatePosition };
