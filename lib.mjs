@@ -271,4 +271,4 @@ let nSpaceTimeSize = 0;
 
 const aSpaceTime = [];
 
-export { makeSpaceGrid, makeSpaceTimeButtonBar, calculateGravity, calculatePosition };
+export { makeSpaceGrid, makeSpaceTimeButtonBar, calculateGravity, calculatePosition, aSpaceTime };
