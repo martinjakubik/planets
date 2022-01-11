@@ -51,7 +51,7 @@ const addItemToStorageView = function (storageView, key) {
     oListItem.id = key;
     oListItem.onclick = handleStoredDataClick;
     const oTitle = document.createElement('span');
-    const sTitle = key.substring(key.indexOf('-'));
+    const sTitle = key.substring(key.indexOf('-') + 1);
     oTitle.innerText = sTitle;
     oListItem.appendChild(oTitle);
     storageView.appendChild(oListItem);
