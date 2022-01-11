@@ -1,12 +1,11 @@
 import { createDiv, createButton } from './lib/js/learnhypertext.mjs';
 
 const handleSaveButtonClick = function () {
-    const oNow = new Date();
-    const sToday = `${oNow.getUTCFullYear()}-${oNow.getUTCMonth()}-${oNow.getUTCDate()}`;
     const sContent = JSON.stringify(aSpaceTime);
     const a = document.createElement('a');
     a.href = `data:application/json,${sContent}`;
-    a.download = `spacetime-${sToday}.json`;
+    const sNowLabel = getNowLabel();
+    a.download = `spacetime-${sNowLabel}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -35,6 +34,12 @@ const makeDataButtonBar = function (spaceTime) {
 
     makeSaveSpaceTimeButton(buttonBar);
     // makeLoadSpaceTimeButton(buttonBar);
+};
+
+const getNowLabel = function () {
+    const oNow = new Date();
+    const sNowLabel = `${oNow.getUTCFullYear()}-${oNow.getUTCMonth()}-${oNow.getUTCDate()}`;
+    return sNowLabel;
 };
 
 export { makeDataButtonBar };
