@@ -12,7 +12,7 @@ const handleDownloadButtonClick = function () {
 };
 
 const handleSaveButtonClick = function () {
-    const sContent = JSON.stringify(aSpaceTime);
+    const sContent = JSON.stringify(getSpaceTime());
     const oLocalStorage = window.localStorage;
     const sNowLabel = getNowLabel();
     const sKey = `spacetime-${sNowLabel}`;
@@ -39,27 +39,29 @@ const makeUploadSpaceTimeButton = function (parentBox) {
     loadSpaceTimeButton.addEventListener('change', handleLoadFileInputChange);
 };
 
-let aSpaceTime;
+let getSpaceTime, setSpaceTime;
 let loadSpaceTimeButton;
 
-const makeDataButtonBar = function (spaceTime) {
+const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
     const buttonBar = createDiv('dataButtonBar');
 
-    aSpaceTime = spaceTime;
+    getSpaceTime = fnGetSpaceTime;
+    setSpaceTime = fnSetSpaceTime;
 
-    makeDownloadSpaceTimeButton(buttonBar);
     makeSaveSpaceTimeButton(buttonBar);
-    makeUploadSpaceTimeButton(buttonBar);
+    // makeDownloadSpaceTimeButton(buttonBar);
+    // makeUploadSpaceTimeButton(buttonBar);
 };
 
 const getNowLabel = function () {
     const oNow = new Date();
-    const sNowLabel = `${oNow.getUTCFullYear()}-${oNow.getUTCMonth()}-${oNow.getUTCDate()}`;
+    const sMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug','Sep', 'Oct', 'Nov', 'Dec'];
+    const sMonth = sMonths[oNow.getUTCMonth()];
+    const sNowLabel = `${sMonth}.${oNow.getUTCDate()}.${oNow.getUTCHours()}:${oNow.getUTCMinutes()}`;
     return sNowLabel;
 };
 
 const createFileInput = function (sId, sLabel, oParent, sAccept) {
-
     if (!oParent) {
         oParent = document.body;
     }
@@ -79,7 +81,16 @@ const createFileInput = function (sId, sLabel, oParent, sAccept) {
     oParent.appendChild(oInput);
 
     return oInput;
+};
 
+const handleStoredDataClick = function (event) {
+    const oTarget = event.target;
+    const sKey = oTarget.innerText;
+    const oStorageArea = window.localStorage;
+    const oItem = oStorageArea.getItem(sKey);
+    const aLoadedSpaceTime = JSON.parse(oItem);
+    setSpaceTime(aLoadedSpaceTime);
+    reset();
 };
 
 const updateStorageView = function (storageArea) {
@@ -97,7 +108,8 @@ const updateStorageView = function (storageArea) {
     for (let i = 0; i < storageArea.length; i++) {
         const sKey = storageArea.key(i);
         const oChild = document.createElement('li');
-        oChild.innerText =sKey;
+        oChild.innerText = sKey;
+        oChild.onclick = handleStoredDataClick;
         oStorageView.appendChild(oChild);
     }
 };
@@ -112,8 +124,12 @@ const handleStorageChange = function (storageEvent) {
     updateStorageView(oStorageArea);
 };
 
-const makeLoadBar = function () {
+let reset;
+
+const makeLoadBar = function (fnReset) {
     window.addEventListener('storage', handleStorageChange);
+    reset = fnReset;
+    handleStorageChange();
 };
 
 export { makeDataButtonBar, makeLoadBar };

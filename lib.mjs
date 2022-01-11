@@ -200,7 +200,10 @@ const makeSpaceGrid = function (numberOfRows) {
 
     let y = numberOfRows - 1;
     let x = 0;
-    let spaceTimeBox = createDiv('spaceTime');
+    let spaceTimeBox = document.getElementById('spaceTime');
+    if(!spaceTimeBox) {
+        spaceTimeBox = createDiv('spaceTime');
+    }
     spaceTimeBox.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
     let rowBox;
 
@@ -210,10 +213,16 @@ const makeSpaceGrid = function (numberOfRows) {
     let box = null;
     while (y >= 0) {
         x = 0;
-        rowBox = createDiv('', spaceTimeBox);
+        rowBox = document.getElementById(`row${y}`);
+        if (!rowBox) {
+            rowBox = createDiv(`row${y}`, spaceTimeBox);
+        }
         while (x < numberOfColumns) {
             sBoxId = `${x}:${y}`;
-            box = createDiv(sBoxId, rowBox);
+            box = document.getElementById(sBoxId);
+            if (!box) {
+                box = createDiv(sBoxId, rowBox);
+            }
             box.onclick = handleSpaceClick;
             box.style.height = nSizeOfBox;
             box.style.width = nSizeOfBox;
@@ -260,6 +269,13 @@ const handleKeyDown = function (event) {
 
 document.addEventListener('keydown', handleKeyDown);
 
+const reset = function () {
+    nTime = 0;
+    makeSpaceGrid(oAppConfiguration.gridSize);
+    const oButton = document.getElementById('timeBackButton');
+    oButton.disabled = true;
+};
+
 const oAppConfiguration = {
     gridSize: 0,
     maxSpaceTimeSize: 10 ** 6
@@ -269,6 +285,14 @@ let oSpace;
 let nTime = 0;
 let nSpaceTimeSize = 0;
 
-const aSpaceTime = [];
+let aSpaceTime = [];
 
-export { makeSpaceGrid, makeSpaceTimeButtonBar, calculateGravity, calculatePosition, aSpaceTime };
+const getSpaceTime = function () {
+    return aSpaceTime;
+};
+
+const setSpaceTime = function (spaceTime) {
+    aSpaceTime = spaceTime;
+};
+
+export { makeSpaceGrid, makeSpaceTimeButtonBar, calculateGravity, calculatePosition, reset, getSpaceTime, setSpaceTime };
