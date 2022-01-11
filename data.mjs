@@ -34,8 +34,11 @@ const getNowLabel = function () {
 };
 
 const handleStoredDataClick = function (event) {
-    const oTarget = event.target;
-    const sKey = oTarget.innerText;
+    let oTarget = event.target;
+    if (oTarget.tagName === 'SPAN') {
+        oTarget = oTarget.parentElement;
+    }
+    const sKey = oTarget.id;
     const oStorageArea = window.localStorage;
     const oItem = oStorageArea.getItem(sKey);
     const aLoadedSpaceTime = JSON.parse(oItem);
@@ -45,8 +48,12 @@ const handleStoredDataClick = function (event) {
 
 const addItemToStorageView = function (storageView, key) {
     const oListItem = document.createElement('li');
-    oListItem.innerText = key;
+    oListItem.id = key;
     oListItem.onclick = handleStoredDataClick;
+    const oTitle = document.createElement('span');
+    const sTitle = key.substring(key.indexOf('-'));
+    oTitle.innerText = sTitle;
+    oListItem.appendChild(oTitle);
     storageView.appendChild(oListItem);
 };
 
