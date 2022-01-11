@@ -1,16 +1,5 @@
 import { createDiv, createButton } from './lib/js/learnhypertext.mjs';
 
-const handleDownloadButtonClick = function () {
-    const sContent = JSON.stringify(aSpaceTime);
-    const a = document.createElement('a');
-    a.href = `data:application/json,${sContent}`;
-    const sNowLabel = getNowLabel();
-    a.download = `spacetime-${sNowLabel}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-};
-
 const handleSaveButtonClick = function () {
     const sContent = JSON.stringify(getSpaceTime());
     const oLocalStorage = window.localStorage;
@@ -20,27 +9,12 @@ const handleSaveButtonClick = function () {
     handleStorageChange();
 };
 
-const handleLoadFileInputChange = function () {
-};
-
-const makeDownloadSpaceTimeButton = function (parentBox) {
-    const oButton = createButton('downloadSpaceTimeButton', 'Download', parentBox);
-    oButton.onclick = handleDownloadButtonClick;
-};
-
 const makeSaveSpaceTimeButton = function (parentBox) {
     const oButton = createButton('saveSpaceTimeButton', 'Save', parentBox);
     oButton.onclick = handleSaveButtonClick;
 };
 
-const makeUploadSpaceTimeButton = function (parentBox) {
-    const sAccept = 'json';
-    loadSpaceTimeButton = createFileInput('loadSpaceTimeButton', 'Upload', parentBox, sAccept);
-    loadSpaceTimeButton.addEventListener('change', handleLoadFileInputChange);
-};
-
 let getSpaceTime, setSpaceTime;
-let loadSpaceTimeButton;
 
 const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
     const buttonBar = createDiv('dataButtonBar');
@@ -49,8 +23,6 @@ const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
     setSpaceTime = fnSetSpaceTime;
 
     makeSaveSpaceTimeButton(buttonBar);
-    // makeDownloadSpaceTimeButton(buttonBar);
-    // makeUploadSpaceTimeButton(buttonBar);
 };
 
 const getNowLabel = function () {
@@ -59,28 +31,6 @@ const getNowLabel = function () {
     const sMonth = sMonths[oNow.getUTCMonth()];
     const sNowLabel = `${sMonth}.${oNow.getUTCDate()}.${oNow.getUTCHours()}:${oNow.getUTCMinutes()}`;
     return sNowLabel;
-};
-
-const createFileInput = function (sId, sLabel, oParent, sAccept) {
-    if (!oParent) {
-        oParent = document.body;
-    }
-
-    const oInput = document.createElement('input');
-    oInput.type = 'file';
-    oInput.id = sId;
-    if (sAccept && sAccept.length > 0) {
-        oInput.accept = sAccept;
-    }
-
-    const oLabel = document.createElement('label');
-    oLabel.for = sId;
-    oLabel.innerText = sLabel;
-
-    oParent.appendChild(oLabel);
-    oParent.appendChild(oInput);
-
-    return oInput;
 };
 
 const handleStoredDataClick = function (event) {
