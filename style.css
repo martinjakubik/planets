@@ -21,3 +21,7 @@ div.grid>div>div {
     width: 240px;
     height: 60px;
 }
+
+li {
+    color: white;
+}
