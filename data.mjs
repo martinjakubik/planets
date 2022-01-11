@@ -43,6 +43,13 @@ const handleStoredDataClick = function (event) {
     reset();
 };
 
+const addItemToStorageView = function (storageView, key) {
+    const oChild = document.createElement('li');
+    oChild.innerText = key;
+    oChild.onclick = handleStoredDataClick;
+    storageView.appendChild(oChild);
+};
+
 const updateStorageView = function (storageArea) {
     let oStorageView = document.getElementById('storageView');
     if(!oStorageView) {
@@ -57,10 +64,7 @@ const updateStorageView = function (storageArea) {
     }
     for (let i = 0; i < storageArea.length; i++) {
         const sKey = storageArea.key(i);
-        const oChild = document.createElement('li');
-        oChild.innerText = sKey;
-        oChild.onclick = handleStoredDataClick;
-        oStorageView.appendChild(oChild);
+        addItemToStorageView(oStorageView, sKey);
     }
 };
 
