@@ -44,10 +44,10 @@ const handleStoredDataClick = function (event) {
 };
 
 const addItemToStorageView = function (storageView, key) {
-    const oChild = document.createElement('li');
-    oChild.innerText = key;
-    oChild.onclick = handleStoredDataClick;
-    storageView.appendChild(oChild);
+    const oListItem = document.createElement('li');
+    oListItem.innerText = key;
+    oListItem.onclick = handleStoredDataClick;
+    storageView.appendChild(oListItem);
 };
 
 const updateStorageView = function (storageArea) {
