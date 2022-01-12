@@ -23,5 +23,13 @@ div.grid>div>div {
 }
 
 li {
+    color: rgb(207, 206, 255);
+    font-family: sans-serif;
+    font-size: 24;
+    list-style: none;
+}
+
+li:hover {
     color: white;
+    outline: 2x solid rgb(207, 206, 255);
 }
