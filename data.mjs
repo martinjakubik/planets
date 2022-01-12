@@ -33,11 +33,8 @@ const getNowLabel = function () {
     return sNowLabel;
 };
 
-const handleStoredDataClick = function (event) {
+const handleLoadDataButtonClick = function (event) {
     let oTarget = event.target;
-    if (oTarget.tagName === 'SPAN') {
-        oTarget = oTarget.parentElement;
-    }
     const sKey = oTarget.id;
     const oStorageArea = window.localStorage;
     const oItem = oStorageArea.getItem(sKey);
@@ -46,11 +43,23 @@ const handleStoredDataClick = function (event) {
     reset();
 };
 
+const handleDataDeleteButtonClick = function (event) {
+    let oTarget = event.target;
+    const sKey = oTarget.id;
+    const oStorageArea = window.localStorage;
+    oStorageArea.removeItem(sKey);
+    handleStorageChange();
+};
+
 const addItemToStorageView = function (storageView, key) {
     const sTitle = key.substring(key.indexOf('-') + 1);
     const oItem = createDiv(key, storageView);
     const oLoadButton = createButton(key, sTitle, oItem);
-    oLoadButton.onclick = handleStoredDataClick;
+    oLoadButton.className = 'load';
+    oLoadButton.onclick = handleLoadDataButtonClick;
+    const oDeleteButton = createButton(key, 'x', oItem);
+    oDeleteButton.className = 'delete';
+    oDeleteButton.onclick = handleDataDeleteButtonClick;
 };
 
 const updateStorageView = function (storageArea) {

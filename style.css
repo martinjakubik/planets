@@ -48,19 +48,38 @@ div.grid>div>div {
     height: 60px;
 }
 
+#storageView>div {
+    display: flex;
+}
+
 #storageView>div>button {
     display: flex;
     background-color: rgb(0, 0, 40);
     font-size: 14pt;
     font-weight: bold;
     height: 36px;
-    width: 200px;
     border: 3px solid rgba(0, 0, 0, 0);
 }
 
-#storageView>div>button:hover {
+#storageView>div:hover>button {
     background-color: rgba(207, 206, 255, .4);
-    color: white;
     border: 3px solid rgb(207, 206, 255);
     border-radius: 3px;
+}
+
+#storageView>div>button.load {
+    width: 200px;
+}
+
+#storageView>div>button.delete {
+    display: none;
+    width: 30px;
+}
+
+#storageView>div:hover>button.delete {
+    display: flex;
+}
+
+#storageView>div:hover>button:hover {
+    color: white;
 }
