@@ -192,6 +192,13 @@ const handleGridToggleButtonClick = function () {
     spaceTimeBox.classList.toggle('grid');
 };
 
+const makeAppBox = function () {
+    appBox = document.getElementById('app');
+    if(!appBox) {
+        appBox = createDiv('app');
+    }
+};
+
 const makeSpaceGrid = function (numberOfRows) {
     oAppConfiguration.gridSize = numberOfRows;
     let nSizeOfBox = Math.floor(720 / oAppConfiguration.gridSize);
@@ -200,9 +207,10 @@ const makeSpaceGrid = function (numberOfRows) {
 
     let y = numberOfRows - 1;
     let x = 0;
+    makeAppBox();
     let spaceTimeBox = document.getElementById('spaceTime');
     if(!spaceTimeBox) {
-        spaceTimeBox = createDiv('spaceTime');
+        spaceTimeBox = createDiv('spaceTime', appBox);
     }
     spaceTimeBox.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
     let rowBox;
@@ -251,7 +259,7 @@ const makeGridToggleButton = function (parentBox) {
 };
 
 const makeSpaceTimeButtonBar = function () {
-    const buttonBar = createDiv('buttonBar');
+    const buttonBar = createDiv('buttonBar', appBox);
 
     makeTimeBackButton(buttonBar);
     makeTimeFwdButton(buttonBar);
@@ -284,6 +292,7 @@ const oAppConfiguration = {
 let oSpace;
 let nTime = 0;
 let nSpaceTimeSize = 0;
+let appBox;
 
 let aSpaceTime = [];
 

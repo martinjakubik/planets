@@ -17,7 +17,7 @@ const makeSaveSpaceTimeButton = function (parentBox) {
 let getSpaceTime, setSpaceTime;
 
 const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
-    const buttonBar = createDiv('dataButtonBar');
+    const buttonBar = createDiv('dataButtonBar', dataView);
 
     getSpaceTime = fnGetSpaceTime;
     setSpaceTime = fnSetSpaceTime;
@@ -50,19 +50,21 @@ const addItemToStorageView = function (storageView, key) {
     const oListItem = document.createElement('li');
     oListItem.id = key;
     oListItem.onclick = handleStoredDataClick;
+
     const oTitle = document.createElement('span');
     const sTitle = key.substring(key.indexOf('-') + 1);
     oTitle.innerText = sTitle;
     oListItem.appendChild(oTitle);
+
     storageView.appendChild(oListItem);
 };
 
 const updateStorageView = function (storageArea) {
     let oStorageView = document.getElementById('storageView');
     if(!oStorageView) {
-        oStorageView = document.createElement('ul');
+        oStorageView = document.createElement('ol');
         oStorageView.id = 'storageView';
-        document.body.appendChild(oStorageView);
+        dataView.appendChild(oStorageView);
     }
     const aChildren = oStorageView.childNodes;
     for (let j = aChildren.length - 1; j >= 0; j--) {
@@ -86,6 +88,7 @@ const handleStorageChange = function (storageEvent) {
 };
 
 let reset;
+let dataView;
 
 const makeLoadBar = function (fnReset) {
     window.addEventListener('storage', handleStorageChange);
@@ -93,4 +96,10 @@ const makeLoadBar = function (fnReset) {
     handleStorageChange();
 };
 
-export { makeDataButtonBar, makeLoadBar };
+const makeDataView = function (getSpaceTime, setSpaceTime, reset) {
+    dataView = createDiv('dataView'),
+    makeDataButtonBar(getSpaceTime, setSpaceTime);
+    makeLoadBar(reset);
+};
+
+export { makeDataView };

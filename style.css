@@ -1,20 +1,46 @@
 body {
     background-color: rgb(0, 0, 40);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+button {
+    background-color: rgba(207, 206, 255, .4);;
+    color: rgb(207, 206, 255);
+    border: 3px solid rgb(207, 206, 255);
+    border-radius: 3px;
+}
+
+button:hover {
+    color: rgb(0, 0, 40);
+    border: 3px solid rgb(207, 206, 255);
+}
+
+button:disabled {
+    color: rgb(82, 82, 82);
+    border: 3px solid rgb(91, 90, 126);
+}
+
+div#dataView {
+    display: flex;
+    flex-flow: column;
+    flex: 1;
+}
+
+div#app {
+    flex: 3;
 }
 
 div#spaceTime {
     display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
+}
+
+div#buttonBar {
+    display: flex;
 }
 
 div.grid>div>div {
     outline: 1px dotted grey;
-}
-
-#buttonBar {
-    display: flex;
-    justify-content: center;
 }
 
 #buttonBar>button {
@@ -22,14 +48,25 @@ div.grid>div>div {
     height: 60px;
 }
 
+ol {
+    padding-inline-start: 0px;
+}
+
 li {
+    display: flex;
     color: rgb(207, 206, 255);
     font-family: sans-serif;
-    font-size: 24;
+    font-size: 14pt;
+    font-weight: bold;
     list-style: none;
+    height: 36px;
+    width: 200px;
+    border: 3px solid rgba(0, 0, 0, 0);
 }
 
 li:hover {
+    background-color: rgba(207, 206, 255, .4);
     color: white;
-    outline: 2x solid rgb(207, 206, 255);
+    border: 3px solid rgb(207, 206, 255);
+    border-radius: 3px;
 }
