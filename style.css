@@ -12,7 +12,7 @@ button {
 }
 
 button:hover {
-    color: rgb(0, 0, 40);
+    color: white;
     border: 3px solid rgb(207, 206, 255);
 }
 
@@ -50,6 +50,11 @@ div.grid>div>div {
 
 #storageView>div {
     display: flex;
+}
+
+#saveSpaceTimeButton {
+    width: 200px;
+    height: 36px;
 }
 
 #storageView>div>button {
