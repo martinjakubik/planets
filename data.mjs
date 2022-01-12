@@ -48,8 +48,8 @@ const handleStoredDataClick = function (event) {
 
 const addItemToStorageView = function (storageView, key) {
     const sTitle = key.substring(key.indexOf('-') + 1);
-    const oListItem = createButton(key, sTitle, storageView);
-    oListItem.onclick = handleStoredDataClick;
+    const oItem = createButton(key, sTitle, storageView);
+    oItem.onclick = handleStoredDataClick;
 };
 
 const updateStorageView = function (storageArea) {
