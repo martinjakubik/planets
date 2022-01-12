@@ -47,24 +47,15 @@ const handleStoredDataClick = function (event) {
 };
 
 const addItemToStorageView = function (storageView, key) {
-    const oListItem = document.createElement('li');
-    oListItem.id = key;
-    oListItem.onclick = handleStoredDataClick;
-
-    const oTitle = document.createElement('span');
     const sTitle = key.substring(key.indexOf('-') + 1);
-    oTitle.innerText = sTitle;
-    oListItem.appendChild(oTitle);
-
-    storageView.appendChild(oListItem);
+    const oListItem = createButton(key, sTitle, storageView);
+    oListItem.onclick = handleStoredDataClick;
 };
 
 const updateStorageView = function (storageArea) {
     let oStorageView = document.getElementById('storageView');
     if(!oStorageView) {
-        oStorageView = document.createElement('ol');
-        oStorageView.id = 'storageView';
-        dataView.appendChild(oStorageView);
+        oStorageView = createDiv('storageView', dataView);
     }
     const aChildren = oStorageView.childNodes;
     for (let j = aChildren.length - 1; j >= 0; j--) {
