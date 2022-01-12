@@ -3,8 +3,8 @@ import { createDiv, createButton } from './lib/js/learnhypertext.mjs';
 const handleSaveButtonClick = function () {
     const sContent = JSON.stringify(getSpaceTime());
     const oLocalStorage = window.localStorage;
-    const sNowLabel = getNowLabel();
-    const sKey = `spacetime-${sNowLabel}`;
+    const sNowKey = getNowKey();
+    const sKey = `spacetime-${sNowKey}`;
     oLocalStorage.setItem(sKey, sContent);
     handleStorageChange();
 };
@@ -25,7 +25,7 @@ const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
     makeSaveSpaceTimeButton(buttonBar);
 };
 
-const getNowLabel = function () {
+const getNowKey = function () {
     const oNow = new Date();
     const sMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug','Sep', 'Oct', 'Nov', 'Dec'];
     const sMonth = sMonths[oNow.getUTCMonth()];
