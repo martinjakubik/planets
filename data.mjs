@@ -16,8 +16,6 @@ const makeSaveSpaceTimeButton = function (parentBox) {
     oButton.onclick = handleSaveButtonClick;
 };
 
-let getSpaceTime, setSpaceTime;
-
 const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
     const buttonBar = createDiv('dataButtonBar', dataView);
 
@@ -107,6 +105,7 @@ const handleStorageChange = function (storageEvent) {
     updateStorageView(oStorageArea);
 };
 
+let getSpaceTime, setSpaceTime;
 let reset;
 let dataView;
 
