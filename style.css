@@ -52,6 +52,11 @@ div.grid>div>div {
     display: flex;
 }
 
+#newButton {
+    width: 200px;
+    height: 36px;
+}
+
 #saveSpaceTimeButton {
     width: 200px;
     height: 36px;
