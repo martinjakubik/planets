@@ -76,15 +76,19 @@ div.grid>div>div {
     width: 200px;
 }
 
-#storageView>div>button.delete {
-    display: none;
-    width: 30px;
-}
-
-#storageView>div:hover>button.delete {
+#storageView>div>.additionalButtons {
     display: flex;
+    position: relative;
+    z-index: -1;
+    left: -90px;
 }
 
-#storageView>div:hover>button:hover {
+#storageView>div:hover>.additionalButtons {
+    left: 0px;
+    z-index: 0;
+    transition: left .5s;
+}
+
+#storageView>div:hover>.additionalButtons>button:hover {
     color: white;
 }
