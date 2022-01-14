@@ -89,7 +89,7 @@ const updateStorageView = function (storageArea) {
         const oChild = aChildren[j];
         oStorageView.removeChild(oChild);
     }
-    for (let i = 0; i < storageArea.length; i++) {
+    for (let i = 0; i < storageArea.length; i++) {
         const sKey = storageArea.key(i);
         addItemToStorageView(oStorageView, sKey);
     }
