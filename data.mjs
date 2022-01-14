@@ -43,6 +43,19 @@ const handleLoadDataButtonClick = function (event) {
     reset();
 };
 
+const handleDataDownloadButtonClick = function (event) {
+    let oTarget = event.target;
+    const sKey = oTarget.id;
+    const aSpaceTime = getSpaceTime();
+    const sContent = JSON.stringify(aSpaceTime);
+    const a = document.createElement('a');
+    a.href = `data:application/json,${sContent}`;
+    a.download = `spacetime-${sKey}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+};
+
 const handleDataDeleteButtonClick = function (event) {
     let oTarget = event.target;
     const sKey = oTarget.id;
@@ -59,6 +72,9 @@ const addItemToStorageView = function (storageView, key) {
     oLoadButton.onclick = handleLoadDataButtonClick;
     const oAdditionalButtons = createDiv(key, oItem);
     oAdditionalButtons.className = 'additionalButtons';
+    const oDownloadButton = createButton(key, null, oAdditionalButtons);
+    oDownloadButton.className = 'download';
+    oDownloadButton.onclick = handleDataDownloadButtonClick;
     const oDeleteButton = createButton(key, 'x', oAdditionalButtons);
     oDeleteButton.className = 'delete';
     oDeleteButton.onclick = handleDataDeleteButtonClick;

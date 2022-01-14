@@ -67,8 +67,8 @@ div.grid>div>div {
 }
 
 #storageView>div:hover>button {
-    background-color: rgba(207, 206, 255, .4);
-    border: 3px solid rgb(207, 206, 255);
+    background-color: rgba(205, 204, 255, 0.4);
+    border: 3px solid rgb(205, 204, 255);
     border-radius: 3px;
 }
 
@@ -89,6 +89,21 @@ div.grid>div>div {
     transition: left .5s;
 }
 
+#storageView>div:hover>.additionalButtons>button {
+    width: 32px;
+}
+
 #storageView>div:hover>.additionalButtons>button:hover {
     color: white;
+}
+
+#storageView>div>.additionalButtons>.download {
+    background-image: url('./download.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#storageView>div>.additionalButtons>.download:hover {
+    background-image: url('./download-hover.png');
 }
