@@ -116,15 +116,25 @@ const handleStorageChange = function (storageEvent) {
     updateStorageView(oStorageArea);
 };
 
+const handleKeyDown = function (event) {
+    const keyCode = event.keyCode;
+    if (keyCode === 78) {
+        setSpaceTime([]);
+        reset();
+    }
+};
+
 let getSpaceTime, setSpaceTime;
 let reset;
 let dataView;
+document.addEventListener('keydown', handleKeyDown);
 
 const makeLoadBar = function (fnReset) {
     window.addEventListener('storage', handleStorageChange);
     reset = fnReset;
     handleStorageChange();
 };
+
 
 const makeDataView = function (getSpaceTime, setSpaceTime, reset) {
     dataView = createDiv('dataView'),
