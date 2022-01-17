@@ -85,7 +85,7 @@ const addItemToStorageView = function (storageView, key) {
     const oDownloadButton = createButton(key, null, oAdditionalButtons);
     oDownloadButton.className = 'download';
     oDownloadButton.onclick = handleDataDownloadButtonClick;
-    const oDeleteButton = createButton(key, 'x', oAdditionalButtons);
+    const oDeleteButton = createButton(key, null, oAdditionalButtons);
     oDeleteButton.className = 'delete';
     oDeleteButton.onclick = handleDataDeleteButtonClick;
 };

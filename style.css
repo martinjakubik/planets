@@ -95,20 +95,24 @@ div.grid>div>div {
 }
 
 #storageView>div:hover>.additionalButtons>button {
-    width: 32px;
-}
-
-#storageView>div:hover>.additionalButtons>button:hover {
-    color: white;
-}
-
-#storageView>div>.additionalButtons>.download {
-    background-image: url('./download.png');
+    width: 64px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
+#storageView>div>.additionalButtons>.download {
+    background-image: url('./download.png');
+}
+
 #storageView>div>.additionalButtons>.download:hover {
     background-image: url('./download-hover.png');
+}
+
+#storageView>div>.additionalButtons>.delete {
+    background-image: url('./delete.png');
+}
+
+#storageView>div>.additionalButtons>.delete:hover {
+    background-image: url('./delete-hover.png');
 }
