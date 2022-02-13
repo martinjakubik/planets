@@ -177,7 +177,6 @@ const makeLoadBar = function (fnReset) {
     handleStorageChange();
 };
 
-
 const makeDataView = function (getSpaceTime, setSpaceTime, reset) {
     dataView = createDiv('dataView'),
     makeDataButtonBar(getSpaceTime, setSpaceTime);
