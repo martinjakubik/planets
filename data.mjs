@@ -17,6 +17,15 @@ const handleSaveButtonClick = function () {
 };
 
 const handleLoadFileInputChange = function () {
+    const [files] = document.getElementById('loadSpaceTimeButton').files;
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+        console.log(reader.result);
+    }, false);
+
+    if (files) {
+        reader.readAsText(files);
+    }
 };
 
 const makeNewButton = function (parentBox) {
