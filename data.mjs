@@ -17,7 +17,7 @@ const handleSaveButtonClick = function () {
 };
 
 const handleLoadFileInputChange = function () {
-    const aFiles = document.getElementById('loadSpaceTimeButton').files;
+    const aFiles = document.getElementById('uploadSpaceTimeButton').files;
     const reader = new FileReader();
     reader.addEventListener('load', () => {
         console.log(reader.result);
@@ -40,9 +40,9 @@ const makeSaveSpaceTimeButton = function (parentBox) {
 };
 
 const makeUploadSpaceTimeButton = function (parentBox) {
-    const sAccept = 'json';
-    loadSpaceTimeButton = createFileInput('loadSpaceTimeButton', 'Upload', parentBox, sAccept);
-    loadSpaceTimeButton.addEventListener('change', handleLoadFileInputChange);
+    const sAccept = '.spacetime';
+    uploadSpaceTimeButton = createFileInput('uploadSpaceTimeButton', 'Upload', parentBox, sAccept);
+    uploadSpaceTimeButton.addEventListener('change', handleLoadFileInputChange);
 };
 
 const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
@@ -80,7 +80,7 @@ const handleDataDownloadButtonClick = function (event) {
     const sContent = JSON.stringify(aSpaceTime);
     const a = document.createElement('a');
     a.href = `data:application/json,${sContent}`;
-    a.download = `spacetime-${sKey}.json`;
+    a.download = `planets-${sKey}.spacetime`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -169,7 +169,7 @@ const handleKeyDown = function (event) {
 let getSpaceTime, setSpaceTime;
 let reset;
 let dataView;
-let loadSpaceTimeButton;
+let uploadSpaceTimeButton;
 document.addEventListener('keydown', handleKeyDown);
 
 const makeLoadBar = function (fnReset) {
