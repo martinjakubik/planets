@@ -16,6 +16,9 @@ const handleSaveButtonClick = function () {
     handleStorageChange();
 };
 
+const handleLoadFileInputChange = function () {
+};
+
 const makeNewButton = function (parentBox) {
     const oButton = createButton('newButton', 'New', parentBox);
     oButton.onclick = handleNewButtonClick;
@@ -26,6 +29,12 @@ const makeSaveSpaceTimeButton = function (parentBox) {
     oButton.onclick = handleSaveButtonClick;
 };
 
+const makeUploadSpaceTimeButton = function (parentBox) {
+    const sAccept = 'json';
+    loadSpaceTimeButton = createFileInput('loadSpaceTimeButton', 'Upload', parentBox, sAccept);
+    loadSpaceTimeButton.addEventListener('change', handleLoadFileInputChange);
+};
+
 const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
     const buttonBar = createDiv('dataButtonBar', dataView);
 
@@ -34,6 +43,7 @@ const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
 
     makeNewButton(buttonBar);
     makeSaveSpaceTimeButton(buttonBar);
+    makeUploadSpaceTimeButton(buttonBar);
 };
 
 const getNowKey = function () {
@@ -116,6 +126,28 @@ const handleStorageChange = function (storageEvent) {
     updateStorageView(oStorageArea);
 };
 
+const createFileInput = function (sId, sLabel, oParent, sAccept) {
+    if (!oParent) {
+        oParent = document.body;
+    }
+
+    const oInput = document.createElement('input');
+    oInput.type = 'file';
+    oInput.id = sId;
+    if (sAccept && sAccept.length > 0) {
+        oInput.accept = sAccept;
+    }
+
+    const oLabel = document.createElement('label');
+    oLabel.for = sId;
+    oLabel.innerText = sLabel;
+
+    oParent.appendChild(oLabel);
+    oParent.appendChild(oInput);
+
+    return oInput;
+};
+
 const handleKeyDown = function (event) {
     const keyCode = event.keyCode;
     if (keyCode === 78) {
@@ -127,6 +159,7 @@ const handleKeyDown = function (event) {
 let getSpaceTime, setSpaceTime;
 let reset;
 let dataView;
+let loadSpaceTimeButton;
 document.addEventListener('keydown', handleKeyDown);
 
 const makeLoadBar = function (fnReset) {
