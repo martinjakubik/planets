@@ -16,11 +16,22 @@ const handleSaveButtonClick = function () {
     handleStorageChange();
 };
 
+const validateSpaceTime = function (a) {
+    let aSpaceTime = [];
+    const nSnapshotSize = JSON.stringify(a).length;
+    if (nSnapshotSize < oAppConfiguration.maxSpaceTimeSize) {
+        aSpaceTime = JSON.parse(a);
+    }
+    return aSpaceTime;
+};
+
 const handleLoadFileInputChange = function () {
     const aFiles = document.getElementById('uploadSpaceTimeButton').files;
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-        console.log(reader.result);
+        const aSpaceTime = validateSpaceTime(reader.result);
+        setSpaceTime(aSpaceTime);
+        reset();
     }, false);
 
     if (aFiles && aFiles.length > 0) {
@@ -171,6 +182,7 @@ let reset;
 let dataView;
 let uploadSpaceTimeButton;
 document.addEventListener('keydown', handleKeyDown);
+const oAppConfiguration = { maxSpaceTimeSize: 10 ** 6 };
 
 const makeLoadBar = function (fnReset) {
     window.addEventListener('storage', handleStorageChange);
