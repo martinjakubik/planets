@@ -4,19 +4,19 @@ body {
     flex-wrap: wrap;
 }
 
-button, #uploadSpaceTimeButton {
+button {
     background-color: rgba(207, 206, 255, .4);;
     color: rgb(207, 206, 255);
     border: 3px solid rgb(207, 206, 255);
     border-radius: 3px;
 }
 
-button:hover, #uploadSpaceTimeButton:hover {
+button:hover {
     color: white;
     border: 3px solid rgb(207, 206, 255);
 }
 
-button:disabled, #uploadSpaceTimeButton:disabled {
+button:disabled {
     color: rgb(82, 82, 82);
     border: 3px solid rgb(91, 90, 126);
 }
@@ -52,30 +52,17 @@ div.grid>div>div {
     display: flex;
 }
 
-#newButton {
+div#dataButtonBar>button {
     width: 200px;
     height: 36px;
 }
 
-#saveSpaceTimeButton {
-    width: 200px;
+input[type='file'] {
+    opacity: 0;
     height: 36px;
-}
-
-label {
-    display: none;
-    box-sizing: border-box;
-    background-color: rgba(207, 206, 255, .4);;
-    color: rgb(207, 206, 255);
-    border: 3px solid rgb(207, 206, 255);
-    border-radius: 3px;
     width: 200px;
-    height: 36px;;
-}
-
-#uploadSpaceTimeButton {
-    width: 200px;
-    height: 36px;;
+    display: block;
+    overflow: hidden;
 }
 
 #storageView>div>button {

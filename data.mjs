@@ -159,12 +159,10 @@ const createFileInput = function (sId, sLabel, oParent, sAccept) {
         oInput.accept = sAccept;
     }
 
-    const oLabel = document.createElement('label');
-    oLabel.for = sId;
-    oLabel.innerText = sLabel;
+    const oStylishButton = createButton(sId, null, oParent);
 
-    oParent.appendChild(oLabel);
-    oParent.appendChild(oInput);
+    oStylishButton.appendChild(oInput);
+    oParent.appendChild(oStylishButton);
 
     return oInput;
 };
