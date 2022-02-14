@@ -63,6 +63,13 @@ input[type='file'] {
     width: 200px;
     display: block;
     overflow: hidden;
+    position: relative;
+    top: -20px;
+    left: -9px;
+}
+
+.inputStylishButton {
+    padding: 7px 0 0 0;
 }
 
 #storageView>div>button {

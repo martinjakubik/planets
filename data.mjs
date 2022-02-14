@@ -159,7 +159,8 @@ const createFileInput = function (sId, sLabel, oParent, sAccept) {
         oInput.accept = sAccept;
     }
 
-    const oStylishButton = createButton(sId, null, oParent);
+    const oStylishButton = createButton(sId + 'StylishButton', sLabel, oParent);
+    oStylishButton.classList.add('inputStylishButton');
 
     oStylishButton.appendChild(oInput);
     oParent.appendChild(oStylishButton);
