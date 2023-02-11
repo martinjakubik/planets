@@ -101,7 +101,7 @@ input[type='file'] {
 #storageView>div:hover>.additionalButtons {
     left: 0px;
     z-index: 0;
-    transition: left .5s;
+    transition: left .2s;
 }
 
 #storageView>div:hover>.additionalButtons>button {
