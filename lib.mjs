@@ -6,6 +6,11 @@ const LIGHTEST_COLOR = 255;
 const CSS_RGB_BACKGROUND_COLOR = `rgb(${DARKEST_COLOR}, ${DARKEST_COLOR}, ${DARKEST_COLOR + 40})`;
 const CSS_RGBA_SHINY_COLOR = `rgba(${LIGHTEST_COLOR}, ${LIGHTEST_COLOR}, ${LIGHTEST_COLOR}, 0.5)`;
 
+const startTimer = function () {
+    bTimerRunning = true;
+    nTimerIntervalId = window.setInterval(moveTimeForward, 700);
+};
+
 const getMassColor = function (mass) {
     return LIGHTEST_COLOR - mass * 16 + 1;
 };
@@ -66,6 +71,9 @@ const handleSpaceClick = function (event) {
     const oSpaceSnapshot = copySpaceSnapshot(oSpace);
     aSpaceTime[nTime] = oSpaceSnapshot;
     drawBody(oCoordinates, getCssMassColor(oBody));
+    if (!bTimerRunning) {
+        startTimer();
+    }
 };
 
 const moveTimeForward = function (increment = 1) {
@@ -108,10 +116,12 @@ const moveTimeBackward = function (increment = 1) {
 };
 
 const handleTimeFwdButtonClick = function () {
-    moveTimeForward();
+    startTimer();
 };
 
 const handleTimeBackButtonClick = function () {
+    window.clearInterval(nTimerIntervalId);
+    bTimerRunning = false;
     moveTimeBackward();
 };
 
@@ -243,8 +253,8 @@ const makeSpaceGrid = function (numberOfRows) {
 };
 
 const makeTimeFwdButton = function (parentBox) {
-    const oButton = createButton('timeFwdButton', '>', parentBox);
-    oButton.onclick = handleTimeFwdButtonClick;
+    oTimeFwdButton = createButton('timeFwdButton', '>', parentBox);
+    oTimeFwdButton.onclick = handleTimeFwdButtonClick;
 };
 
 const makeTimeBackButton = function (parentBox) {
@@ -271,7 +281,9 @@ const handleKeyDown = function (event) {
     if (keyCode === 37) {
         moveTimeBackward();
     } else if (keyCode === 39) {
-        moveTimeForward();
+        if (!bTimerRunning) {
+            moveTimeForward();
+        }
     }
 };
 
@@ -279,6 +291,7 @@ document.addEventListener('keydown', handleKeyDown);
 
 const reset = function () {
     nTime = 0;
+    window.clearInterval(nTimerIntervalId);
     makeSpaceGrid(oAppConfiguration.gridSize);
     const oButton = document.getElementById('timeBackButton');
     oButton.disabled = true;
@@ -295,6 +308,10 @@ let nSpaceTimeSize = 0;
 let appBox;
 
 let aSpaceTime = [];
+
+let nTimerIntervalId = 0;
+let bTimerRunning = false;
+let oTimeFwdButton;
 
 const getSpaceTime = function () {
     return aSpaceTime;
