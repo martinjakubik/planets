@@ -9,6 +9,13 @@ const CSS_RGBA_SHINY_COLOR = `rgba(${LIGHTEST_COLOR}, ${LIGHTEST_COLOR}, ${LIGHT
 const startTimer = function () {
     bTimerRunning = true;
     nTimerIntervalId = window.setInterval(moveTimeForward, 700);
+    oTimeFwdButton.innerText = '||';
+};
+
+const stopTimer = function () {
+    window.clearInterval(nTimerIntervalId);
+    bTimerRunning = false;
+    oTimeFwdButton.innerText = '>';
 };
 
 const getMassColor = function (mass) {
@@ -116,12 +123,16 @@ const moveTimeBackward = function (increment = 1) {
 };
 
 const handleTimeFwdButtonClick = function () {
-    startTimer();
+    if (bTimerRunning) {
+        stopTimer();
+        moveTimeForward();
+    } else {
+        startTimer();
+    }
 };
 
 const handleTimeBackButtonClick = function () {
-    window.clearInterval(nTimerIntervalId);
-    bTimerRunning = false;
+    stopTimer();
     moveTimeBackward();
 };
 
@@ -281,9 +292,8 @@ const handleKeyDown = function (event) {
     if (keyCode === 37) {
         moveTimeBackward();
     } else if (keyCode === 39) {
-        if (!bTimerRunning) {
-            moveTimeForward();
-        }
+        stopTimer();
+        moveTimeForward();
     }
 };
 
