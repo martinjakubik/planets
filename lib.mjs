@@ -83,7 +83,7 @@ const handleSpaceClick = function (event) {
     }
 };
 
-const moveTimeForward = function (increment = 1) {
+const moveTimeForward = function () {
     const clear = true;
     drawSpace(nTime, clear);
 
@@ -107,7 +107,7 @@ const moveTimeForward = function (increment = 1) {
     drawSpace(nTime);
 };
 
-const moveTimeBackward = function (increment = 1) {
+const moveTimeBackward = function () {
     const clear = true;
     drawSpace(nTime, clear);
 
