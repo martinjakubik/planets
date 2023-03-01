@@ -7,17 +7,17 @@ body {
 button {
   background-color: var(--bg-1-color);
   color: var(--text-0-fg-color);
-  border: 3px solid var(--bg-2-color);
+  border: 1px solid var(--bg-2-color);
 }
 
 button:hover {
   color: var(--text-0-inverted-fg-color);
-  border: 3px solid var(--bg-2-color);
+  border: 1px solid var(--bg-2-color);
 }
 
 button:disabled {
   color: var(--text-1-inverted-fg-color);
-  border: 3px solid var(--bg-2-color);
+  border: 1px solid var(--bg-2-color);
 }
 
 div#dataView {
@@ -45,6 +45,7 @@ div.grid>div>div {
 #buttonBar>button {
   width: 240px;
   height: 60px;
+  margin: 0 -1px 0 0;
 }
 
 #storageView>div {
@@ -54,6 +55,7 @@ div.grid>div>div {
 div#dataButtonBar>button {
   width: 200px;
   height: 36px;
+  margin: 0 0 -1px 0;
 }
 
 input[type='file'] {
@@ -72,17 +74,9 @@ input[type='file'] {
 }
 
 #storageView>div>button {
-  display: flex;
   background-color: var(--bg-1-color);
-  font-size: 14pt;
-  font-weight: bold;
   height: 36px;
-  border: 3px solid var(--bg-2-color);
-}
-
-#storageView>div:hover>button {
-  background-color: var(--bg-0-inverted-color);
-  border: 3px solid var(--bg-2-color);
+  border: 1px solid var(--bg-2-color);
 }
 
 #storageView>div>button.load {
@@ -104,34 +98,38 @@ input[type='file'] {
 
 #storageView>div:hover>.additionalButtons>button {
   width: 64px;
+  height: 36px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  margin: 0 0 0 -1px;
 }
 
 #storageView>div>.additionalButtons>.download {
-  background-image: url('./download.png');
+  background-image: url('./resources/download.png');
 }
 
 #storageView>div>.additionalButtons>.download:hover {
-  background-image: url('./download-hover.png');
+  background-image: url('./resources/download-hover.png');
+  background-color: var(--bg-0-inverted-color);
 }
 
 #storageView>div>.additionalButtons>.delete {
-  background-image: url('./delete.png');
+  background-image: url('./resources/delete.png');
 }
 
 #storageView>div>.additionalButtons>.delete:hover {
-  background-image: url('./delete-hover.png');
+  background-image: url('./resources/delete-hover.png');
+  background-color: var(--bg-0-inverted-color);
 }
 
 :root {
   --bg-0-color: rgb(255, 255, 255);
-  --bg-0-inverted-color: rgb(103, 65, 32);
-  --bg-1-color: rgb(103, 65, 32);
-  --bg-2-color: rgba(204, 141, 5, 0.55);
+  --bg-0-inverted-color: rgba(57, 66, 237, 0.815);
+  --bg-1-color: rgb(237, 237, 237);
+  --bg-2-color: rgba(57, 66, 237, 0.815);
   --bg-3-color: rgba(204, 141, 5, 0.55);
-  --text-0-fg-color: rgb(243, 236, 218);
+  --text-0-fg-color: rgb(57, 66, 237);
   --text-1-fg-color: rgb(7, 7, 52);
   --text-0-inverted-fg-color: rgb(169, 123, 7);
   --text-1-inverted-fg-color: rgb(255, 219, 157);
