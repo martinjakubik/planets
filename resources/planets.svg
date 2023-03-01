@@ -10,7 +10,7 @@
    xml:space="preserve"
    inkscape:version="1.2.2 (b0a84865, 2022-12-01)"
    sodipodi:docname="planets.svg"
-   inkscape:export-filename="delete-hover.png"
+   inkscape:export-filename="download.png"
    inkscape:export-xdpi="148.65"
    inkscape:export-ydpi="148.65"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -28,8 +28,8 @@
      inkscape:document-units="mm"
      showgrid="true"
      inkscape:zoom="0.79142743"
-     inkscape:cx="51.173359"
-     inkscape:cy="263.44803"
+     inkscape:cx="349.36874"
+     inkscape:cy="157.3107"
      inkscape:window-width="1429"
      inkscape:window-height="826"
      inkscape:window-x="0"
@@ -45,12 +45,12 @@
      transform="translate(-55.343086,-80.512566)"><g
        id="g2744"
        transform="matrix(0.86877001,0,0,0.86877001,14.530978,17.867598)"
-       style="fill:#ededed;fill-opacity:1"><path
-         style="fill:#ededed;fill-opacity:1;stroke:none;stroke-width:0.529"
+       style="fill:#3942ed;fill-opacity:1"><path
+         style="fill:#3942ed;fill-opacity:1;stroke:none;stroke-width:0.529"
          d="m 112.45499,84.289628 v 73.091842 l 16.75022,-21.31845 1.52274,1.52274 -19.7957,25.8867 -19.795712,-25.8867 1.744996,-1.23988 16.527966,21.03559 V 84.289628 Z"
          id="path585"
          sodipodi:nodetypes="cccccccccc" /><path
-         style="fill:#ededed;fill-opacity:1;stroke:none;stroke-width:0.529"
+         style="fill:#3942ed;fill-opacity:1;stroke:none;stroke-width:0.529"
          d="m 162.70563,189.35915 v -53.29613 h -3.04549 l 0,50.25064 H 60.681604 l 0,-50.25064 h -3.045493 v 53.29613 z"
          id="path704"
          sodipodi:nodetypes="ccccccccc" /></g><path
