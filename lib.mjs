@@ -187,7 +187,8 @@ const drawShininess = function (position, pen) {
     const aNeighborBoxes = getNeighborBoxes(position, 1);
     aNeighborBoxes.forEach(neighborBoxPosition => {
         let target = document.getElementById(`${neighborBoxPosition.x}:${neighborBoxPosition.y}`);
-        target.style.backgroundColor = pen;
+        target.style.border = `1px solid ${pen}`;
+        target.style.boxSizing = 'border-box';
     });
 };
 

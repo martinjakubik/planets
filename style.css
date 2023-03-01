@@ -50,6 +50,7 @@ div.grid>div>div {
 
 #storageView>div {
   display: flex;
+  margin: -1px 0 0 0;
 }
 
 div#dataButtonBar>button {
