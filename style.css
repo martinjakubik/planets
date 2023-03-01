@@ -42,6 +42,11 @@ div.grid>div>div {
   outline: 1px dotted grey;
 }
 
+div#spaceTime>div>div:hover {
+  border: 1px dotted grey;
+  box-sizing: border-box;
+}
+
 #buttonBar>button {
   width: 240px;
   height: 60px;
