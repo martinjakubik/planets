@@ -1,4 +1,4 @@
-body {
+  body {
     background-color: var(--bg-0-color);
     display: flex;
     flex-wrap: wrap;
@@ -8,7 +8,6 @@ body {
     background-color: var(--bg-1-color);
     color: var(--text-0-fg-color);
     border: 3px solid var(--bg-2-color);
-    border-radius: 3px;
   }
   
   button:hover {
@@ -84,7 +83,6 @@ body {
   #storageView>div:hover>button {
     background-color: var(--bg-0-inverted-color);
     border: 3px solid var(--bg-2-color);
-    border-radius: 3px;
   }
   
   #storageView>div>button.load {
