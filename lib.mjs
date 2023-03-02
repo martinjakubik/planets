@@ -275,17 +275,11 @@ const makeTimeBackButton = function (parentBox) {
     oButton.disabled = true;
 };
 
-const makeGridToggleButton = function (parentBox) {
-    const oButton = createButton('gridToggleButton', 'grid', parentBox);
-    oButton.onclick = handleGridToggleButtonClick;
-};
-
 const makeSpaceTimeButtonBar = function () {
     const buttonBar = createDiv('buttonBar', appBox);
 
     makeTimeBackButton(buttonBar);
     makeTimeFwdButton(buttonBar);
-    makeGridToggleButton(buttonBar);
 };
 
 const handleKeyDown = function (event) {

@@ -38,10 +38,6 @@ div#buttonBar {
   display: flex;
 }
 
-div.grid>div>div {
-  outline: 1px dotted grey;
-}
-
 div#spaceTime>div>div:hover {
   border: 1px dotted grey;
   box-sizing: border-box;
