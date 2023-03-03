@@ -209,11 +209,6 @@ const getNeighborBoxes = function (position, radius) {
     return aNeighborBoxes;
 };
 
-const handleGridToggleButtonClick = function () {
-    const spaceTimeBox = document.getElementById('spaceTime');
-    spaceTimeBox.classList.toggle('grid');
-};
-
 const makeAppBox = function () {
     appBox = document.getElementById('app');
     if(!appBox) {
