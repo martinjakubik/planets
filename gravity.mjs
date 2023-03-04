@@ -1,8 +1,8 @@
 const G = 6.674 * 10 ** -1;
 
-const createBody = function (x, y) {
+const createBody = function (nTime, x, y) {
     return {
-        id: `${x}:${y}`,
+        id: `${nTime}:${x}:${y}`,
         mass: 1,
         position: {
             x: x,

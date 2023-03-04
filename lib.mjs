@@ -39,44 +39,91 @@ const getCssShineColor = function (pen) {
 };
 
 const calculateAllGravity = function () {
-    const aBodies = Object.entries(oSpace);
-    aBodies.forEach(([oBodyKey, oBody]) => {
-        aBodies.forEach(([oNeighbourKey, oNeighbour]) => {
-            if (oNeighbourKey !== oBodyKey) {
-                calculateGravity(oBody, oNeighbour);
-            }
-        });
-    });
+    const aCoordinates = aSpaceTime[nTime];
+    if (aCoordinates) {
+        aCoordinates.forEach(aXAxis => {
+            aXAxis.forEach((oBody) => {
+                aCoordinates.forEach(aXAxis => {
+                    aXAxis.forEach(oNeighbour => {
+                        if (oNeighbour.id !== oBody.id) {
+                            const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
+                            const oCoordinates = oBody.position;
+                            updateBodyAt(nTime, oCoordinates.x, oCoordinates.y, oRecalculatedBody);
+                        }
+                    })
+                })
+            })
+        })
+    }
 };
 
 const calculateAllPositions = function () {
-    const aBodies = Object.values(oSpace);
-    aBodies.forEach(oBody => {
-        calculatePosition(oBody, nTime);
-    });
+    const aCoordinates = aSpaceTime[nTime];
+    if (aCoordinates) {
+        aCoordinates.forEach(aXAxis => {
+            aXAxis.forEach(oBody => {
+                const oCoordinates = oBody.position;
+                calculatePosition(oBody, nTime);
+                updateBodyAt(nTime, oCoordinates.x, oCoordinates.y, oBody);
+            })
+        });
+    }
+};
+
+const getBodyAt = function (nTime, dx, dy) {
+    const x = Math.floor(dx);
+    const y = Math.floor(dy);
+    const aSpace = aSpaceTime[nTime];
+    const aXAxis = aSpace ? aSpace[x] : null;
+    return aXAxis ? aXAxis[y] : null;
+};
+
+const updateBodyAt = function (nTime, dx, dy, oBody) {
+    const x = Math.floor(dx);
+    const y = Math.floor(dy);
+    const nMoveToX = Math.floor(oBody.position.x);
+    const nMoveToY = Math.floor(oBody.position.y);
+    if (!aSpaceTime[nTime]) {
+        aSpaceTime[nTime] = [];
+    }
+    if (x === oBody.position.x && y === oBody.position.y) {
+        if (!aSpaceTime[nTime][x]) {
+            aSpaceTime[nTime][x] = [];
+        }
+        aSpaceTime[nTime][x][y] = oBody;
+    } else {
+        deleteBodyAt(nTime, x, y);
+        if (!aSpaceTime[nTime][nMoveToX]) {
+            aSpaceTime[nTime][nMoveToX] = [];
+        }
+        aSpaceTime[nTime][nMoveToX][nMoveToY] = oBody;
+    }
+};
+
+const deleteBodyAt = function (nTime, dx, dy) {
+    const x = Math.floor(dx);
+    const y = Math.floor(dy);
+    if (aSpaceTime[nTime] && aSpaceTime[nTime][x] && aSpaceTime[nTime][x][y]) {
+        delete aSpaceTime[nTime][x][y];
+    }
 };
 
 const handleSpaceClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
-    let oBody = oSpace[sId];
+    let oBody = getBodyAt(nTime, oCoordinates.x, oCoordinates.y);
     if(oBody) {
         oBody.mass++;
     } else {
-        oBody = createBody(oCoordinates.x, oCoordinates.y);
+        oBody = createBody(nTime, oCoordinates.x, oCoordinates.y);
     }
     if (oBody.mass < 16) {
-        oSpace[sId] = oBody;
-        if (!aSpaceTime[nTime]) {
-            aSpaceTime[nTime] = [];
-        }
+        updateBodyAt(nTime, oCoordinates.x, oCoordinates.y, oBody);
     } else {
-        delete oSpace[sId];
+        deleteBodyAt(nTime, oCoordinates.x, oCoordinates.y);
         oBody = null;
     }
-    const oSpaceSnapshot = copySpaceSnapshot(oSpace);
-    aSpaceTime[nTime] = oSpaceSnapshot;
     drawBody(oCoordinates, getCssMassColor(oBody));
     if (!bTimerRunning) {
         startTimer();
@@ -88,14 +135,15 @@ const moveTimeForward = function () {
     drawSpace(nTime, clear);
 
     if (nSpaceTimeSize < oAppConfiguration.maxSpaceTimeSize) {
+        const nPreviousTime = nTime;
         nTime++;
         const oTimeBackButton = document.getElementById('timeBackButton');
         oTimeBackButton.disabled = false;
         if (!aSpaceTime[nTime]) {
+            const oSpaceSnapshot = copySpaceSnapshot(aSpaceTime[nPreviousTime]);
+            aSpaceTime[nTime] = oSpaceSnapshot;
             calculateAllGravity();
             calculateAllPositions();
-            const oSpaceSnapshot = copySpaceSnapshot(oSpace);
-            aSpaceTime[nTime] = oSpaceSnapshot;
             const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
             nSpaceTimeSize = nSpaceTimeSize + nSnapshotSize;
         }
@@ -146,29 +194,36 @@ const getXYFromID = function (sId) {
     };
 };
 
-const copySpaceSnapshot = function (oSpace) {
-    let oSpaceSnapshot = {};
-    const aSpaceSnapshots = Object.entries(oSpace);
-    aSpaceSnapshots.forEach(([key, value]) => {
-        oSpaceSnapshot[key] = Object.assign({}, value);
+const copySpaceSnapshot = function (aCoordinates) {
+    let aSpaceSnapshot = [];
+    aCoordinates.forEach(aXAxis => {
+        aXAxis.forEach(oBody => {
+            const x = Math.floor(oBody.position.x);
+            const y = Math.floor(oBody.position.y);
+            if (!aSpaceSnapshot[x]) {
+                aSpaceSnapshot[x] = [];
+            }
+            aSpaceSnapshot[x][y] = oBody;
+        })
     });
-    return oSpaceSnapshot;
+    return aSpaceSnapshot;
 };
 
 const drawSpace = function (nTime, bClear) {
-    const oSpaceSnapshot = aSpaceTime[nTime];
-    if (oSpaceSnapshot) {
-        const aBodies = Object.values(oSpaceSnapshot);
-        aBodies.forEach(oBody => {
-            const floorX = Math.floor(oBody.position.x);
-            const floorY = Math.floor(oBody.position.y);
-            if (floorX > 0 && floorX < oAppConfiguration.gridSize && floorY > 0 && floorY < oAppConfiguration.gridSize) {
-                if (bClear) {
-                    drawBody({x: floorX, y: floorY}, CSS_RGB_BACKGROUND_COLOR);
-                } else {
-                    drawBody({x: floorX, y: floorY}, getCssMassColor(oBody));
+    const aCoordinates = aSpaceTime[nTime];
+    if (aCoordinates) {
+        aCoordinates.forEach(aXAxis => {
+            aXAxis.forEach(oBody => {
+                const floorX = Math.floor(oBody.position.x);
+                const floorY = Math.floor(oBody.position.y);
+                if (floorX > 0 && floorX < oAppConfiguration.gridSize && floorY > 0 && floorY < oAppConfiguration.gridSize) {
+                    if (bClear) {
+                        drawBody({x: floorX, y: floorY}, CSS_RGB_BACKGROUND_COLOR);
+                    } else {
+                        drawBody({x: floorX, y: floorY}, getCssMassColor(oBody));
+                    }
                 }
-            }
+            })
         });
     }
 };
@@ -231,8 +286,6 @@ const makeSpaceGrid = function (numberOfRows) {
     }
     spaceTimeBox.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
     let rowBox;
-
-    oSpace = {};
 
     let sBoxId = '';
     let box = null;
@@ -302,7 +355,6 @@ const oAppConfiguration = {
     maxSpaceTimeSize: 10 ** 6
 };
 
-let oSpace;
 let nTime = 0;
 let nSpaceTimeSize = 0;
 let appBox;
