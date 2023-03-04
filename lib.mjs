@@ -373,4 +373,4 @@ const setSpaceTime = function (spaceTime) {
     aSpaceTime = spaceTime;
 };
 
-export { makeSpaceGrid, makeSpaceTimeButtonBar, calculateGravity, calculatePosition, reset, getSpaceTime, setSpaceTime };
+export { makeSpaceGrid, makeSpaceTimeButtonBar, reset, getSpaceTime, setSpaceTime };
