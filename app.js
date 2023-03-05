@@ -1,6 +1,8 @@
-import { makeSpaceGrid, makeSpaceTimeButtonBar, reset, getSpaceTime, setSpaceTime } from './lib.mjs';
+import { makeSpaceGrid, makeSpaceTimeButtonBar, reset } from './lib.mjs';
 import { makeDataView } from './data.mjs';
+import { SpaceTimeController } from './spacetimecontroller.mjs';
 
-makeDataView(getSpaceTime, setSpaceTime, reset);
-makeSpaceGrid(80);
+const oSpaceTimeController = new SpaceTimeController();
+makeDataView(SpaceTimeController, reset);
+makeSpaceGrid(80, oSpaceTimeController);
 makeSpaceTimeButtonBar();

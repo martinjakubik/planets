@@ -1,14 +1,14 @@
 import { createDiv, createButton } from './lib/js/learnhypertext.mjs';
 
-const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug','Sep', 'Oct', 'Nov', 'Dec'];
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const handleNewButtonClick = function () {
-    setSpaceTime([]);
+    resetSpaceTimeModel();
     reset();
 };
 
 const handleSaveButtonClick = function () {
-    const sContent = JSON.stringify(getSpaceTime());
+    const sContent = JSON.stringify(getSpaceTimeModel());
     const oLocalStorage = window.localStorage;
     const sNowKey = getNowKey();
     const sKey = `spacetime-${sNowKey}`;
@@ -30,7 +30,7 @@ const handleLoadFileInputChange = function () {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
         const aSpaceTime = validateSpaceTime(reader.result);
-        setSpaceTime(aSpaceTime);
+        setSpaceTimeModel(aSpaceTime);
         reset();
     }, false);
 
@@ -56,11 +56,12 @@ const makeUploadSpaceTimeButton = function (parentBox) {
     uploadSpaceTimeButton.addEventListener('change', handleLoadFileInputChange);
 };
 
-const makeDataButtonBar = function (fnGetSpaceTime, fnSetSpaceTime) {
+const makeDataButtonBar = function (fnGetSpaceTimeModel, fnSetSpaceTimeModel, fnResetSpaceTimeModel) {
     const buttonBar = createDiv('dataButtonBar', dataView);
 
-    getSpaceTime = fnGetSpaceTime;
-    setSpaceTime = fnSetSpaceTime;
+    getSpaceTimeModel = fnGetSpaceTimeModel;
+    setSpaceTimeModel = fnSetSpaceTimeModel;
+    resetSpaceTimeModel = fnResetSpaceTimeModel;
 
     makeNewButton(buttonBar);
     makeSaveSpaceTimeButton(buttonBar);
@@ -80,14 +81,14 @@ const handleLoadDataButtonClick = function (event) {
     const oStorageArea = window.localStorage;
     const oItem = oStorageArea.getItem(sKey);
     const aLoadedSpaceTime = JSON.parse(oItem);
-    setSpaceTime(aLoadedSpaceTime);
+    setSpaceTimeModel(aLoadedSpaceTime);
     reset();
 };
 
 const handleDataDownloadButtonClick = function (event) {
     let oTarget = event.target;
     const sKey = oTarget.id;
-    const aSpaceTime = getSpaceTime();
+    const aSpaceTime = getSpaceTimeModel();
     const sContent = JSON.stringify(aSpaceTime);
     const a = document.createElement('a');
     a.href = `data:application/json,${sContent}`;
@@ -123,7 +124,7 @@ const addItemToStorageView = function (storageView, key) {
 
 const updateStorageView = function (storageArea) {
     let oStorageView = document.getElementById('storageView');
-    if(!oStorageView) {
+    if (!oStorageView) {
         oStorageView = createDiv('storageView', dataView);
     }
     const aChildren = oStorageView.childNodes;
@@ -140,7 +141,7 @@ const updateStorageView = function (storageArea) {
 const handleStorageChange = function (storageEvent) {
     let oStorageArea;
     if (storageEvent) {
-        oStorageArea  = storageEvent.storage;
+        oStorageArea = storageEvent.storage;
     } else {
         oStorageArea = window.localStorage;
     }
@@ -171,12 +172,12 @@ const createFileInput = function (sId, sLabel, oParent, sAccept) {
 const handleKeyDown = function (event) {
     const keyCode = event.keyCode;
     if (keyCode === 78) {
-        setSpaceTime([]);
+        resetSpaceTime();
         reset();
     }
 };
 
-let getSpaceTime, setSpaceTime;
+let getSpaceTimeModel, setSpaceTimeModel, resetSpaceTimeModel;
 let reset;
 let dataView;
 let uploadSpaceTimeButton;
@@ -189,9 +190,9 @@ const makeLoadBar = function (fnReset) {
     handleStorageChange();
 };
 
-const makeDataView = function (getSpaceTime, setSpaceTime, reset) {
+const makeDataView = function (spaceTimeController, reset) {
     dataView = createDiv('dataView'),
-    makeDataButtonBar(getSpaceTime, setSpaceTime);
+        makeDataButtonBar(spaceTimeController.getSpaceTimeModel, spaceTimeController.setSpaceTimeModel, spaceTimeController.resetSpaceTimeModel);
     makeLoadBar(reset);
 };
 

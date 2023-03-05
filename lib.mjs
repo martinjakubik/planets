@@ -1,5 +1,6 @@
 import { createBody, calculateGravity, calculatePosition } from './gravity.mjs';
 import { createDiv, createButton } from './lib/js/learnhypertext.mjs';
+import { SpaceTimeController } from './spacetimecontroller.mjs';
 
 const DARKEST_COLOR = 0;
 const LIGHTEST_COLOR = 255;
@@ -39,7 +40,7 @@ const getCssShineColor = function (pen) {
 };
 
 const calculateAllGravity = function () {
-    const aCoordinates = aSpaceTime[nTime];
+    const aCoordinates = oThisSpaceTimeController.getSpaceSnapshot();
     if (aCoordinates) {
         aCoordinates.forEach(aXAxis => {
             aXAxis.forEach((oBody) => {
@@ -48,7 +49,7 @@ const calculateAllGravity = function () {
                         if (oNeighbour.id !== oBody.id) {
                             const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
                             const oCoordinates = oBody.position;
-                            updateBodyAt(nTime, oCoordinates.x, oCoordinates.y, oRecalculatedBody);
+                            oThisSpaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
                         }
                     })
                 })
@@ -58,53 +59,15 @@ const calculateAllGravity = function () {
 };
 
 const calculateAllPositions = function () {
-    const aCoordinates = aSpaceTime[nTime];
+    const aCoordinates = oThisSpaceTimeController.getSpaceSnapshot();
     if (aCoordinates) {
         aCoordinates.forEach(aXAxis => {
             aXAxis.forEach(oBody => {
                 const oCoordinates = oBody.position;
-                calculatePosition(oBody, nTime);
-                updateBodyAt(nTime, oCoordinates.x, oCoordinates.y, oBody);
+                calculatePosition(oBody, oThisSpaceTimeController.getTime());
+                oThisSpaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
             })
         });
-    }
-};
-
-const getBodyAt = function (nTime, dx, dy) {
-    const x = Math.floor(dx);
-    const y = Math.floor(dy);
-    const aSpace = aSpaceTime[nTime];
-    const aXAxis = aSpace ? aSpace[x] : null;
-    return aXAxis ? aXAxis[y] : null;
-};
-
-const updateBodyAt = function (nTime, dx, dy, oBody) {
-    const x = Math.floor(dx);
-    const y = Math.floor(dy);
-    const nMoveToX = Math.floor(oBody.position.x);
-    const nMoveToY = Math.floor(oBody.position.y);
-    if (!aSpaceTime[nTime]) {
-        aSpaceTime[nTime] = [];
-    }
-    if (x === oBody.position.x && y === oBody.position.y) {
-        if (!aSpaceTime[nTime][x]) {
-            aSpaceTime[nTime][x] = [];
-        }
-        aSpaceTime[nTime][x][y] = oBody;
-    } else {
-        deleteBodyAt(nTime, x, y);
-        if (!aSpaceTime[nTime][nMoveToX]) {
-            aSpaceTime[nTime][nMoveToX] = [];
-        }
-        aSpaceTime[nTime][nMoveToX][nMoveToY] = oBody;
-    }
-};
-
-const deleteBodyAt = function (nTime, dx, dy) {
-    const x = Math.floor(dx);
-    const y = Math.floor(dy);
-    if (aSpaceTime[nTime] && aSpaceTime[nTime][x] && aSpaceTime[nTime][x][y]) {
-        delete aSpaceTime[nTime][x][y];
     }
 };
 
@@ -112,16 +75,16 @@ const handleSpaceClick = function (event) {
     const oTarget = event.currentTarget;
     let sId = oTarget.id;
     let oCoordinates = getXYFromID(sId);
-    let oBody = getBodyAt(nTime, oCoordinates.x, oCoordinates.y);
-    if(oBody) {
+    let oBody = oThisSpaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
+    if (oBody) {
         oBody.mass++;
     } else {
-        oBody = createBody(nTime, oCoordinates.x, oCoordinates.y);
+        oBody = createBody(oThisSpaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
     }
     if (oBody.mass < 16) {
-        updateBodyAt(nTime, oCoordinates.x, oCoordinates.y, oBody);
+        oThisSpaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
     } else {
-        deleteBodyAt(nTime, oCoordinates.x, oCoordinates.y);
+        oThisSpaceTimeController.deleteBodyAt(oCoordinates.x, oCoordinates.y);
         oBody = null;
     }
     drawBody(oCoordinates, getCssMassColor(oBody));
@@ -132,16 +95,16 @@ const handleSpaceClick = function (event) {
 
 const moveTimeForward = function () {
     const clear = true;
-    drawSpace(nTime, clear);
+    drawSpace(clear);
 
     if (nSpaceTimeSize < oAppConfiguration.maxSpaceTimeSize) {
-        const nPreviousTime = nTime;
-        nTime++;
+        const nPreviousTime = oThisSpaceTimeController.getTime();
+        oThisSpaceTimeController.incrementTime();
         const oTimeBackButton = document.getElementById('timeBackButton');
         oTimeBackButton.disabled = false;
-        if (!aSpaceTime[nTime]) {
-            const oSpaceSnapshot = copySpaceSnapshot(aSpaceTime[nPreviousTime]);
-            aSpaceTime[nTime] = oSpaceSnapshot;
+        if (!oThisSpaceTimeController.getSpaceSnapshot()) {
+            const oSpaceSnapshot = copySpaceSnapshot(oThisSpaceTimeController.getSpaceSnapshotAt(nPreviousTime));
+            oThisSpaceTimeController.addSpaceSnapshot(oSpaceSnapshot);
             calculateAllGravity();
             calculateAllPositions();
             const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
@@ -152,22 +115,22 @@ const moveTimeForward = function () {
         oTimeFwdButton.disabled = true;
     }
 
-    drawSpace(nTime);
+    drawSpace();
 };
 
 const moveTimeBackward = function () {
     const clear = true;
-    drawSpace(nTime, clear);
+    drawSpace(clear);
 
     const oTimeBackButton = document.getElementById('timeBackButton');
-    if (nTime === 0) {
+    if (oThisSpaceTimeController.getTime() === 0) {
         oTimeBackButton.disabled = true;
     } else {
-        nTime--;
+        oThisSpaceTimeController.incrementTime(-1);
         const oTimeFwdButton = document.getElementById('timeFwdButton');
         oTimeFwdButton.disabled = false;
     }
-    drawSpace(nTime);
+    drawSpace();
 };
 
 const handleTimeFwdButtonClick = function () {
@@ -209,8 +172,8 @@ const copySpaceSnapshot = function (aCoordinates) {
     return aSpaceSnapshot;
 };
 
-const drawSpace = function (nTime, bClear) {
-    const aCoordinates = aSpaceTime[nTime];
+const drawSpace = function (bClear) {
+    const aCoordinates = oThisSpaceTimeController.getSpaceSnapshot();
     if (aCoordinates) {
         aCoordinates.forEach(aXAxis => {
             aXAxis.forEach(oBody => {
@@ -218,9 +181,9 @@ const drawSpace = function (nTime, bClear) {
                 const floorY = Math.floor(oBody.position.y);
                 if (floorX > 0 && floorX < oAppConfiguration.gridSize && floorY > 0 && floorY < oAppConfiguration.gridSize) {
                     if (bClear) {
-                        drawBody({x: floorX, y: floorY}, CSS_RGB_BACKGROUND_COLOR);
+                        drawBody({ x: floorX, y: floorY }, CSS_RGB_BACKGROUND_COLOR);
                     } else {
-                        drawBody({x: floorX, y: floorY}, getCssMassColor(oBody));
+                        drawBody({ x: floorX, y: floorY }, getCssMassColor(oBody));
                     }
                 }
             })
@@ -250,28 +213,29 @@ const drawShininess = function (position, pen) {
 const getNeighborBoxes = function (position, radius) {
     const aNeighborBoxes = [];
     if ((position.x - radius) >= 0) {
-        aNeighborBoxes.push({x: position.x - radius, y: position.y});
+        aNeighborBoxes.push({ x: position.x - radius, y: position.y });
     }
     if ((position.y - radius) >= 0) {
-        aNeighborBoxes.push({x: position.x, y: position.y - 1});
+        aNeighborBoxes.push({ x: position.x, y: position.y - 1 });
     }
     if ((position.x + radius) < oAppConfiguration.gridSize) {
-        aNeighborBoxes.push({x: position.x + radius, y: position.y});
+        aNeighborBoxes.push({ x: position.x + radius, y: position.y });
     }
     if ((position.y + radius) < oAppConfiguration.gridSize) {
-        aNeighborBoxes.push({x: position.x, y: position.y + radius});
+        aNeighborBoxes.push({ x: position.x, y: position.y + radius });
     }
     return aNeighborBoxes;
 };
 
 const makeAppBox = function () {
     appBox = document.getElementById('app');
-    if(!appBox) {
+    if (!appBox) {
         appBox = createDiv('app');
     }
 };
 
-const makeSpaceGrid = function (numberOfRows) {
+const makeSpaceGrid = function (numberOfRows, oSpaceTimeController) {
+    oThisSpaceTimeController = oSpaceTimeController;
     oAppConfiguration.gridSize = numberOfRows;
     let nSizeOfBox = Math.floor(720 / oAppConfiguration.gridSize);
 
@@ -281,7 +245,7 @@ const makeSpaceGrid = function (numberOfRows) {
     let x = 0;
     makeAppBox();
     let spaceTimeBox = document.getElementById('spaceTime');
-    if(!spaceTimeBox) {
+    if (!spaceTimeBox) {
         spaceTimeBox = createDiv('spaceTime', appBox);
     }
     spaceTimeBox.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
@@ -343,7 +307,7 @@ const handleKeyDown = function (event) {
 document.addEventListener('keydown', handleKeyDown);
 
 const reset = function () {
-    nTime = 0;
+    oThisSpaceTimeController.reset();
     window.clearInterval(nTimerIntervalId);
     makeSpaceGrid(oAppConfiguration.gridSize);
     const oButton = document.getElementById('timeBackButton');
@@ -355,22 +319,13 @@ const oAppConfiguration = {
     maxSpaceTimeSize: 10 ** 6
 };
 
-let nTime = 0;
 let nSpaceTimeSize = 0;
 let appBox;
 
-let aSpaceTime = [];
+let oThisSpaceTimeController;
 
 let nTimerIntervalId = 0;
 let bTimerRunning = false;
 let oTimeFwdButton;
 
-const getSpaceTime = function () {
-    return aSpaceTime;
-};
-
-const setSpaceTime = function (spaceTime) {
-    aSpaceTime = spaceTime;
-};
-
-export { makeSpaceGrid, makeSpaceTimeButtonBar, reset, getSpaceTime, setSpaceTime };
+export { makeSpaceGrid, makeSpaceTimeButtonBar, reset };
