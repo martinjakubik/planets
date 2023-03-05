@@ -3,6 +3,6 @@ import { makeDataView } from './data.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
 const oSpaceTimeController = new SpaceTimeController();
-makeDataView(SpaceTimeController, reset);
+makeDataView(oSpaceTimeController, reset);
 makeSpaceGrid(80, oSpaceTimeController);
 makeSpaceTimeButtonBar();

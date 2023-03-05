@@ -1,5 +1,4 @@
 class SpaceTimeController {
-
     constructor() {
         this.time = 0;
         this.spaceTimeModel = [];
@@ -68,11 +67,11 @@ class SpaceTimeController {
     }
 
     setSpaceTimeModel(spaceTimeModel) {
-        this.setSpaceTimeModel = spaceTimeModel;
+        this.spaceTimeModel = spaceTimeModel;
     }
 
     resetSpaceTimeModel() {
-        this.setSpaceTimeModel = [];
+        this.spaceTimeModel = [];
     }
 
     addSpaceSnapshot(oSpaceSnapshot) {
