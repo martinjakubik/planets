@@ -4,11 +4,6 @@ class SpaceTimeController {
         this.spaceTimeModel = [];
     }
 
-    reset() {
-        this.time = 0;
-        this.spaceTimeModel = [];
-    }
-
     setTime(nTime) {
         this.time = nTime;
     }
@@ -71,6 +66,7 @@ class SpaceTimeController {
     }
 
     resetSpaceTimeModel() {
+        this.time = 0;
         this.spaceTimeModel = [];
     }
 

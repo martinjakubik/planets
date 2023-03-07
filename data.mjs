@@ -59,9 +59,9 @@ const makeUploadSpaceTimeButton = function (parentBox) {
 const makeDataButtonBar = function (fnGetSpaceTimeModel, fnSetSpaceTimeModel, fnResetSpaceTimeModel) {
     const buttonBar = createDiv('dataButtonBar', dataView);
 
+    resetSpaceTimeModel = fnResetSpaceTimeModel;
     getSpaceTimeModel = fnGetSpaceTimeModel;
     setSpaceTimeModel = fnSetSpaceTimeModel;
-    resetSpaceTimeModel = fnResetSpaceTimeModel;
 
     makeNewButton(buttonBar);
     makeSaveSpaceTimeButton(buttonBar);
