@@ -1,6 +1,21 @@
 import { calculateGravity, calculatePosition } from './gravity.mjs';
 
 class SpaceTimeController {
+    static copySpaceSnapshot(aCoordinates) {
+        let aSpaceSnapshot = [];
+        aCoordinates.forEach(aXAxis => {
+            aXAxis.forEach(oBody => {
+                const x = Math.floor(oBody.position.x);
+                const y = Math.floor(oBody.position.y);
+                if (!aSpaceSnapshot[x]) {
+                    aSpaceSnapshot[x] = [];
+                }
+                aSpaceSnapshot[x][y] = oBody;
+            })
+        });
+        return aSpaceSnapshot;
+    };
+
     constructor() {
         this.time = 0;
         this.spaceTimeModel = [];

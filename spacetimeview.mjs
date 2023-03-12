@@ -18,21 +18,6 @@ class SpaceTimeView {
         };
     };
 
-    static copySpaceSnapshot(aCoordinates) {
-        let aSpaceSnapshot = [];
-        aCoordinates.forEach(aXAxis => {
-            aXAxis.forEach(oBody => {
-                const x = Math.floor(oBody.position.x);
-                const y = Math.floor(oBody.position.y);
-                if (!aSpaceSnapshot[x]) {
-                    aSpaceSnapshot[x] = [];
-                }
-                aSpaceSnapshot[x][y] = oBody;
-            })
-        });
-        return aSpaceSnapshot;
-    };
-
     static getMassColor(mass) {
         return LIGHTEST_COLOR - mass * 16 + 1;
     };
@@ -147,7 +132,7 @@ class SpaceTimeView {
             this.spaceTimeController.incrementTime();
             this.oTimeBackButton.disabled = false;
             if (!this.spaceTimeController.getSpaceSnapshot()) {
-                const oSpaceSnapshot = SpaceTimeView.copySpaceSnapshot(this.spaceTimeController.getSpaceSnapshotAt(nPreviousTime));
+                const oSpaceSnapshot = SpaceTimeController.copySpaceSnapshot(this.spaceTimeController.getSpaceSnapshotAt(nPreviousTime));
                 this.spaceTimeController.addSpaceSnapshot(oSpaceSnapshot);
                 this.spaceTimeController.calculateAllGravity();
                 this.spaceTimeController.calculateAllPositions();
