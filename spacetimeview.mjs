@@ -92,32 +92,32 @@ class SpaceTimeView {
     constructor(oAppConfiguration) {
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
 
-        this.oAppConfiguration = oAppConfiguration;
+        this.appConfiguration = oAppConfiguration;
 
-        this.nSpaceTimeSize = 0;
+        this.spaceTimeSize = 0;
         this.appBox;
 
-        this.oThisSpaceTimeController;
+        this.spaceTimeController;
 
-        this.nTimerIntervalId = 0;
-        this.bTimerRunning = false;
-        this.oTimeFwdButton;
+        this.timerIntervalId = 0;
+        this.isTimerRunning = false;
+        this.timeFwdButton;
     }
 
     startTimer() {
-        this.bTimerRunning = true;
-        this.nTimerIntervalId = window.setInterval(this.moveTimeForward.bind(this), 700);
-        this.oTimeFwdButton.innerText = '||';
+        this.isTimerRunning = true;
+        this.timerIntervalId = window.setInterval(this.moveTimeForward.bind(this), 700);
+        this.timeFwdButton.innerText = '||';
     };
 
     stopTimer() {
-        window.clearInterval(this.nTimerIntervalId);
-        this.bTimerRunning = false;
-        this.oTimeFwdButton.innerText = '>';
+        window.clearInterval(this.timerIntervalId);
+        this.isTimerRunning = false;
+        this.timeFwdButton.innerText = '>';
     };
 
     calculateAllGravity() {
-        const aCoordinates = this.oThisSpaceTimeController.getSpaceSnapshot();
+        const aCoordinates = this.spaceTimeController.getSpaceSnapshot();
         if (aCoordinates) {
             aCoordinates.forEach(aXAxis => {
                 aXAxis.forEach((oBody) => {
@@ -126,7 +126,7 @@ class SpaceTimeView {
                             if (oNeighbour.id !== oBody.id) {
                                 const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
                                 const oCoordinates = oBody.position;
-                                this.oThisSpaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
+                                this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
                             }
                         })
                     })
@@ -136,13 +136,13 @@ class SpaceTimeView {
     };
 
     calculateAllPositions() {
-        const aCoordinates = this.oThisSpaceTimeController.getSpaceSnapshot();
+        const aCoordinates = this.spaceTimeController.getSpaceSnapshot();
         if (aCoordinates) {
             aCoordinates.forEach(aXAxis => {
                 aXAxis.forEach(oBody => {
                     const oCoordinates = oBody.position;
-                    calculatePosition(oBody, this.oThisSpaceTimeController.getTime());
-                    this.oThisSpaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
+                    calculatePosition(oBody, this.spaceTimeController.getTime());
+                    this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
                 })
             });
         }
@@ -152,20 +152,20 @@ class SpaceTimeView {
         const oTarget = event.currentTarget;
         let sId = oTarget.id;
         let oCoordinates = SpaceTimeView.getXYFromID(sId);
-        let oBody = this.oThisSpaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
+        let oBody = this.spaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
         if (oBody) {
             oBody.mass++;
         } else {
-            oBody = createBody(this.oThisSpaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
+            oBody = createBody(this.spaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
         }
         if (oBody.mass < 16) {
-            this.oThisSpaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
+            this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
         } else {
-            this.oThisSpaceTimeController.deleteBodyAt(oCoordinates.x, oCoordinates.y);
+            this.spaceTimeController.deleteBodyAt(oCoordinates.x, oCoordinates.y);
             oBody = null;
         }
-        SpaceTimeView.drawBody(oCoordinates, SpaceTimeView.getCssMassColor(oBody), this.oAppConfiguration.gridSize);
-        if (!this.bTimerRunning) {
+        SpaceTimeView.drawBody(oCoordinates, SpaceTimeView.getCssMassColor(oBody), this.appConfiguration.gridSize);
+        if (!this.isTimerRunning) {
             this.startTimer.call(this);
         }
     };
@@ -174,20 +174,20 @@ class SpaceTimeView {
         const clear = true;
         this.drawSpace(clear);
 
-        if (this.nSpaceTimeSize < this.oAppConfiguration.maxSpaceTimeSize) {
-            const nPreviousTime = this.oThisSpaceTimeController.getTime();
-            this.oThisSpaceTimeController.incrementTime();
+        if (this.spaceTimeSize < this.appConfiguration.maxSpaceTimeSize) {
+            const nPreviousTime = this.spaceTimeController.getTime();
+            this.spaceTimeController.incrementTime();
             this.oTimeBackButton.disabled = false;
-            if (!this.oThisSpaceTimeController.getSpaceSnapshot()) {
-                const oSpaceSnapshot = SpaceTimeView.copySpaceSnapshot(this.oThisSpaceTimeController.getSpaceSnapshotAt(nPreviousTime));
-                this.oThisSpaceTimeController.addSpaceSnapshot(oSpaceSnapshot);
+            if (!this.spaceTimeController.getSpaceSnapshot()) {
+                const oSpaceSnapshot = SpaceTimeView.copySpaceSnapshot(this.spaceTimeController.getSpaceSnapshotAt(nPreviousTime));
+                this.spaceTimeController.addSpaceSnapshot(oSpaceSnapshot);
                 this.calculateAllGravity();
                 this.calculateAllPositions();
                 const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
-                this.nSpaceTimeSize = this.nSpaceTimeSize + nSnapshotSize;
+                this.spaceTimeSize = this.spaceTimeSize + nSnapshotSize;
             }
         } else {
-            this.oTimeFwdButton.disabled = true;
+            this.timeFwdButton.disabled = true;
         }
 
         this.drawSpace();
@@ -197,17 +197,17 @@ class SpaceTimeView {
         const clear = true;
         this.drawSpace(clear);
 
-        if (this.oThisSpaceTimeController.getTime() === 0) {
+        if (this.spaceTimeController.getTime() === 0) {
             this.oTimeBackButton.disabled = true;
         } else {
-            this.oThisSpaceTimeController.incrementTime(-1);
-            this.oTimeFwdButton.disabled = false;
+            this.spaceTimeController.incrementTime(-1);
+            this.timeFwdButton.disabled = false;
         }
         this.drawSpace();
     };
 
     handleTimeFwdButtonClick() {
-        if (this.bTimerRunning) {
+        if (this.isTimerRunning) {
             this.stopTimer.call(this);
             this.moveTimeForward.call(this);
         } else {
@@ -221,17 +221,17 @@ class SpaceTimeView {
     };
 
     drawSpace(bClear) {
-        const aCoordinates = this.oThisSpaceTimeController.getSpaceSnapshot();
+        const aCoordinates = this.spaceTimeController.getSpaceSnapshot();
         if (aCoordinates) {
             aCoordinates.forEach(aXAxis => {
                 aXAxis.forEach(oBody => {
                     const floorX = Math.floor(oBody.position.x);
                     const floorY = Math.floor(oBody.position.y);
-                    if (floorX > 0 && floorX < this.oAppConfiguration.gridSize && floorY > 0 && floorY < this.oAppConfiguration.gridSize) {
+                    if (floorX > 0 && floorX < this.appConfiguration.gridSize && floorY > 0 && floorY < this.appConfiguration.gridSize) {
                         if (bClear) {
-                            SpaceTimeView.drawBody({ x: floorX, y: floorY }, CSS_RGB_BACKGROUND_COLOR, this.oAppConfiguration.gridSize);
+                            SpaceTimeView.drawBody({ x: floorX, y: floorY }, CSS_RGB_BACKGROUND_COLOR, this.appConfiguration.gridSize);
                         } else {
-                            SpaceTimeView.drawBody({ x: floorX, y: floorY }, SpaceTimeView.getCssMassColor(oBody), this.oAppConfiguration.gridSize);
+                            SpaceTimeView.drawBody({ x: floorX, y: floorY }, SpaceTimeView.getCssMassColor(oBody), this.appConfiguration.gridSize);
                         }
                     }
                 })
@@ -247,9 +247,9 @@ class SpaceTimeView {
     };
 
     makeSpaceGrid(numberOfRows, oSpaceTimeController) {
-        this.oThisSpaceTimeController = oSpaceTimeController;
-        this.oAppConfiguration.gridSize = numberOfRows;
-        let nSizeOfBox = Math.floor(720 / this.oAppConfiguration.gridSize);
+        this.spaceTimeController = oSpaceTimeController;
+        this.appConfiguration.gridSize = numberOfRows;
+        let nSizeOfBox = Math.floor(720 / this.appConfiguration.gridSize);
 
         let numberOfColumns = numberOfRows;
 
@@ -289,8 +289,8 @@ class SpaceTimeView {
     };
 
     makeTimeFwdButton(parentBox) {
-        this.oTimeFwdButton = createButton('timeFwdButton', '>', parentBox);
-        this.oTimeFwdButton.onclick = this.handleTimeFwdButtonClick.bind(this);
+        this.timeFwdButton = createButton('timeFwdButton', '>', parentBox);
+        this.timeFwdButton.onclick = this.handleTimeFwdButtonClick.bind(this);
     };
 
     makeTimeBackButton(parentBox) {
