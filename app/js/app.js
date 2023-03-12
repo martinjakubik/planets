@@ -1,5 +1,4 @@
 import { SpaceTimeView } from './spacetimeview.mjs';
-import { DataController } from './datacontroller.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
 const oAppConfiguration = {

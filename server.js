@@ -3,24 +3,28 @@ import * as oUrl from 'url';
 import * as oFs from 'fs';
 import * as oPath from 'path';
 
-let sBaseDirectory = '.';
+let sBaseDirectory = './';
 
 let nPort = 1995;
 
 let getDefaultIfBlankPath = function (sPath) {
-    let sDefaultPath = sPath;
+    let sResponsePath = sPath;
 
     if (process.platform === 'win32') {
-        if (sPath === '.\\') {
-            sDefaultPath = '.\\index.html';
+        if (sPath === '\\') {
+            sResponsePath = '.\\app\\index.html';
+        } else {
+            sResponsePath = sBaseDirectory + sPath;
         }
     } else {
-        if (sPath === './') {
-            sDefaultPath = './index.html';
+        if (sPath === '/') {
+            sResponsePath = './app/index.html';
+        } else {
+            sResponsePath = sBaseDirectory + sPath;
         }
     }
 
-    return sDefaultPath;
+    return sResponsePath;
 };
 
 let getContentType = function (sPath) {
@@ -54,12 +58,12 @@ oHttp.createServer(function (oRequest, oResponse) {
         let sPath = oRequestUrl.pathname;
 
         // need to use oPath.normalize so people can't access directories underneath sBaseDirectory
-        let sFSPath = sBaseDirectory + oPath.normalize(sPath);
+        let sFSPath = oPath.normalize(sPath);
 
         let sFinalPath = getDefaultIfBlankPath(sFSPath);
         let sContentType = getContentType(sFinalPath);
 
-        let oHeaders =  {
+        let oHeaders = {
             'Content-Type': sContentType
         };
 
@@ -71,7 +75,7 @@ oHttp.createServer(function (oRequest, oResponse) {
             oResponse.writeHead(404);
             oResponse.end();
         });
-    } catch(e) {
+    } catch (e) {
         oResponse.writeHead(500);
 
         // ends the oResponse so browsers don't hang
