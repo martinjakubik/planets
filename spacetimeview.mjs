@@ -1,0 +1,320 @@
+import { createBody, calculateGravity, calculatePosition } from './gravity.mjs';
+import { createDiv, createButton } from './lib/js/learnhypertext.mjs';
+import { SpaceTimeController } from './spacetimecontroller.mjs';
+
+const DARKEST_COLOR = 0;
+const LIGHTEST_COLOR = 255;
+const CSS_RGB_BACKGROUND_COLOR = `rgb(${LIGHTEST_COLOR}, ${LIGHTEST_COLOR}, ${LIGHTEST_COLOR + 40})`;
+const CSS_RGBA_SHINY_COLOR = `rgba(${DARKEST_COLOR}, ${DARKEST_COLOR}, ${DARKEST_COLOR}, 0.5)`;
+
+class SpaceTimeView {
+    static getXYFromID(sId) {
+        let aCoordinates = sId.split(':');
+        let sX = aCoordinates[0];
+        let sY = aCoordinates[1];
+        return {
+            x: Number(sX),
+            y: Number(sY)
+        };
+    };
+
+    static copySpaceSnapshot(aCoordinates) {
+        let aSpaceSnapshot = [];
+        aCoordinates.forEach(aXAxis => {
+            aXAxis.forEach(oBody => {
+                const x = Math.floor(oBody.position.x);
+                const y = Math.floor(oBody.position.y);
+                if (!aSpaceSnapshot[x]) {
+                    aSpaceSnapshot[x] = [];
+                }
+                aSpaceSnapshot[x][y] = oBody;
+            })
+        });
+        return aSpaceSnapshot;
+    };
+
+    static getMassColor(mass) {
+        return LIGHTEST_COLOR - mass * 16 + 1;
+    };
+
+    static getCssMassColor(body) {
+        let sMassColor = DARKEST_COLOR;
+        if (body && body.mass) {
+            sMassColor = SpaceTimeView.getMassColor(body.mass);
+            return `rgb(${sMassColor}, ${sMassColor}, ${sMassColor})`;
+        }
+        return CSS_RGB_BACKGROUND_COLOR;
+    };
+
+    static getCssShineColor(pen) {
+        if (pen === CSS_RGB_BACKGROUND_COLOR) {
+            return CSS_RGB_BACKGROUND_COLOR;
+        }
+        return CSS_RGBA_SHINY_COLOR;
+    };
+
+    static drawBody(position, pen, gridSize) {
+        const floorPosition = {
+            x: Math.floor(position.x),
+            y: Math.floor(position.y)
+        };
+        const oNewTarget = document.getElementById(`${floorPosition.x}:${floorPosition.y}`);
+        oNewTarget.style.backgroundColor = pen;
+        SpaceTimeView.drawShininess(floorPosition, SpaceTimeView.getCssShineColor(pen), gridSize);
+    };
+
+    static drawShininess(position, pen, gridSize) {
+        const aNeighborBoxes = SpaceTimeView.getNeighborBoxes(position, 1, gridSize);
+        aNeighborBoxes.forEach(neighborBoxPosition => {
+            let target = document.getElementById(`${neighborBoxPosition.x}:${neighborBoxPosition.y}`);
+            target.style.border = `1px solid ${pen}`;
+            target.style.boxSizing = 'border-box';
+        });
+    };
+
+    static getNeighborBoxes(position, radius, gridSize) {
+        const aNeighborBoxes = [];
+        if ((position.x - radius) >= 0) {
+            aNeighborBoxes.push({ x: position.x - radius, y: position.y });
+        }
+        if ((position.y - radius) >= 0) {
+            aNeighborBoxes.push({ x: position.x, y: position.y - 1 });
+        }
+        if ((position.x + radius) < gridSize) {
+            aNeighborBoxes.push({ x: position.x + radius, y: position.y });
+        }
+        if ((position.y + radius) < gridSize) {
+            aNeighborBoxes.push({ x: position.x, y: position.y + radius });
+        }
+        return aNeighborBoxes;
+    };
+
+    constructor(oAppConfiguration) {
+        document.addEventListener('keydown', this.handleKeyDown.bind(this));
+
+        this.oAppConfiguration = oAppConfiguration;
+
+        this.nSpaceTimeSize = 0;
+        this.appBox;
+
+        this.oThisSpaceTimeController;
+
+        this.nTimerIntervalId = 0;
+        this.bTimerRunning = false;
+        this.oTimeFwdButton;
+    }
+
+    startTimer() {
+        this.bTimerRunning = true;
+        this.nTimerIntervalId = window.setInterval(this.moveTimeForward.bind(this), 700);
+        this.oTimeFwdButton.innerText = '||';
+    };
+
+    stopTimer() {
+        window.clearInterval(this.nTimerIntervalId);
+        this.bTimerRunning = false;
+        this.oTimeFwdButton.innerText = '>';
+    };
+
+    calculateAllGravity() {
+        const aCoordinates = this.oThisSpaceTimeController.getSpaceSnapshot();
+        if (aCoordinates) {
+            aCoordinates.forEach(aXAxis => {
+                aXAxis.forEach((oBody) => {
+                    aCoordinates.forEach(aXAxis => {
+                        aXAxis.forEach(oNeighbour => {
+                            if (oNeighbour.id !== oBody.id) {
+                                const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
+                                const oCoordinates = oBody.position;
+                                this.oThisSpaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
+                            }
+                        })
+                    })
+                })
+            })
+        }
+    };
+
+    calculateAllPositions() {
+        const aCoordinates = this.oThisSpaceTimeController.getSpaceSnapshot();
+        if (aCoordinates) {
+            aCoordinates.forEach(aXAxis => {
+                aXAxis.forEach(oBody => {
+                    const oCoordinates = oBody.position;
+                    calculatePosition(oBody, this.oThisSpaceTimeController.getTime());
+                    this.oThisSpaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
+                })
+            });
+        }
+    };
+
+    handleSpaceClick(event) {
+        const oTarget = event.currentTarget;
+        let sId = oTarget.id;
+        let oCoordinates = SpaceTimeView.getXYFromID(sId);
+        let oBody = this.oThisSpaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
+        if (oBody) {
+            oBody.mass++;
+        } else {
+            oBody = createBody(this.oThisSpaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
+        }
+        if (oBody.mass < 16) {
+            this.oThisSpaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
+        } else {
+            this.oThisSpaceTimeController.deleteBodyAt(oCoordinates.x, oCoordinates.y);
+            oBody = null;
+        }
+        SpaceTimeView.drawBody(oCoordinates, SpaceTimeView.getCssMassColor(oBody), this.oAppConfiguration.gridSize);
+        if (!this.bTimerRunning) {
+            this.startTimer.call(this);
+        }
+    };
+
+    moveTimeForward() {
+        const clear = true;
+        this.drawSpace(clear);
+
+        if (this.nSpaceTimeSize < this.oAppConfiguration.maxSpaceTimeSize) {
+            const nPreviousTime = this.oThisSpaceTimeController.getTime();
+            this.oThisSpaceTimeController.incrementTime();
+            this.oTimeBackButton.disabled = false;
+            if (!this.oThisSpaceTimeController.getSpaceSnapshot()) {
+                const oSpaceSnapshot = SpaceTimeView.copySpaceSnapshot(this.oThisSpaceTimeController.getSpaceSnapshotAt(nPreviousTime));
+                this.oThisSpaceTimeController.addSpaceSnapshot(oSpaceSnapshot);
+                this.calculateAllGravity();
+                this.calculateAllPositions();
+                const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
+                this.nSpaceTimeSize = this.nSpaceTimeSize + nSnapshotSize;
+            }
+        } else {
+            this.oTimeFwdButton.disabled = true;
+        }
+
+        this.drawSpace();
+    };
+
+    moveTimeBackward() {
+        const clear = true;
+        this.drawSpace(clear);
+
+        if (this.oThisSpaceTimeController.getTime() === 0) {
+            this.oTimeBackButton.disabled = true;
+        } else {
+            this.oThisSpaceTimeController.incrementTime(-1);
+            this.oTimeFwdButton.disabled = false;
+        }
+        this.drawSpace();
+    };
+
+    handleTimeFwdButtonClick() {
+        if (this.bTimerRunning) {
+            this.stopTimer.call(this);
+            this.moveTimeForward.call(this);
+        } else {
+            this.startTimer.call(this);
+        }
+    };
+
+    handleTimeBackButtonClick() {
+        this.stopTimer.call(this);
+        this.moveTimeBackward.call(this);
+    };
+
+    drawSpace(bClear) {
+        const aCoordinates = this.oThisSpaceTimeController.getSpaceSnapshot();
+        if (aCoordinates) {
+            aCoordinates.forEach(aXAxis => {
+                aXAxis.forEach(oBody => {
+                    const floorX = Math.floor(oBody.position.x);
+                    const floorY = Math.floor(oBody.position.y);
+                    if (floorX > 0 && floorX < this.oAppConfiguration.gridSize && floorY > 0 && floorY < this.oAppConfiguration.gridSize) {
+                        if (bClear) {
+                            SpaceTimeView.drawBody({ x: floorX, y: floorY }, CSS_RGB_BACKGROUND_COLOR, this.oAppConfiguration.gridSize);
+                        } else {
+                            SpaceTimeView.drawBody({ x: floorX, y: floorY }, SpaceTimeView.getCssMassColor(oBody), this.oAppConfiguration.gridSize);
+                        }
+                    }
+                })
+            });
+        }
+    };
+
+    makeAppBox() {
+        this.appBox = document.getElementById('app');
+        if (!this.appBox) {
+            this.appBox = createDiv('app');
+        }
+    };
+
+    makeSpaceGrid(numberOfRows, oSpaceTimeController) {
+        this.oThisSpaceTimeController = oSpaceTimeController;
+        this.oAppConfiguration.gridSize = numberOfRows;
+        let nSizeOfBox = Math.floor(720 / this.oAppConfiguration.gridSize);
+
+        let numberOfColumns = numberOfRows;
+
+        let y = numberOfRows - 1;
+        let x = 0;
+        this.makeAppBox();
+        let spaceTimeBox = document.getElementById('spaceTime');
+        if (!spaceTimeBox) {
+            spaceTimeBox = createDiv('spaceTime', this.appBox);
+        }
+        spaceTimeBox.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
+        let rowBox;
+
+        let sBoxId = '';
+        let box = null;
+        while (y >= 0) {
+            x = 0;
+            rowBox = document.getElementById(`row${y}`);
+            if (!rowBox) {
+                rowBox = createDiv(`row${y}`, spaceTimeBox);
+            }
+            while (x < numberOfColumns) {
+                sBoxId = `${x}:${y}`;
+                box = document.getElementById(sBoxId);
+                if (!box) {
+                    box = createDiv(sBoxId, rowBox);
+                }
+                box.onclick = this.handleSpaceClick.bind(this);
+                box.style.height = nSizeOfBox;
+                box.style.width = nSizeOfBox;
+                box.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
+                x = x + 1;
+            }
+
+            y = y - 1;
+        }
+    };
+
+    makeTimeFwdButton(parentBox) {
+        this.oTimeFwdButton = createButton('timeFwdButton', '>', parentBox);
+        this.oTimeFwdButton.onclick = this.handleTimeFwdButtonClick.bind(this);
+    };
+
+    makeTimeBackButton(parentBox) {
+        this.oTimeBackButton = createButton('timeBackButton', '<', parentBox);
+        this.oTimeBackButton.onclick = this.handleTimeBackButtonClick.bind(this);
+        this.oTimeBackButton.disabled = true;
+    };
+
+    makeSpaceTimeButtonBar() {
+        const buttonBar = createDiv('buttonBar', this.appBox);
+
+        this.makeTimeBackButton(buttonBar);
+        this.makeTimeFwdButton(buttonBar);
+    };
+
+    handleKeyDown(event) {
+        const keyCode = event.keyCode;
+        if (keyCode === 37) {
+            this.moveTimeBackward();
+        } else if (keyCode === 39) {
+            this.stopTimer.call(this);
+            this.moveTimeForward.call(this);
+        }
+    };
+}
+
+export { SpaceTimeView };

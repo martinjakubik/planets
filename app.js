@@ -1,8 +1,13 @@
-import { makeSpaceGrid, makeSpaceTimeButtonBar, reset } from './lib.mjs';
-import { makeDataView } from './data.mjs';
+import { SpaceTimeView } from './spacetimeview.mjs';
+import { DataController } from './datacontroller.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
+const oAppConfiguration = {
+    gridSize: 0,
+    maxSpaceTimeSize: 10 ** 6
+};
+
 const oSpaceTimeController = new SpaceTimeController();
-makeDataView(oSpaceTimeController, reset);
-makeSpaceGrid(80, oSpaceTimeController);
-makeSpaceTimeButtonBar();
+const oSpaceTimeView = new SpaceTimeView(oAppConfiguration);
+oSpaceTimeView.makeSpaceGrid(80, oSpaceTimeController);
+oSpaceTimeView.makeSpaceTimeButtonBar();
