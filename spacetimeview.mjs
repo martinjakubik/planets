@@ -1,4 +1,4 @@
-import { createBody, calculateGravity, calculatePosition } from './gravity.mjs';
+import { createBody } from './gravity.mjs';
 import { createDiv, createButton } from './lib/js/learnhypertext.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
@@ -116,38 +116,6 @@ class SpaceTimeView {
         this.timeFwdButton.innerText = '>';
     };
 
-    calculateAllGravity() {
-        const aCoordinates = this.spaceTimeController.getSpaceSnapshot();
-        if (aCoordinates) {
-            aCoordinates.forEach(aXAxis => {
-                aXAxis.forEach((oBody) => {
-                    aCoordinates.forEach(aXAxis => {
-                        aXAxis.forEach(oNeighbour => {
-                            if (oNeighbour.id !== oBody.id) {
-                                const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
-                                const oCoordinates = oBody.position;
-                                this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
-                            }
-                        })
-                    })
-                })
-            })
-        }
-    };
-
-    calculateAllPositions() {
-        const aCoordinates = this.spaceTimeController.getSpaceSnapshot();
-        if (aCoordinates) {
-            aCoordinates.forEach(aXAxis => {
-                aXAxis.forEach(oBody => {
-                    const oCoordinates = oBody.position;
-                    calculatePosition(oBody, this.spaceTimeController.getTime());
-                    this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
-                })
-            });
-        }
-    };
-
     handleSpaceClick(event) {
         const oTarget = event.currentTarget;
         let sId = oTarget.id;
@@ -181,8 +149,8 @@ class SpaceTimeView {
             if (!this.spaceTimeController.getSpaceSnapshot()) {
                 const oSpaceSnapshot = SpaceTimeView.copySpaceSnapshot(this.spaceTimeController.getSpaceSnapshotAt(nPreviousTime));
                 this.spaceTimeController.addSpaceSnapshot(oSpaceSnapshot);
-                this.calculateAllGravity();
-                this.calculateAllPositions();
+                this.spaceTimeController.calculateAllGravity();
+                this.spaceTimeController.calculateAllPositions();
                 const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
                 this.spaceTimeSize = this.spaceTimeSize + nSnapshotSize;
             }

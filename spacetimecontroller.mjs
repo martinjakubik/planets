@@ -1,3 +1,5 @@
+import { calculateGravity, calculatePosition } from './gravity.mjs';
+
 class SpaceTimeController {
     constructor() {
         this.time = 0;
@@ -83,6 +85,38 @@ class SpaceTimeController {
     getSpaceSnapshotAt(nTime) {
         return this.spaceTimeModel[nTime];
     }
+
+    calculateAllGravity() {
+        const aCoordinates = this.getSpaceSnapshot();
+        if (aCoordinates) {
+            aCoordinates.forEach(aXAxis => {
+                aXAxis.forEach((oBody) => {
+                    aCoordinates.forEach(aXAxis => {
+                        aXAxis.forEach(oNeighbour => {
+                            if (oNeighbour.id !== oBody.id) {
+                                const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
+                                const oCoordinates = oBody.position;
+                                this.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
+                            }
+                        })
+                    })
+                })
+            })
+        }
+    };
+
+    calculateAllPositions() {
+        const aCoordinates = this.getSpaceSnapshot();
+        if (aCoordinates) {
+            aCoordinates.forEach(aXAxis => {
+                aXAxis.forEach(oBody => {
+                    const oCoordinates = oBody.position;
+                    calculatePosition(oBody, this.getTime());
+                    this.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
+                })
+            });
+        }
+    };
 }
 
 export { SpaceTimeController };
