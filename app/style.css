@@ -39,7 +39,7 @@ div#spaceTime {
 }
 
 div#buttonBar {
-  display: flex;
+  display: none;
 }
 
 div#spaceTime>div>div:hover {
