@@ -2,6 +2,7 @@ import { createBody } from './gravity.mjs';
 import { createDiv, createButton } from './learnhypertext.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
+const TIMER_INTERVAL = 70;
 const DARKEST_COLOR = 0;
 const LIGHTEST_COLOR = 255;
 const CSS_RGB_BACKGROUND_COLOR = `rgb(${LIGHTEST_COLOR}, ${LIGHTEST_COLOR}, ${LIGHTEST_COLOR + 40})`;
@@ -91,7 +92,7 @@ class SpaceTimeView {
 
     startTimer() {
         this.isTimerRunning = true;
-        this.timerIntervalId = window.setInterval(this.moveTimeForward.bind(this), 700);
+        this.timerIntervalId = window.setInterval(this.moveTimeForward.bind(this), TIMER_INTERVAL);
         this.timeFwdButton.innerText = '||';
     };
 
