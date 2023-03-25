@@ -108,20 +108,20 @@ input[type='file'] {
 }
 
 #storageView>div>.additionalButtons>.download {
-  background-image: url('./resources/download.png');
+  background-image: url('./download.png');
 }
 
 #storageView>div>.additionalButtons>.download:hover {
-  background-image: url('./resources/download-hover.png');
+  background-image: url('./download-hover.png');
   background-color: var(--bg-0-inverted-color);
 }
 
 #storageView>div>.additionalButtons>.delete {
-  background-image: url('./resources/delete.png');
+  background-image: url('./delete.png');
 }
 
 #storageView>div>.additionalButtons>.delete:hover {
-  background-image: url('./resources/delete-hover.png');
+  background-image: url('./delete-hover.png');
   background-color: var(--bg-0-inverted-color);
 }
 

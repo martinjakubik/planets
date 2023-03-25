@@ -1,5 +1,5 @@
 import { createBody } from './gravity.mjs';
-import { createDiv, createButton } from '../../lib/js/learnhypertext.mjs';
+import { createDiv, createButton } from './learnhypertext.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
 const DARKEST_COLOR = 0;

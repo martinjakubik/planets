@@ -3,7 +3,7 @@ import * as oUrl from 'url';
 import * as oFs from 'fs';
 import * as oPath from 'path';
 
-let sBaseDirectory = './';
+let sBaseDirectory = './app';
 
 let nPort = 1995;
 
