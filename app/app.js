@@ -9,4 +9,3 @@ const oAppConfiguration = {
 const oSpaceTimeController = new SpaceTimeController();
 const oSpaceTimeView = new SpaceTimeView(oAppConfiguration);
 oSpaceTimeView.makeSpaceGrid(80, oSpaceTimeController);
-oSpaceTimeView.makeSpaceTimeButtonBar();
