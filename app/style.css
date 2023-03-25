@@ -27,11 +27,15 @@ div#dataView {
 }
 
 div#app {
-  flex: 3;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 div#spaceTime {
   display: flex;
+  border: 1px dotted black;
 }
 
 div#buttonBar {
