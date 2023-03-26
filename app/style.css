@@ -35,7 +35,7 @@ div#app {
 
 div#spaceTime {
   display: flex;
-  border: 1px dotted black;
+  border: 1px dotted var(--bg-2-color);
 }
 
 div#buttonBar {
@@ -43,7 +43,7 @@ div#buttonBar {
 }
 
 div#spaceTime>div>div:hover {
-  border: 1px dotted grey;
+  border: 1px dotted var(--bg-0-inverted-color);
   box-sizing: border-box;
 }
 
@@ -131,9 +131,9 @@ input[type='file'] {
 
 :root {
   --bg-0-color: rgb(255, 255, 255);
-  --bg-0-inverted-color: rgba(57, 66, 237, 0.815);
+  --bg-0-inverted-color: rgba(209, 209, 209);
   --bg-1-color: rgb(237, 237, 237);
-  --bg-2-color: rgba(57, 66, 237, 0.815);
+  --bg-2-color: rgba(0, 0, 0);
   --bg-3-color: rgba(204, 141, 5, 0.55);
   --text-0-fg-color: rgb(57, 66, 237);
   --text-1-fg-color: rgb(7, 7, 52);
