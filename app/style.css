@@ -20,13 +20,16 @@ button:disabled {
   border: 1px solid var(--bg-2-color);
 }
 
-div.navigation>div.home {
+div.navigation>div.navigationButton,
+div.control>div.controlButton {
   width: 48px;
   height: 48px;
 }
 
-div.navigation>div.home>a>img {
+div.navigation>div.navigationButton>a>img,
+div.control>div.controlButton>img {
   width: 100%;
+  cursor: pointer;
 }
 
 div#dataView {

@@ -88,6 +88,27 @@ class SpaceTimeView {
         this.timerIntervalId = 0;
         this.isTimerRunning = false;
         this.timeFwdButton;
+
+        this.audioOn = false;
+        this.chirp = new Audio(this.appConfiguration.hoverSound);
+        this.chirp.load();
+
+        const oControlButton = document.getElementsByClassName('controlButton')[0];
+        this.volumeIcon = document.createElement('img');
+        this.volumeIcon.src = this.appConfiguration.volumeIcon.off;
+        oControlButton.onclick = this.toggleAudio.bind(this);
+
+        oControlButton.appendChild(this.volumeIcon);
+    }
+
+    toggleAudio() {
+        this.audioOn = !this.audioOn;
+        if (this.audioOn) {
+            this.volumeIcon.src = this.appConfiguration.volumeIcon.on;
+            this.chirp.play();
+        } else {
+            this.volumeIcon.src = this.appConfiguration.volumeIcon.off;
+        }
     }
 
     startTimer() {
@@ -200,6 +221,12 @@ class SpaceTimeView {
         }
     };
 
+    playChirp() {
+        if (this.audioOn) {
+            this.chirp.play();
+        }
+    }
+
     makeSpaceGrid(numberOfRows, oSpaceTimeController) {
         this.spaceTimeController = oSpaceTimeController;
         this.appConfiguration.gridSize = numberOfRows;
@@ -235,6 +262,7 @@ class SpaceTimeView {
                 box.style.height = nSizeOfBox;
                 box.style.width = nSizeOfBox;
                 box.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
+                box.onmouseenter = this.playChirp.bind(this);
                 x = x + 1;
             }
 
