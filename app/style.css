@@ -20,6 +20,15 @@ button:disabled {
   border: 1px solid var(--bg-2-color);
 }
 
+div.navigation>div.home {
+  width: 48px;
+  height: 48px;
+}
+
+div.navigation>div.home>a>img {
+  width: 100%;
+}
+
 div#dataView {
   display: flex;
   flex-flow: column;
