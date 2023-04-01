@@ -49,11 +49,14 @@ div#app {
 
 div#spaceTime {
   display: flex;
-  border: 1px dotted var(--bg-2-color);
 }
 
 div#buttonBar {
   display: none;
+}
+
+div#spaceTime>div>div {
+  border-radius: 30%;
 }
 
 div#spaceTime>div>div:hover {
