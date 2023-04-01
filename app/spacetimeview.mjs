@@ -3,10 +3,8 @@ import { createDiv, createButton } from './learnhypertext.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
 const TIMER_INTERVAL = 70;
-const DARKEST_COLOR = 0;
-const LIGHTEST_COLOR = 255;
-const CSS_RGB_BACKGROUND_COLOR = `rgb(${LIGHTEST_COLOR}, ${LIGHTEST_COLOR}, ${LIGHTEST_COLOR + 40})`;
-const CSS_RGBA_SHINY_COLOR = `rgba(${DARKEST_COLOR}, ${DARKEST_COLOR}, ${DARKEST_COLOR}, 0.5)`;
+const CSS_CLASS_BODY_BOX = 'bodyBox';
+const CSS_CLASS_NEIGHBOR_BOX = 'neighborBox';
 
 class SpaceTimeView {
     static getXYFromID (sId) {
@@ -19,42 +17,45 @@ class SpaceTimeView {
         };
     }
 
-    static getMassColor (mass) {
-        return LIGHTEST_COLOR - mass * 16 + 1;
+    static modulo (n, d) {
+        return ((n % d) + d) % d;
     }
 
-    static getCssMassColor (body) {
-        let sMassColor = DARKEST_COLOR;
-        if (body && body.mass) {
-            sMassColor = SpaceTimeView.getMassColor(body.mass);
-            return `rgb(${sMassColor}, ${sMassColor}, ${sMassColor})`;
-        }
-        return CSS_RGB_BACKGROUND_COLOR;
+    static eraseBody (target, mass) {
+        target.classList.remove(`m${mass}`);
+        target.classList.remove(CSS_CLASS_BODY_BOX);
     }
 
-    static getCssShineColor (pen) {
-        if (pen === CSS_RGB_BACKGROUND_COLOR) {
-            return CSS_RGB_BACKGROUND_COLOR;
-        }
-        return CSS_RGBA_SHINY_COLOR;
+    static cycleMassClass (target, mass) {
+        const nPreviousMass = this.modulo((mass - 1), 16);
+        target.classList.remove(`m${nPreviousMass}`);
+        target.classList.add(`m${mass}`);
     }
 
-    static drawBody (position, pen, gridSize) {
+    static drawBody (position, isPenDown, mass=0, gridSize) {
         const floorPosition = {
             x: Math.floor(position.x),
             y: Math.floor(position.y)
         };
         const oNewTarget = document.getElementById(`${floorPosition.x}:${floorPosition.y}`);
-        oNewTarget.style.backgroundColor = pen;
-        SpaceTimeView.drawShininess(floorPosition, SpaceTimeView.getCssShineColor(pen), gridSize);
+        this.cycleMassClass(oNewTarget, mass);
+        if (isPenDown) {
+            oNewTarget.classList.add(CSS_CLASS_BODY_BOX);
+        } else {
+            this.eraseBody(oNewTarget, mass);
+        }
+        SpaceTimeView.drawSparkle(floorPosition, isPenDown, gridSize);
     }
 
-    static drawShininess (position, pen, gridSize) {
+    static drawSparkle (position, isPenDown, gridSize) {
         const aNeighborBoxes = SpaceTimeView.getNeighborBoxes(position, 1, gridSize);
         aNeighborBoxes.forEach(neighborBoxPosition => {
             let target = document.getElementById(`${neighborBoxPosition.x}:${neighborBoxPosition.y}`);
-            target.style.border = `1px solid ${pen}`;
-            target.style.boxSizing = 'border-box';
+            if (isPenDown) {
+                target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
+            } else {
+                target.classList.remove(CSS_CLASS_NEIGHBOR_BOX);
+            }
         });
     }
 
@@ -133,21 +134,25 @@ class SpaceTimeView {
         } else {
             oBody = createBody(this.spaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
         }
+
+        let bIsPenDown = true;
         if (oBody.mass < 16) {
             this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
         } else {
             this.spaceTimeController.deleteBodyAt(oCoordinates.x, oCoordinates.y);
             oBody = null;
+            bIsPenDown = false;
         }
-        SpaceTimeView.drawBody(oCoordinates, SpaceTimeView.getCssMassColor(oBody), this.appConfiguration.gridSize);
+        const nMass = oBody ? oBody.mass : 0;
+        SpaceTimeView.drawBody(oCoordinates, bIsPenDown, nMass, this.appConfiguration.gridSize);
         if (!this.isTimerRunning) {
             this.startTimer.call(this);
         }
     }
 
     moveTimeForward () {
-        const clear = true;
-        this.drawSpace(clear);
+        const bIsPenDown = false;
+        this.drawSpace(bIsPenDown);
 
         if (this.spaceTimeSize < this.appConfiguration.maxSpaceTimeSize) {
             const nPreviousTime = this.spaceTimeController.getTime();
@@ -169,8 +174,8 @@ class SpaceTimeView {
     }
 
     moveTimeBackward () {
-        const clear = true;
-        this.drawSpace(clear);
+        const bIsPenDown = false;
+        this.drawSpace(bIsPenDown);
 
         if (this.spaceTimeController.getTime() === 0) {
             this.oTimeBackButton.disabled = true;
@@ -195,7 +200,7 @@ class SpaceTimeView {
         this.moveTimeBackward.call(this);
     }
 
-    drawSpace (bClear) {
+    drawSpace (isPenDown=true) {
         const aCoordinates = this.spaceTimeController.getSpaceSnapshot();
         if (aCoordinates) {
             aCoordinates.forEach(aXAxis => {
@@ -203,11 +208,7 @@ class SpaceTimeView {
                     const floorX = Math.floor(oBody.position.x);
                     const floorY = Math.floor(oBody.position.y);
                     if (floorX > 0 && floorX < this.appConfiguration.gridSize && floorY > 0 && floorY < this.appConfiguration.gridSize) {
-                        if (bClear) {
-                            SpaceTimeView.drawBody({ x: floorX, y: floorY }, CSS_RGB_BACKGROUND_COLOR, this.appConfiguration.gridSize);
-                        } else {
-                            SpaceTimeView.drawBody({ x: floorX, y: floorY }, SpaceTimeView.getCssMassColor(oBody), this.appConfiguration.gridSize);
-                        }
+                        SpaceTimeView.drawBody({ x: floorX, y: floorY }, isPenDown, oBody.mass, this.appConfiguration.gridSize);
                     }
                 });
             });
@@ -241,7 +242,6 @@ class SpaceTimeView {
         if (!spaceTimeBox) {
             spaceTimeBox = createDiv('spaceTime', this.appBox);
         }
-        spaceTimeBox.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
         let rowBox;
 
         let sBoxId = '';
@@ -261,7 +261,6 @@ class SpaceTimeView {
                 box.onclick = this.handleSpaceClick.bind(this);
                 box.style.height = nSizeOfBox;
                 box.style.width = nSizeOfBox;
-                box.style.backgroundColor = CSS_RGB_BACKGROUND_COLOR;
                 box.onmouseenter = this.playChirp.bind(this);
                 x = x + 1;
             }

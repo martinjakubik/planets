@@ -1,5 +1,5 @@
 body {
-  background-image: url('./background.png');
+  background-image: url('https://www.supertitle.org/background.png');
   background-size: cover;
   background-color: var(--bg-0-color);
   display: flex;
@@ -49,6 +49,7 @@ div#app {
 
 div#spaceTime {
   display: flex;
+  background-color: var(--bg-0-color);
 }
 
 div#buttonBar {
@@ -57,6 +58,75 @@ div#buttonBar {
 
 div#spaceTime>div>div {
   border-radius: 30%;
+}
+
+div#spaceTime>div>div.m0 {
+  background-color: var(--bg-0-color);
+}
+
+div#spaceTime>div>div.m1 {
+  background-color: var(--mass-m1-color);
+}
+
+div#spaceTime>div>div.m2 {
+  background-color: var(--mass-m2-color);
+}
+
+div#spaceTime>div>div.m3 {
+  background-color: var(--mass-m3-color);
+}
+
+div#spaceTime>div>div.m4 {
+  background-color: var(--mass-m4-color);
+}
+
+div#spaceTime>div>div.m5 {
+  background-color: var(--mass-m5-color);
+}
+
+div#spaceTime>div>div.m6 {
+  background-color: var(--mass-m6-color);
+}
+
+div#spaceTime>div>div.m7 {
+  background-color: var(--mass-m7-color);
+}
+
+div#spaceTime>div>div.m8 {
+  background-color: var(--mass-m8-color);
+}
+
+div#spaceTime>div>div.m9 {
+  background-color: var(--mass-m9-color);
+}
+
+div#spaceTime>div>div.m10 {
+  background-color: var(--mass-m10-color);
+}
+
+div#spaceTime>div>div.m11 {
+  background-color: var(--mass-m11-color);
+}
+
+div#spaceTime>div>div.m12 {
+  background-color: var(--mass-m12-color);
+}
+
+div#spaceTime>div>div.m13 {
+  background-color: var(--mass-m13-color);
+}
+
+div#spaceTime>div>div.m14 {
+  background-color: var(--mass-m14-color);
+}
+
+div#spaceTime>div>div.m15 {
+  background-color: var(--mass-m15-color);
+}
+
+div#spaceTime>div>div.neighborBox {
+  border: 1px solid black;
+  box-sizing: border-box;
 }
 
 div#spaceTime>div>div:hover {
@@ -159,4 +229,20 @@ input[type='file'] {
   --text-2-fg-color: rgb(71, 133, 49);
   --font-0-family: normal helvetica-w01-roman, helvetica-w02-roman, helvetica-lt-w10-roman, sans-serif;
   --copy-column-width: 520px;
+  --mass-m0-color: rgb(237, 237, 237);
+  --mass-m1-color: rgb(222, 222, 222);
+  --mass-m2-color: rgb(201, 201, 201);
+  --mass-m3-color: rgb(195, 195, 195);
+  --mass-m4-color: rgb(177, 177, 177);
+  --mass-m5-color: rgb(140, 140, 140);
+  --mass-m6-color: rgb(122, 122, 122);
+  --mass-m7-color: rgb(113, 113, 113);
+  --mass-m8-color: rgb(102, 102, 102);
+  --mass-m9-color: rgb(91, 91, 91);
+  --mass-m10-color: rgb(83, 83, 83);
+  --mass-m11-color: rgb(68, 68, 68);
+  --mass-m12-color: rgb(55, 55, 55);
+  --mass-m13-color: rgb(41, 41, 41);
+  --mass-m14-color: rgb(22, 22, 22);
+  --mass-m15-color: rgb(9, 9, 9);
 }
