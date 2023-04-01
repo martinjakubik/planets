@@ -75,7 +75,7 @@ class SpaceTimeController {
     }
 
     getSpaceTimeModel () {
-        return spaceTimeModel;
+        return this.spaceTimeModel;
     }
 
     setSpaceTimeModel (spaceTimeModel) {
