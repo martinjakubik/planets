@@ -4,7 +4,7 @@ const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'S
 
 class DataController {
 
-    constructor() {
+    constructor () {
         let getSpaceTimeModel, setSpaceTimeModel, resetSpaceTimeModel;
         let resetViewAndModel;
         let dataView;
@@ -13,30 +13,30 @@ class DataController {
         this.appConfiguration = { maxSpaceTimeSize: 10 ** 6 };
     }
 
-    handleNewButtonClick() {
+    handleNewButtonClick () {
         resetSpaceTimeModel();
         resetViewAndModel();
-    };
+    }
 
-    handleSaveButtonClick() {
+    handleSaveButtonClick () {
         const sContent = JSON.stringify(getSpaceTimeModel());
         const oLocalStorage = window.localStorage;
         const sNowKey = getNowKey();
         const sKey = `spacetime-${sNowKey}`;
         oLocalStorage.setItem(sKey, sContent);
         handleStorageChange();
-    };
+    }
 
-    validateSpaceTime(a) {
+    validateSpaceTime (a) {
         let aSpaceTime = [];
         const nSnapshotSize = JSON.stringify(a).length;
         if (nSnapshotSize < this.appConfiguration.maxSpaceTimeSize) {
             aSpaceTime = JSON.parse(a);
         }
         return aSpaceTime;
-    };
+    }
 
-    handleLoadFileInputChange() {
+    handleLoadFileInputChange () {
         const aFiles = document.getElementById('uploadSpaceTimeButton').files;
         const reader = new FileReader();
         reader.addEventListener('load', () => {
@@ -49,25 +49,25 @@ class DataController {
             const oFile = aFiles[0];
             reader.readAsText(oFile);
         }
-    };
+    }
 
-    makeNewButton(parentBox) {
+    makeNewButton (parentBox) {
         const oButton = createButton('newButton', 'New', parentBox);
         oButton.onclick = handleNewButtonClick;
-    };
+    }
 
-    makeSaveSpaceTimeButton(parentBox) {
+    makeSaveSpaceTimeButton (parentBox) {
         const oButton = createButton('saveSpaceTimeButton', 'Save', parentBox);
         oButton.onclick = handleSaveButtonClick;
-    };
+    }
 
-    makeUploadSpaceTimeButton(parentBox) {
+    makeUploadSpaceTimeButton (parentBox) {
         const sAccept = '.spacetime';
         uploadSpaceTimeButton = createFileInput('uploadSpaceTimeButton', 'Upload', parentBox, sAccept);
         uploadSpaceTimeButton.addEventListener('change', handleLoadFileInputChange);
-    };
+    }
 
-    makeDataButtonBar(fnGetSpaceTimeModel, fnSetSpaceTimeModel, fnResetSpaceTimeModel) {
+    makeDataButtonBar (fnGetSpaceTimeModel, fnSetSpaceTimeModel, fnResetSpaceTimeModel) {
         const buttonBar = createDiv('dataButtonBar', dataView);
 
         resetSpaceTimeModel = fnResetSpaceTimeModel;
@@ -77,16 +77,16 @@ class DataController {
         makeNewButton(buttonBar);
         makeSaveSpaceTimeButton(buttonBar);
         makeUploadSpaceTimeButton(buttonBar);
-    };
+    }
 
-    getNowKey() {
+    getNowKey () {
         const oNow = new Date();
         const sMonth = MONTHS_SHORT[oNow.getUTCMonth()];
         const sNowLabel = `${sMonth}.${oNow.getUTCDate()}.${oNow.getUTCHours()}:${oNow.getUTCMinutes()}`;
         return sNowLabel;
-    };
+    }
 
-    handleLoadDataButtonClick(event) {
+    handleLoadDataButtonClick (event) {
         let oTarget = event.target;
         const sKey = oTarget.id;
         const oStorageArea = window.localStorage;
@@ -94,9 +94,9 @@ class DataController {
         const aLoadedSpaceTime = JSON.parse(oItem);
         setSpaceTimeModel(aLoadedSpaceTime);
         reset();
-    };
+    }
 
-    handleDataDownloadButtonClick(event) {
+    handleDataDownloadButtonClick (event) {
         let oTarget = event.target;
         const sKey = oTarget.id;
         const aSpaceTime = getSpaceTimeModel();
@@ -107,17 +107,17 @@ class DataController {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-    };
+    }
 
-    handleDataDeleteButtonClick(event) {
+    handleDataDeleteButtonClick (event) {
         let oTarget = event.target;
         const sKey = oTarget.id;
         const oStorageArea = window.localStorage;
         oStorageArea.removeItem(sKey);
         handleStorageChange();
-    };
+    }
 
-    addItemToStorageView(storageView, key) {
+    addItemToStorageView (storageView, key) {
         const sTitle = key.substring(key.indexOf('-') + 1);
         const oItem = createDiv(key, storageView);
         const oLoadButton = createButton(key, sTitle, oItem);
@@ -131,9 +131,9 @@ class DataController {
         const oDeleteButton = createButton(key, null, oAdditionalButtons);
         oDeleteButton.className = 'delete';
         oDeleteButton.onclick = handleDataDeleteButtonClick;
-    };
+    }
 
-    updateStorageView(storageArea) {
+    updateStorageView (storageArea) {
         let oStorageView = document.getElementById('storageView');
         if (!oStorageView) {
             oStorageView = createDiv('storageView', dataView);
@@ -147,9 +147,9 @@ class DataController {
             const sKey = storageArea.key(i);
             addItemToStorageView(oStorageView, sKey);
         }
-    };
+    }
 
-    handleStorageChange(storageEvent) {
+    handleStorageChange (storageEvent) {
         let oStorageArea;
         if (storageEvent) {
             oStorageArea = storageEvent.storage;
@@ -157,9 +157,9 @@ class DataController {
             oStorageArea = window.localStorage;
         }
         updateStorageView(oStorageArea);
-    };
+    }
 
-    createFileInput(sId, sLabel, oParent, sAccept) {
+    createFileInput (sId, sLabel, oParent, sAccept) {
         if (!oParent) {
             oParent = document.body;
         }
@@ -178,27 +178,27 @@ class DataController {
         oParent.appendChild(oStylishButton);
 
         return oInput;
-    };
+    }
 
-    handleKeyDown(event) {
+    handleKeyDown (event) {
         const keyCode = event.keyCode;
         if (keyCode === 78) {
             resetSpaceTime();
             reset();
         }
-    };
+    }
 
-    makeLoadBar(fnResetViewAndModel) {
+    makeLoadBar (fnResetViewAndModel) {
         window.addEventListener('storage', handleStorageChange);
         resetViewAndModel = fnResetViewAndModel;
         handleStorageChange();
-    };
+    }
 
-    makeDataView(spaceTimeController, resetViewAndModel) {
+    makeDataView (spaceTimeController, resetViewAndModel) {
         dataView = createDiv('dataView'),
-            makeDataButtonBar(spaceTimeController.getSpaceTimeModel, spaceTimeController.setSpaceTimeModel, spaceTimeController.resetSpaceTimeModel);
+        makeDataButtonBar(spaceTimeController.getSpaceTimeModel, spaceTimeController.setSpaceTimeModel, spaceTimeController.resetSpaceTimeModel);
         makeLoadBar(resetViewAndModel);
-    };
+    }
 }
 
 export { DataController };

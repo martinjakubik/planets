@@ -1,7 +1,7 @@
 import { calculateGravity, calculatePosition } from './gravity.mjs';
 
 class SpaceTimeController {
-    static copySpaceSnapshot(aCoordinates) {
+    static copySpaceSnapshot (aCoordinates) {
         let aSpaceSnapshot = [];
         aCoordinates.forEach(aXAxis => {
             aXAxis.forEach(oBody => {
@@ -11,29 +11,29 @@ class SpaceTimeController {
                     aSpaceSnapshot[x] = [];
                 }
                 aSpaceSnapshot[x][y] = oBody;
-            })
+            });
         });
         return aSpaceSnapshot;
-    };
+    }
 
-    constructor() {
+    constructor () {
         this.time = 0;
         this.spaceTimeModel = [];
     }
 
-    setTime(nTime) {
+    setTime (nTime) {
         this.time = nTime;
     }
 
-    getTime() {
+    getTime () {
         return this.time;
     }
 
-    incrementTime(nTicks = 1) {
+    incrementTime (nTicks = 1) {
         this.time = this.time + nTicks;
     }
 
-    getBodyAt(dx, dy) {
+    getBodyAt (dx, dy) {
         const nTime = this.time;
         const x = Math.floor(dx);
         const y = Math.floor(dy);
@@ -42,7 +42,7 @@ class SpaceTimeController {
         return aXAxis ? aXAxis[y] : null;
     }
 
-    updateBodyAt(dx, dy, oBody) {
+    updateBodyAt (dx, dy, oBody) {
         const nTime = this.time;
         const x = Math.floor(dx);
         const y = Math.floor(dy);
@@ -65,7 +65,7 @@ class SpaceTimeController {
         }
     }
 
-    deleteBodyAt(dx, dy) {
+    deleteBodyAt (dx, dy) {
         const nTime = this.time;
         const x = Math.floor(dx);
         const y = Math.floor(dy);
@@ -74,34 +74,34 @@ class SpaceTimeController {
         }
     }
 
-    getSpaceTimeModel() {
+    getSpaceTimeModel () {
         return spaceTimeModel;
     }
 
-    setSpaceTimeModel(spaceTimeModel) {
+    setSpaceTimeModel (spaceTimeModel) {
         this.spaceTimeModel = spaceTimeModel;
     }
 
-    resetSpaceTimeModel() {
+    resetSpaceTimeModel () {
         this.time = 0;
         this.spaceTimeModel = [];
     }
 
-    addSpaceSnapshot(oSpaceSnapshot) {
+    addSpaceSnapshot (oSpaceSnapshot) {
         const nTime = this.time;
         this.spaceTimeModel[nTime] = oSpaceSnapshot;
     }
 
-    getSpaceSnapshot() {
+    getSpaceSnapshot () {
         const nTime = this.time;
         return this.getSpaceSnapshotAt(nTime);
     }
 
-    getSpaceSnapshotAt(nTime) {
+    getSpaceSnapshotAt (nTime) {
         return this.spaceTimeModel[nTime];
     }
 
-    calculateAllGravity() {
+    calculateAllGravity () {
         const aCoordinates = this.getSpaceSnapshot();
         if (aCoordinates) {
             aCoordinates.forEach(aXAxis => {
@@ -113,14 +113,14 @@ class SpaceTimeController {
                                 const oCoordinates = oBody.position;
                                 this.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
                             }
-                        })
-                    })
-                })
-            })
+                        });
+                    });
+                });
+            });
         }
-    };
+    }
 
-    calculateAllPositions() {
+    calculateAllPositions () {
         const aCoordinates = this.getSpaceSnapshot();
         if (aCoordinates) {
             aCoordinates.forEach(aXAxis => {
@@ -128,10 +128,10 @@ class SpaceTimeController {
                     const oCoordinates = oBody.position;
                     calculatePosition(oBody, this.getTime());
                     this.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
-                })
+                });
             });
         }
-    };
+    }
 }
 
 export { SpaceTimeController };
