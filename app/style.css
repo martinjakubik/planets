@@ -129,6 +129,10 @@ div#spaceTime>div>div.neighborBox {
   box-sizing: border-box;
 }
 
+div#spaceTime>div>div.trailBox {
+  background-color: var(--bg-1-color);
+}
+
 div#spaceTime>div>div:hover {
   border: 1px dotted var(--bg-0-inverted-color);
   box-sizing: border-box;
