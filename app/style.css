@@ -1,4 +1,5 @@
 body {
+  background-image: url('./supertitle-background.png');
   background-color: var(--bg-0-color);
   display: flex;
   flex-wrap: wrap;
