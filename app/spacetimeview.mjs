@@ -63,15 +63,6 @@ class SpaceTimeView {
         return aNeighborBoxes;
     }
 
-    static createTrail(position) {
-        let aTrail = [];
-        let i = 0;
-        for (i = 0; i < TRAIL_LENGTH; i++) {
-            aTrail.push({ x: position.x, y: position.y });
-        }
-        return aTrail;
-    }
-
     constructor(oAppConfiguration) {
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
 
@@ -122,7 +113,8 @@ class SpaceTimeView {
 
     createBody(time, x, y) {
         const sBodyKey = `${time}:${x}:${y}`;
-        this.trails[sBodyKey] = SpaceTimeView.createTrail({ x: x, y: y });
+        const oPosition = { x: x, y: y };
+        this.initializeTrail(sBodyKey, oPosition);
         return createBody(time, x, y);
     }
 
@@ -146,7 +138,7 @@ class SpaceTimeView {
             bIsPenDown = false;
         }
         const nMass = oBody ? oBody.mass : 0;
-        this.drawBody(oCoordinates, bIsPenDown, nMass, this.appConfiguration.gridSize, oBody.id);
+        this.drawBody(oCoordinates, bIsPenDown, nMass, this.appConfiguration.gridSize);
         if (!this.isTimerRunning) {
             this.startTimer.call(this);
         }
@@ -199,25 +191,52 @@ class SpaceTimeView {
         oTarget.classList.remove(CSS_CLASS_TRAIL_BOX);
     }
 
-    updateTrail(sKey, position) {
-        let i = TRAIL_LENGTH;
-        for (i = TRAIL_LENGTH - 1; i > 0; i--) {
-            this.trails[sKey][i] = this.trails[sKey][i - 1];
+    initializeTrail(sKey, position) {
+        if (!this.trails[sKey]) {
+            if (position) {
+                this.trails[sKey] = [];
+                let i;
+                for (i = 0; i < TRAIL_LENGTH; i++) {
+                    this.trails[sKey].push(position);
+                }
+            }
         }
-        this.trails[sKey][0] = position;
     }
 
-    drawTrail(sBodyKey) {
+    moveTrail(sKey, newPosition) {
+        if (this.trails[sKey]) {
+            if (newPosition) {
+                let i;
+                for (i = this.trails[sKey].length - 1; i > 0; i--) {
+                    this.trails[sKey][i] = this.trails[sKey][i - 1];
+                }
+                this.trails[sKey][0] = newPosition;
+            }
+        }
+    }
+
+    trimTrail(sKey) {
+        if (this.trails[sKey]) {
+            if (this.trails[sKey].length === 1) {
+                delete this.trails[sKey];
+            } else {
+                this.trails[sKey].shift();
+            }
+        }
+    }
+
+    drawTrail(sKey) {
+        let aTrail = this.trails[sKey];
         let i;
-        for (i = 3; i < TRAIL_LENGTH - 1; i++) {
-            let position = this.trails[sBodyKey][i];
+        for (i = 1; i < aTrail.length - 1; i++) {
+            let position = aTrail[i];
             let oTarget = document.getElementById(`${position.x}:${position.y}`);
             oTarget.classList.add(CSS_CLASS_BODY_BOX);
             oTarget.classList.add(CSS_CLASS_TRAIL_BOX);
         }
     }
 
-    drawBody(position, isPenDown, mass = 0, gridSize, sBodyKey) {
+    drawBody(position, isPenDown, mass = 0, gridSize) {
         const floorPosition = {
             x: Math.floor(position.x),
             y: Math.floor(position.y)
@@ -226,9 +245,6 @@ class SpaceTimeView {
         SpaceTimeView.incrementMass(oNewTarget, mass);
         if (isPenDown) {
             oNewTarget.classList.add(CSS_CLASS_BODY_BOX);
-            this.eraseBox(this.trails[sBodyKey][TRAIL_LENGTH - 1]);
-            this.updateTrail(sBodyKey, floorPosition);
-            this.drawTrail(sBodyKey);
         } else {
             SpaceTimeView.eraseBody(oNewTarget, mass);
         }
@@ -236,14 +252,27 @@ class SpaceTimeView {
     }
 
     drawSpace(isPenDown = true) {
+        if (this.trails) {
+            Object.keys(this.trails).forEach(sKey => {
+                let aTrail = this.trails[sKey];
+                if (isPenDown) {
+                    this.drawTrail(sKey);
+                } else {
+                    this.eraseBox(aTrail[aTrail.length - 1]);
+                }
+            });
+        }
         const aCoordinates = this.spaceTimeController.getSpaceSnapshot();
         if (aCoordinates) {
             aCoordinates.forEach(aXAxis => {
                 aXAxis.forEach(oBody => {
-                    const floorX = Math.floor(oBody.position.x);
-                    const floorY = Math.floor(oBody.position.y);
-                    if (floorX > 0 && floorX < this.appConfiguration.gridSize && floorY > 0 && floorY < this.appConfiguration.gridSize) {
-                        this.drawBody({ x: floorX, y: floorY }, isPenDown, oBody.mass, this.appConfiguration.gridSize, oBody.id);
+                    const floorPosition = {
+                        x: Math.floor(oBody.position.x),
+                        y: Math.floor(oBody.position.y)
+                    };
+                    if (floorPosition.x > 0 && floorPosition.x < this.appConfiguration.gridSize && floorPosition.y > 0 && floorPosition.y < this.appConfiguration.gridSize) {
+                        this.drawBody(floorPosition, isPenDown, oBody.mass, this.appConfiguration.gridSize);
+                        this.moveTrail(oBody.id, floorPosition);
                     }
                 });
             });
