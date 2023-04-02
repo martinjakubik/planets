@@ -260,6 +260,9 @@ class SpaceTimeView {
                 } else {
                     this.eraseBox(aTrail[aTrail.length - 1]);
                 }
+                if (!this.spaceTimeController.getBody(sKey)) {
+                    this.trimTrail(sKey);
+                }
             });
         }
         const aCoordinates = this.spaceTimeController.getSpaceSnapshot();

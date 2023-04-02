@@ -20,6 +20,7 @@ class SpaceTimeController {
         this.appConfiguration = oAppConfiguration;
         this.time = 0;
         this.spaceTimeModel = [];
+        this.bodyPositions = {};
         this.modelSize = 0;
     }
 
@@ -47,6 +48,10 @@ class SpaceTimeController {
         }
     }
 
+    getBody(key) {
+        return this.bodyPositions[key];
+    }
+
     getBodyAt(dx, dy) {
         const nTime = this.time;
         const x = Math.floor(dx);
@@ -70,12 +75,14 @@ class SpaceTimeController {
                 this.spaceTimeModel[nTime][x] = [];
             }
             this.spaceTimeModel[nTime][x][y] = oBody;
+            this.bodyPositions[oBody.id] = { x: x, y: y };
         } else {
             this.deleteBodyAt(x, y);
             if (!this.spaceTimeModel[nTime][nMoveToX]) {
                 this.spaceTimeModel[nTime][nMoveToX] = [];
             }
             this.spaceTimeModel[nTime][nMoveToX][nMoveToY] = oBody;
+            this.bodyPositions[oBody.id] = { x: nMoveToX, y: nMoveToY };
         }
     }
 
