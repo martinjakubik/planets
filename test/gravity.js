@@ -1,4 +1,4 @@
-import { calculateGravity, calculatePosition } from '../app/gravity.mjs';
+import { calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector } from '../app/gravity.mjs';
 
 QUnit.module('gravity');
 
@@ -16,7 +16,7 @@ const BODY_1 = {
         x: 10,
         y: 10
     },
-    force: 1,
+    force: 0,
     angle: 0
 };
 
@@ -49,13 +49,30 @@ const NEIGHBOUR_1 = {
         x: 20,
         y: 10
     },
-    force: 1,
-    angle: Math.PI
+    force: 0,
+    angle: 0
 };
 
+const duplicate = function (body) {
+    return {
+        id: body.id,
+        mass: body.mass,
+        position: {
+            x: body.position.x,
+            y: body.position.y
+        },
+        force: body.force,
+        angle: body.angle
+    };
+}
+
+const printBody = function (body, label = '') {
+    console.log(`label:'${label}' ${body.id} m:${body.mass} x:${body.position.x} y:${body.position.y} f:${body.force} a:${body.angle}`);
+}
+
 QUnit.test('calculate flat angle', assert => {
-    const body = BODY_1;
-    const neighbour = NEIGHBOUR_1;
+    const body = duplicate(BODY_1);
+    const neighbour = duplicate(NEIGHBOUR_1);
 
     body.force = 1;
     body.angle = 0;
@@ -70,17 +87,64 @@ QUnit.test('calculate flat angle', assert => {
     assert.equal(actual, expected);
 });
 
-QUnit.test('calculate vertical angle', assert => {
-    const body = BODY_1;
-    const neighbour = NEIGHBOUR_1;
+QUnit.test('calculate distance squared', assert => {
+    const body = duplicate(BODY_1);
+    const neighbour = duplicate(NEIGHBOUR_1);
 
+    neighbour.position.x = 10;
+    neighbour.position.y = 20;
+
+    const expected = 100;
+    const actual = getDistanceSquared(body, neighbour);
+
+    assert.equal(actual, expected);
+});
+
+QUnit.test('calculate angle to neighbour', assert => {
+    const body = duplicate(BODY_1);
+    const neighbour = duplicate(NEIGHBOUR_1);
+    const distanceSquared = 100;
+
+    neighbour.position.x = 10;
+    neighbour.position.y = 20;
+
+    const expected = Math.PI / 2;
+    const actualVectorToNeighbour = getNeighbourVector(body, neighbour, distanceSquared);
+    const actual = actualVectorToNeighbour.angle;
+
+    assert.equal(actual, expected);
+});
+
+QUnit.test('calculate vector sum with neighbour', assert => {
+    const body = duplicate(BODY_1);
+    const neighbour = duplicate(NEIGHBOUR_1);
+
+    printBody(BODY_1, '4 BODY_1');
     body.force = 1;
-    body.angle = -1 * Math.PI / 2;
+    body.angle = Math.PI / 2;
 
     neighbour.force = 1;
-    neighbour.angle = Math.PI / 2;
+    neighbour.angle = -1 * Math.PI / 2;
+    neighbour.position.x = 10;
+    neighbour.position.y = 20;
 
-    const expected = -1 * Math.PI / 2;
+    const expected = Math.PI / 2;
+    const actualNeighbourVector = addVectors(body, neighbour);
+    const actual = actualNeighbourVector.angle;
+
+    assert.equal(actual, expected);
+});
+
+QUnit.test('calculate vertical angle', assert => {
+    const body = duplicate(BODY_1);
+    const neighbour = duplicate(NEIGHBOUR_1);
+
+    printBody(BODY_1, '5 BODY_1');
+
+    neighbour.position.x = 10;
+    neighbour.position.y = 20;
+
+    const expected = Math.PI / 2;
     const actualBody = calculateGravity(body, neighbour);
     const actual = actualBody.angle;
 

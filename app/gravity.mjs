@@ -13,12 +13,20 @@ const createBody = function (nTime, x, y) {
     };
 };
 
-const calculateGravity = function (body, neighbour) {
-    let nDistanceSquared = (body.position.x - neighbour.position.x) ** 2 + (body.position.y - neighbour.position.y) ** 2;
-    let neighbourVector = {
-        force: G * body.mass * neighbour.mass / nDistanceSquared,
+const getDistanceSquared = function (body, neighbour) {
+    return (body.position.x - neighbour.position.x) ** 2 + (body.position.y - neighbour.position.y) ** 2;
+}
+
+const getNeighbourVector = function (body, neighbour, distanceSquared) {
+    return {
+        force: G * body.mass * neighbour.mass / distanceSquared,
         angle: Math.atan2(neighbour.position.y - body.position.y, neighbour.position.x - body.position.x)
     };
+}
+
+const calculateGravity = function (body, neighbour) {
+    let nDistanceSquared = getDistanceSquared(body, neighbour);
+    let neighbourVector = getNeighbourVector(body, neighbour, nDistanceSquared);
     let vectorSum = addVectors(body, neighbourVector);
     let sumOfMagnitudes = vectorSum.magnitude;
     let sumOfAngles = vectorSum.angle;
@@ -67,4 +75,4 @@ const convertRadialVectorToCartesian = function (v) {
     };
 };
 
-export { createBody, calculateGravity, calculatePosition };
+export { createBody, calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector };
