@@ -77,7 +77,6 @@ class SpaceTimeView {
 
         this.appConfiguration = oAppConfiguration;
 
-        this.spaceTimeSize = 0;
         this.appBox;
 
         this.spaceTimeController;
@@ -157,18 +156,9 @@ class SpaceTimeView {
         const bIsPenDown = false;
         this.drawSpace(bIsPenDown);
 
-        if (this.spaceTimeSize < this.appConfiguration.maxSpaceTimeSize) {
-            const nPreviousTime = this.spaceTimeController.getTime();
+        if (this.spaceTimeController.isModelSizeAcceptable()) {
             this.spaceTimeController.incrementTime();
             this.oTimeBackButton.disabled = false;
-            if (!this.spaceTimeController.getSpaceSnapshot()) {
-                const oSpaceSnapshot = SpaceTimeController.copySpaceSnapshot(this.spaceTimeController.getSpaceSnapshotAt(nPreviousTime));
-                this.spaceTimeController.addSpaceSnapshot(oSpaceSnapshot);
-                this.spaceTimeController.calculateAllGravity();
-                this.spaceTimeController.calculateAllPositions();
-                const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
-                this.spaceTimeSize = this.spaceTimeSize + nSnapshotSize;
-            }
         } else {
             this.timeFwdButton.disabled = true;
         }
