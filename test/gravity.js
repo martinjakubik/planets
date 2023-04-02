@@ -59,7 +59,6 @@ QUnit.test('calculate vector sum with neighbour', assert => {
     const body = P.duplicate(P.BODY_1);
     const neighbour = P.duplicate(P.NEIGHBOUR_1);
 
-    printBody(BODY_1, '4 BODY_1');
     body.force = 1;
     body.angle = Math.PI / 2;
 
@@ -94,18 +93,18 @@ QUnit.test('calculate position', assert => {
         id: '100:100',
         mass: 1,
         position: {
-            x: 3,
-            y: 15
+            x: 10,
+            y: 10
         },
-        force: 0.005524271728019903,
-        angle: -Math.PI / 4
+        force: 1,
+        angle: Math.PI / 2
     };
 
     const expected = {
-        x: 2,
-        y: 17
+        x: 10,
+        y: 12
     };
-    const actual = calculatePosition(body, 10);
+    const actual = calculatePosition(body, 10000);
 
     assert.equal(actual, expected);
 });
