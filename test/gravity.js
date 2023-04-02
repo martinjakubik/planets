@@ -1,6 +1,6 @@
 import { calculateGravity, calculatePosition } from '../app/gravity.mjs';
 
-QUnit.module('lib');
+QUnit.module('gravity');
 
 // note: good braid without collision
 /*
@@ -66,7 +66,7 @@ QUnit.test('calculate flat angle', assert => {
 
     const expected = 0;
     const actualBody = calculateGravity(body, neighbour);
-    const actual =  actualBody.angle;
+    const actual = actualBody.angle;
 
     assert.equal(actual, expected);
 
@@ -85,7 +85,7 @@ QUnit.test('calculate vertical angle', assert => {
 
     const expected = -1 * Math.PI / 2;
     const actualBody = calculateGravity(body, neighbour);
-    const actual =  actualBody.angle;
+    const actual = actualBody.angle;
 
     assert.equal(actual, expected);
 
