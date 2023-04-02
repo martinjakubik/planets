@@ -59,4 +59,37 @@ const printBody = function (body, label = '') {
     console.log(`label:'${label}' ${body.id} m:${body.mass} x:${body.position.x} y:${body.position.y} f:${body.force} a:${body.angle}`);
 }
 
-export { BODY_1, BODY_2, BODY_3, NEIGHBOUR_1, duplicate, printBody }
+const compareSpaceSnaphshot = function (s1, s2) {
+    let result = {
+        same: true,
+        difference: null
+    }
+    let s1SetIndex, s1Set, s1BoxIndex, s1Box;
+    for (s1SetIndex = 0; s1SetIndex < s1.length; s1SetIndex++) {
+        s1Set = s1[s1SetIndex];
+        if (s1Set) {
+            for (s1BoxIndex = 0; s1BoxIndex < s1Set.length; s1BoxIndex++) {
+                s1Box = s1Set[s1BoxIndex];
+                if (s1Box) {
+                    if (!s2 || !(s2[s1SetIndex]) || !(s2[s1SetIndex][s1BoxIndex] === s1Box)) {
+                        result.same = false;
+                        result.difference = { s1SetIndex: s1SetIndex, s1BoxIndex: s1BoxIndex };
+                        break;
+                    }
+                } else {
+                    if (s2 && s2[s1SetIndex]) {
+                        result.same = false;
+                        result.difference = { s1SetIndex: s1SetIndex, s1BoxIndex: s1BoxIndex };
+                        break;
+                    }
+                }
+            }
+        }
+        if (!result.same) {
+            break;
+        }
+    }
+    return result;
+}
+
+export { BODY_1, BODY_2, BODY_3, NEIGHBOUR_1, duplicate, printBody, compareSpaceSnaphshot }
