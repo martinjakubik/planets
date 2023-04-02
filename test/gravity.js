@@ -54,7 +54,6 @@ const NEIGHBOUR_1 = {
 };
 
 QUnit.test('calculate flat angle', assert => {
-
     const body = BODY_1;
     const neighbour = NEIGHBOUR_1;
 
@@ -69,11 +68,9 @@ QUnit.test('calculate flat angle', assert => {
     const actual = actualBody.angle;
 
     assert.equal(actual, expected);
-
 });
 
 QUnit.test('calculate vertical angle', assert => {
-
     const body = BODY_1;
     const neighbour = NEIGHBOUR_1;
 
@@ -88,11 +85,9 @@ QUnit.test('calculate vertical angle', assert => {
     const actual = actualBody.angle;
 
     assert.equal(actual, expected);
-
 });
 
 QUnit.test('calculate position', assert => {
-
     const body = {
         id: '100:100',
         mass: 1,
@@ -111,5 +106,4 @@ QUnit.test('calculate position', assert => {
     const actual = calculatePosition(body, 10);
 
     assert.equal(actual, expected);
-
 });
