@@ -1,4 +1,4 @@
-import { calculateGravity, calculatePosition } from '../lib.mjs';
+import { calculateGravity, calculatePosition } from '../app/gravity.mjs';
 
 QUnit.module('lib');
 
