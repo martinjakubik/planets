@@ -172,12 +172,8 @@ class SpaceTimeView {
     }
 
     handleTimeFwdButtonClick() {
-        if (this.isTimerRunning) {
-            this.stopTimer.call(this);
-            this.moveTimeForward.call(this);
-        } else {
-            this.startTimer.call(this);
-        }
+        this.stopTimer.call(this);
+        this.moveTimeForward.call(this);
     }
 
     handleTimeBackButtonClick() {
