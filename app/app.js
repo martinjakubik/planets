@@ -8,10 +8,11 @@ const oAppConfiguration = {
     volumeIcon: {
         on: 'https://www.supertitle.org/volume-on.png',
         off: 'https://www.supertitle.org/volume-off.png'
-    }
+    },
+    settingsIcon: 'https://www.supertitle.org/settings.png'
 };
 
 const oSpaceTimeController = new SpaceTimeController(oAppConfiguration);
 const oSpaceTimeView = new SpaceTimeView(oAppConfiguration);
-oSpaceTimeView.makeSpaceTimeButtonBar();
 oSpaceTimeView.makeSpaceGrid(80, oSpaceTimeController);
+oSpaceTimeView.makeSpaceTimeButtonBar();

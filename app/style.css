@@ -9,17 +9,15 @@ body {
 button {
   background-color: var(--bg-1-color);
   color: var(--text-0-fg-color);
-  border: 1px solid var(--bg-2-color);
+  border: none;
 }
 
 button:hover {
   color: var(--text-0-inverted-fg-color);
-  border: 1px solid var(--bg-2-color);
 }
 
 button:disabled {
   color: var(--text-1-inverted-fg-color);
-  border: 1px solid var(--bg-2-color);
 }
 
 div.navigation>div.navigationButton,
@@ -50,6 +48,10 @@ div#app {
 div#spaceTime {
   display: flex;
   background-color: var(--bg-0-color);
+}
+
+div#buttonBar.visible {
+  display: flex;
 }
 
 div#buttonBar {

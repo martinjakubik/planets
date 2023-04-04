@@ -37,14 +37,18 @@ class SpaceTimeController {
     }
 
     incrementTime(nTicks = 1) {
-        const oSpaceSnapshot = SpaceTimeController.copySpaceSnapshot(this.getSpaceSnapshotAt(this.time));
-        this.time = this.time + nTicks;
-        if (!this.getSpaceSnapshot()) {
-            this.addSpaceSnapshot(oSpaceSnapshot);
-            this.calculateAllGravity();
-            this.calculateAllPositions();
-            const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
-            this.modelSize = this.modelSize + nSnapshotSize;
+        const oSpaceSnapshot = this.getSpaceSnapshotAt(this.time);
+        let oSpaceSnapshotCopy;
+        if (oSpaceSnapshot) {
+            oSpaceSnapshotCopy = SpaceTimeController.copySpaceSnapshot(oSpaceSnapshot);
+            this.time = this.time + nTicks;
+            if (!this.getSpaceSnapshot()) {
+                this.addSpaceSnapshot(oSpaceSnapshotCopy);
+                this.calculateAllGravity();
+                this.calculateAllPositions();
+                const nSnapshotSize = JSON.stringify(oSpaceSnapshotCopy).length;
+                this.modelSize = this.modelSize + nSnapshotSize;
+            }
         }
     }
 

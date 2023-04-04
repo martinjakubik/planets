@@ -77,16 +77,32 @@ class SpaceTimeView {
         this.timeFwdButton;
 
         this.audioOn = false;
+        this.settingsVisible = false;
         this.chirp = new Audio(this.appConfiguration.hoverSound);
         this.chirp.load();
 
-        const oControlButton = document.getElementsByClassName('controlButton')[0];
+        const oVolumeControlButton = document.getElementsByClassName('controlButton')[0];
         this.volumeIcon = document.createElement('img');
         this.volumeIcon.src = this.appConfiguration.volumeIcon.off;
-        oControlButton.onclick = this.toggleAudio.bind(this);
+        oVolumeControlButton.onclick = this.toggleAudio.bind(this);
+        oVolumeControlButton.appendChild(this.volumeIcon);
 
-        oControlButton.appendChild(this.volumeIcon);
+        const oSettingsControlButton = document.getElementsByClassName('controlButton')[1];
+        this.settingsIcon = document.createElement('img');
+        this.settingsIcon.src = this.appConfiguration.settingsIcon;
+        oSettingsControlButton.onclick = this.toggleSettings.bind(this);
+        oSettingsControlButton.appendChild(this.settingsIcon);
+
         this.trails = {};
+    }
+
+    toggleSettings() {
+        this.settingsVisible = !this.settingsVisible;
+        if (this.settingsVisible) {
+            this.buttonBar.classList.add('visible');
+        } else {
+            this.buttonBar.classList.remove('visible');
+        }
     }
 
     toggleAudio() {
@@ -344,7 +360,7 @@ class SpaceTimeView {
     }
 
     makeSpaceTimeButtonBar() {
-        const buttonBar = createDiv('buttonBar', this.appBox);
+        this.buttonBar = createDiv('buttonBar', this.appBox);
 
         this.makeTimeBackButton(buttonBar);
         this.makeTimeFwdButton(buttonBar);
