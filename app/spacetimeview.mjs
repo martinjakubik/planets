@@ -81,15 +81,19 @@ class SpaceTimeView {
         this.chirp = new Audio(this.appConfiguration.hoverSound);
         this.chirp.load();
 
-        const oVolumeControlButton = document.getElementsByClassName('controlButton')[0];
+        const oControlParent = document.getElementsByClassName('navigation')[0];
+
+        const oVolumeControlButton = createButton('volumeControlButton', '', oControlParent);
         this.volumeIcon = document.createElement('img');
         this.volumeIcon.src = this.appConfiguration.volumeIcon.off;
+        oVolumeControlButton.classList.add('controlButton');
         oVolumeControlButton.onclick = this.toggleAudio.bind(this);
         oVolumeControlButton.appendChild(this.volumeIcon);
 
-        const oSettingsControlButton = document.getElementsByClassName('controlButton')[1];
+        const oSettingsControlButton = createButton('settingsControlButton', '', oControlParent);
         this.settingsIcon = document.createElement('img');
         this.settingsIcon.src = this.appConfiguration.settingsIcon;
+        oSettingsControlButton.classList.add('controlButton');
         oSettingsControlButton.onclick = this.toggleSettings.bind(this);
         oSettingsControlButton.appendChild(this.settingsIcon);
 
@@ -297,7 +301,12 @@ class SpaceTimeView {
     makeAppBox() {
         this.appBox = document.getElementById('app');
         if (!this.appBox) {
-            this.appBox = createDiv('app');
+            const oContainer = document.getElementById('container');
+            let oParentElement = document.getElementsByTagName('body');
+            if (oContainer) {
+                oParentElement = oContainer;
+            }
+            this.appBox = createDiv('app', oParentElement);
         }
     }
 

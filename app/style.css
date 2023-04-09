@@ -7,27 +7,36 @@ body {
 }
 
 button {
-  background-color: var(--bg-1-color);
+  background-color: var(--bg-0-color);
   color: var(--text-0-fg-color);
   border: none;
+  border-radius: 4px;
 }
 
 button:hover {
   color: var(--text-0-inverted-fg-color);
+  border: 1px solid var(--bg-2-color);
 }
 
 button:disabled {
   color: var(--text-1-inverted-fg-color);
+  border: 1px solid var(--bg-2-color);
 }
 
-div.navigation>div.navigationButton,
-div.control>div.controlButton {
+div.navigation {
+  display: flex;
+  flex-direction: column;
+}
+
+div.navigation>button.navigationButton,
+div.navigation>button.controlButton {
   width: 48px;
   height: 48px;
+  margin: 4px;
 }
 
-div.navigation>div.navigationButton>a>img,
-div.control>div.controlButton>img {
+div.navigation>button.navigationButton>a>img,
+div.navigation>button.controlButton>img {
   width: 100%;
   cursor: pointer;
 }
