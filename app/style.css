@@ -54,6 +54,12 @@ div#app {
   align-items: center;
 }
 
+div#footer>a {
+  color: var(--text-0-inverted-fg-color);
+  text-decoration: none;
+  font-family: var(--font-0-family);
+}
+
 div#spaceTime {
   display: flex;
   background-color: var(--bg-0-color);
