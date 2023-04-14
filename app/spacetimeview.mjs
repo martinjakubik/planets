@@ -371,8 +371,8 @@ class SpaceTimeView {
     makeSpaceTimeButtonBar () {
         this.buttonBar = createDiv('buttonBar', this.appBox);
 
-        this.makeTimeBackButton(buttonBar);
-        this.makeTimeFwdButton(buttonBar);
+        this.makeTimeBackButton(this.buttonBar);
+        this.makeTimeFwdButton(this.buttonBar);
     }
 
     handleKeyDown (event) {
