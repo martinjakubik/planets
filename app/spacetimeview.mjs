@@ -9,7 +9,7 @@ const CSS_CLASS_TRAIL_BOX = 'trailBox';
 const TRAIL_LENGTH = 16;
 
 class SpaceTimeView {
-    static getXYFromID(sId) {
+    static getXYFromID (sId) {
         let aCoordinates = sId.split(':');
         let sX = aCoordinates[0];
         let sY = aCoordinates[1];
@@ -19,22 +19,22 @@ class SpaceTimeView {
         };
     }
 
-    static modulo(n, d) {
+    static modulo (n, d) {
         return ((n % d) + d) % d;
     }
 
-    static eraseBody(target, mass) {
+    static eraseBody (target, mass) {
         target.classList.remove(`m${mass}`);
         target.classList.remove(CSS_CLASS_BODY_BOX);
     }
 
-    static incrementMass(target, mass) {
+    static incrementMass (target, mass) {
         const nPreviousMass = this.modulo((mass - 1), 16);
         target.classList.remove(`m${nPreviousMass}`);
         target.classList.add(`m${mass}`);
     }
 
-    static drawSparkle(position, isPenDown, gridSize) {
+    static drawSparkle (position, isPenDown, gridSize) {
         const aNeighborBoxes = SpaceTimeView.getNeighborBoxes(position, 1, gridSize);
         aNeighborBoxes.forEach(neighborBoxPosition => {
             let target = document.getElementById(`${neighborBoxPosition.x}:${neighborBoxPosition.y}`);
@@ -46,7 +46,7 @@ class SpaceTimeView {
         });
     }
 
-    static getNeighborBoxes(position, radius, gridSize) {
+    static getNeighborBoxes (position, radius, gridSize) {
         const aNeighborBoxes = [];
         if ((position.x - radius) >= 0) {
             aNeighborBoxes.push({ x: position.x - radius, y: position.y });
@@ -63,7 +63,7 @@ class SpaceTimeView {
         return aNeighborBoxes;
     }
 
-    constructor(oAppConfiguration) {
+    constructor (oAppConfiguration) {
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
 
         this.appConfiguration = oAppConfiguration;
@@ -100,7 +100,7 @@ class SpaceTimeView {
         this.trails = {};
     }
 
-    toggleSettings() {
+    toggleSettings () {
         this.settingsVisible = !this.settingsVisible;
         if (this.settingsVisible) {
             this.buttonBar.classList.add('visible');
@@ -109,7 +109,7 @@ class SpaceTimeView {
         }
     }
 
-    toggleAudio() {
+    toggleAudio () {
         this.audioOn = !this.audioOn;
         if (this.audioOn) {
             this.volumeIcon.src = this.appConfiguration.volumeIcon.on;
@@ -119,26 +119,26 @@ class SpaceTimeView {
         }
     }
 
-    startTimer() {
+    startTimer () {
         this.isTimerRunning = true;
         this.timerIntervalId = window.setInterval(this.moveTimeForward.bind(this), TIMER_INTERVAL);
         this.timeFwdButton.innerText = '||';
     }
 
-    stopTimer() {
+    stopTimer () {
         window.clearInterval(this.timerIntervalId);
         this.isTimerRunning = false;
         this.timeFwdButton.innerText = '>';
     }
 
-    createBody(time, x, y) {
+    createBody (time, x, y) {
         const sBodyKey = `${time}:${x}:${y}`;
         const oPosition = { x: x, y: y };
         this.initializeTrail(sBodyKey, oPosition);
         return createBody(time, x, y);
     }
 
-    handleSpaceClick(event) {
+    handleSpaceClick (event) {
         const oTarget = event.currentTarget;
         let sId = oTarget.id;
         let oCoordinates = SpaceTimeView.getXYFromID(sId);
@@ -164,7 +164,7 @@ class SpaceTimeView {
         }
     }
 
-    moveTimeForward() {
+    moveTimeForward () {
         const bIsPenDown = false;
         this.drawSpace(bIsPenDown);
 
@@ -178,7 +178,7 @@ class SpaceTimeView {
         this.drawSpace();
     }
 
-    moveTimeBackward() {
+    moveTimeBackward () {
         const bIsPenDown = false;
         this.drawSpace(bIsPenDown);
 
@@ -191,23 +191,23 @@ class SpaceTimeView {
         this.drawSpace();
     }
 
-    handleTimeFwdButtonClick() {
+    handleTimeFwdButtonClick () {
         this.stopTimer.call(this);
         this.moveTimeForward.call(this);
     }
 
-    handleTimeBackButtonClick() {
+    handleTimeBackButtonClick () {
         this.stopTimer.call(this);
         this.moveTimeBackward.call(this);
     }
 
-    eraseBox(position) {
+    eraseBox (position) {
         const oTarget = document.getElementById(`${position.x}:${position.y}`);
         oTarget.classList.remove(CSS_CLASS_BODY_BOX);
         oTarget.classList.remove(CSS_CLASS_TRAIL_BOX);
     }
 
-    initializeTrail(sKey, position) {
+    initializeTrail (sKey, position) {
         if (!this.trails[sKey]) {
             if (position) {
                 this.trails[sKey] = [];
@@ -219,7 +219,7 @@ class SpaceTimeView {
         }
     }
 
-    moveTrail(sKey, newPosition) {
+    moveTrail (sKey, newPosition) {
         if (this.trails[sKey]) {
             if (newPosition) {
                 let i;
@@ -231,7 +231,7 @@ class SpaceTimeView {
         }
     }
 
-    trimTrail(sKey) {
+    trimTrail (sKey) {
         if (this.trails[sKey]) {
             if (this.trails[sKey].length === 1) {
                 delete this.trails[sKey];
@@ -241,7 +241,7 @@ class SpaceTimeView {
         }
     }
 
-    drawTrail(sKey) {
+    drawTrail (sKey) {
         let aTrail = this.trails[sKey];
         let i;
         for (i = 1; i < aTrail.length - 1; i++) {
@@ -252,7 +252,7 @@ class SpaceTimeView {
         }
     }
 
-    drawBody(position, isPenDown, mass = 0, gridSize) {
+    drawBody (position, isPenDown, mass = 0, gridSize) {
         const floorPosition = {
             x: Math.floor(position.x),
             y: Math.floor(position.y)
@@ -267,7 +267,7 @@ class SpaceTimeView {
         SpaceTimeView.drawSparkle(floorPosition, isPenDown, gridSize);
     }
 
-    drawSpace(isPenDown = true) {
+    drawSpace (isPenDown = true) {
         if (this.trails) {
             Object.keys(this.trails).forEach(sKey => {
                 let aTrail = this.trails[sKey];
@@ -298,7 +298,7 @@ class SpaceTimeView {
         }
     }
 
-    makeAppBox() {
+    makeAppBox () {
         this.appBox = document.getElementById('app');
         if (!this.appBox) {
             const oContainer = document.getElementById('container');
@@ -310,13 +310,13 @@ class SpaceTimeView {
         }
     }
 
-    playChirp() {
+    playChirp () {
         if (this.audioOn) {
             this.chirp.play();
         }
     }
 
-    makeSpaceGrid(numberOfRows, oSpaceTimeController) {
+    makeSpaceGrid (numberOfRows, oSpaceTimeController) {
         this.spaceTimeController = oSpaceTimeController;
         this.appConfiguration.gridSize = numberOfRows;
         let nSizeOfBox = Math.floor(720 / this.appConfiguration.gridSize);
@@ -357,25 +357,25 @@ class SpaceTimeView {
         }
     }
 
-    makeTimeFwdButton(parentBox) {
+    makeTimeFwdButton (parentBox) {
         this.timeFwdButton = createButton('timeFwdButton', '>', parentBox);
         this.timeFwdButton.onclick = this.handleTimeFwdButtonClick.bind(this);
     }
 
-    makeTimeBackButton(parentBox) {
+    makeTimeBackButton (parentBox) {
         this.oTimeBackButton = createButton('timeBackButton', '<', parentBox);
         this.oTimeBackButton.onclick = this.handleTimeBackButtonClick.bind(this);
         this.oTimeBackButton.disabled = true;
     }
 
-    makeSpaceTimeButtonBar() {
+    makeSpaceTimeButtonBar () {
         this.buttonBar = createDiv('buttonBar', this.appBox);
 
         this.makeTimeBackButton(buttonBar);
         this.makeTimeFwdButton(buttonBar);
     }
 
-    handleKeyDown(event) {
+    handleKeyDown (event) {
         const keyCode = event.keyCode;
         if (keyCode === 37) {
             this.moveTimeBackward();
