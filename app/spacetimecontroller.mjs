@@ -52,7 +52,7 @@ class SpaceTimeController {
         }
     }
 
-    getBody (key) {
+    getBodyWithId (key) {
         return this.bodyPositions[key];
     }
 

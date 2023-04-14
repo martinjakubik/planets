@@ -275,7 +275,7 @@ class SpaceTimeView {
                 } else {
                     this.eraseBox(aTrail[aTrail.length - 1]);
                 }
-                if (!this.spaceTimeController.getBody(sKey)) {
+                if (!this.spaceTimeController.getBodyWithId(sKey)) {
                     this.trimTrail(sKey);
                 }
             });
