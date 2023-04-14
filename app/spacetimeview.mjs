@@ -1,6 +1,5 @@
 import { createBody } from './gravity.mjs';
 import { createDiv, createButton } from './learnhypertext.mjs';
-import { SpaceTimeController } from './spacetimecontroller.mjs';
 
 const TIMER_INTERVAL = 70;
 const CSS_CLASS_BODY_BOX = 'bodyBox';
