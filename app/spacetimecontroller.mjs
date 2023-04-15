@@ -1,7 +1,7 @@
 import { calculateGravity, calculatePosition } from './gravity.mjs';
 
 class SpaceTimeController {
-    static copySpaceSnapshot (aCoordinates) {
+    static copySpaceSnapshot0 (aCoordinates) {
         let aSpaceSnapshot = [];
         aCoordinates.forEach(aXAxis => {
             aXAxis.forEach(oBody => {
@@ -16,16 +16,31 @@ class SpaceTimeController {
         return aSpaceSnapshot;
     }
 
+    static copySpaceSnapshot1 (oSpaceSnapshot) {
+        let oSpaceSnapshotCopy = {};
+        Object.keys(oSpaceSnapshot).forEach(sKey => {
+            const oBody = oSpaceSnapshot[sKey];
+            oSpaceSnapshotCopy[sKey] = oBody;
+        });
+        return oSpaceSnapshotCopy;
+    }
+
+    static getKeyFromXY (x, y) {
+        return `${x}-${y}`;
+    }
+
     constructor (oAppConfiguration) {
         this.appConfiguration = oAppConfiguration;
         this.time = 0;
         this.spaceTimeModel0 = [];
+        this.spaceTimeModel1 = {};
         this.bodyPositions = {};
-        this.modelSize = 0;
+        this.modelSize0 = 0;
+        this.modelSize1 = 0;
     }
 
     isModelSizeAcceptable () {
-        return this.modelSize < this.appConfiguration.maxSpaceTimeSize;
+        return this.modelSize0 < this.appConfiguration.maxSpaceTimeSize;
     }
 
     setTime (nTime) {
@@ -37,17 +52,31 @@ class SpaceTimeController {
     }
 
     incrementTime (nTicks = 1) {
-        const oSpaceSnapshot = this.getSpaceSnapshotAt(this.time);
-        let oSpaceSnapshotCopy;
-        if (oSpaceSnapshot) {
-            oSpaceSnapshotCopy = SpaceTimeController.copySpaceSnapshot(oSpaceSnapshot);
+        const oSpaceSnapshot0 = this.getSpaceSnapshot0At(this.time);
+        let oSpaceSnapshotCopy0;
+        if (oSpaceSnapshot0 || oSpaceSnapshot1) {
             this.time = this.time + nTicks;
-            if (!this.getSpaceSnapshot()) {
-                this.addSpaceSnapshot(oSpaceSnapshotCopy);
+        }
+        if (oSpaceSnapshot0) {
+            oSpaceSnapshotCopy0 = SpaceTimeController.copySpaceSnapshot0(oSpaceSnapshot0);
+            if (!this.getSpaceSnapshot0()) {
+                this.addSpaceSnapshot0(oSpaceSnapshotCopy0);
                 this.calculateAllGravity();
                 this.calculateAllPositions();
-                const nSnapshotSize = JSON.stringify(oSpaceSnapshotCopy).length;
-                this.modelSize = this.modelSize + nSnapshotSize;
+                const nSnapshotSize = JSON.stringify(oSpaceSnapshotCopy0).length;
+                this.modelSize0 = this.modelSize0 + nSnapshotSize;
+            }
+        }
+        const oSpaceSnapshot1 = this.getSpaceSnapshot1At(this.time);
+        let oSpaceSnapshotCopy1;
+        if (oSpaceSnapshot1) {
+            oSpaceSnapshotCopy1 = SpaceTimeController.copySpaceSnapshot1(oSpaceSnapshot1);
+            if (!this.getSpaceSnapshot1()) {
+                this.addSpaceSnapshot1(oSpaceSnapshotCopy1);
+                this.calculateAllGravity();
+                this.calculateAllPositions();
+                const nSnapshotSize = JSON.stringify(oSpaceSnapshotCopy1).length;
+                this.model1Size = this.model1Size + nSnapshotSize;
             }
         }
     }
@@ -56,13 +85,20 @@ class SpaceTimeController {
         return this.bodyPositions[key];
     }
 
-    getBodyAt (dx, dy) {
+    getBody0At (dx, dy) {
         const nTime = this.time;
         const x = Math.floor(dx);
         const y = Math.floor(dy);
         const aSpace = this.spaceTimeModel0[nTime];
         const aXAxis = aSpace ? aSpace[x] : null;
         return aXAxis ? aXAxis[y] : null;
+    }
+
+    getBody1At (dx, dy) {
+        const sKey = SpaceTimeController.getKeyFromXY(dx, dy);
+        const nTime = this.time;
+        const aSpaceSnapshot = this.spaceTimeModel1[nTime];
+        return aSpaceSnapshot ? aSpaceSnapshot[sKey] : null;
     }
 
     updateBodyAt (dx, dy, oBody) {
@@ -74,6 +110,9 @@ class SpaceTimeController {
         if (!this.spaceTimeModel0[nTime]) {
             this.spaceTimeModel0[nTime] = [];
         }
+        if (!this.spaceTimeModel1[nTime]) {
+            this.spaceTimeModel1[nTime] = [];
+        }
         if (x === oBody.position.x && y === oBody.position.y) {
             if (!this.spaceTimeModel0[nTime][x]) {
                 this.spaceTimeModel0[nTime][x] = [];
@@ -81,21 +120,32 @@ class SpaceTimeController {
             this.spaceTimeModel0[nTime][x][y] = oBody;
             this.bodyPositions[oBody.id] = { x: x, y: y };
         } else {
-            this.deleteBodyAt(x, y);
+            this.deleteBody0At(x, y);
             if (!this.spaceTimeModel0[nTime][nMoveToX]) {
                 this.spaceTimeModel0[nTime][nMoveToX] = [];
             }
             this.spaceTimeModel0[nTime][nMoveToX][nMoveToY] = oBody;
             this.bodyPositions[oBody.id] = { x: nMoveToX, y: nMoveToY };
         }
+        this.deleteBody1At(dx, dy);
+        const sKey = SpaceTimeController.getKeyFromXY(oBody.position.x, oBody.position.y);
+        this.spaceTimeModel1[nTime][sKey] = oBody;
     }
 
-    deleteBodyAt (dx, dy) {
+    deleteBody0At (dx, dy) {
         const nTime = this.time;
         const x = Math.floor(dx);
         const y = Math.floor(dy);
         if (this.spaceTimeModel0[nTime] && this.spaceTimeModel0[nTime][x] && this.spaceTimeModel0[nTime][x][y]) {
             delete this.spaceTimeModel0[nTime][x][y];
+        }
+    }
+
+    deleteBody1At (dx, dy) {
+        const nTime = this.time;
+        const sKey = SpaceTimeController.getKeyFromXY(dx, dy);
+        if (this.spaceTimeModel1[nTime] && this.spaceTimeModel1[nTime][sKey]) {
+            delete this.spaceTimeModel0[nTime][sKey];
         }
     }
 
@@ -110,22 +160,33 @@ class SpaceTimeController {
     resetSpaceTimeModel () {
         this.time = 0;
         this.spaceTimeModel0 = [];
+        this.spaceTimeModel1 = [];
     }
 
-    addSpaceSnapshot (oSpaceSnapshot) {
+    addSpaceSnapshot0 (oSpaceSnapshot) {
         const nTime = this.time;
         this.spaceTimeModel0[nTime] = oSpaceSnapshot;
     }
 
-    getSpaceSnapshot () {
+    addSpaceSnapshot1 (oSpaceSnapshot) {
         const nTime = this.time;
-        return this.getSpaceSnapshotAt(nTime);
+        this.spaceTimeModel1[nTime] = oSpaceSnapshot;
     }
 
-    getBodies () {
+    getSpaceSnapshot0 () {
+        const nTime = this.time;
+        return this.getSpaceSnapshot0At(nTime);
+    }
+
+    getSpaceSnapshot1 () {
+        const nTime = this.time;
+        return this.getSpaceSnapshot1At(nTime);
+    }
+
+    getBodies0 () {
         let aBodies = [];
         const nTime = this.time;
-        const aCoordinates = this.getSpaceSnapshotAt(nTime);
+        const aCoordinates = this.getSpaceSnapshot0At(nTime);
         aCoordinates.forEach(aXAxis => {
             aXAxis.forEach((oBody) => {
                 aBodies.push(oBody);
@@ -134,12 +195,20 @@ class SpaceTimeController {
         return aBodies;
     }
 
-    getSpaceSnapshotAt (nTime) {
+    getSpaceSnapshot0At (nTime) {
         return this.spaceTimeModel0[nTime];
     }
 
+    getSpaceSnapshot1At (nTime) {
+        return this.spaceTimeModel1[nTime];
+    }
+
+    getSpaceSnapshotAt (nTime) {
+        return this.spaceTimeModel1[nTime];
+    }
+
     calculateAllGravity () {
-        const aBodies = this.getBodies();
+        const aBodies = this.getBodies0();
         aBodies.forEach(oBody => {
             aBodies.forEach(oNeighbour => {
                 if (oNeighbour.id !== oBody.id) {
@@ -152,7 +221,7 @@ class SpaceTimeController {
     }
 
     calculateAllPositions () {
-        const aBodies = this.getBodies();
+        const aBodies = this.getBodies0();
         aBodies.forEach(oBody => {
             const oCoordinates = oBody.position;
             calculatePosition(oBody, this.getTime());

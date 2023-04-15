@@ -141,22 +141,24 @@ class SpaceTimeView {
         const oTarget = event.currentTarget;
         let sId = oTarget.id;
         let oCoordinates = SpaceTimeView.getXYFromID(sId);
-        let oBody = this.spaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
-        if (oBody) {
-            oBody.mass++;
+        let oBody0 = this.spaceTimeController.getBody0At(oCoordinates.x, oCoordinates.y);
+        let oBody1 = this.spaceTimeController.getBody1At(oCoordinates.x, oCoordinates.y);
+        if (oBody0) {
+            oBody0.mass++;
         } else {
-            oBody = this.createBody(this.spaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
+            oBody0 = this.createBody(this.spaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
         }
 
         let bIsPenDown = true;
-        if (oBody.mass < 16) {
-            this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
+        if (oBody0.mass < 16) {
+            this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody0);
         } else {
-            this.spaceTimeController.deleteBodyAt(oCoordinates.x, oCoordinates.y);
-            oBody = null;
+            this.spaceTimeController.deleteBody0At(oCoordinates.x, oCoordinates.y);
+            this.spaceTimeController.deleteBody1At(oCoordinates.x, oCoordinates.y);
+            oBody0 = null;
             bIsPenDown = false;
         }
-        const nMass = oBody ? oBody.mass : 0;
+        const nMass = oBody0 ? oBody0.mass : 0;
         this.drawBody(oCoordinates, bIsPenDown, nMass, this.appConfiguration.gridSize);
         if (!this.isTimerRunning) {
             this.startTimer.call(this);
@@ -280,7 +282,7 @@ class SpaceTimeView {
                 }
             });
         }
-        const aBodies = this.spaceTimeController.getBodies();
+        const aBodies = this.spaceTimeController.getBodies0();
         aBodies.forEach(oBody => {
             const floorPosition = {
                 x: Math.floor(oBody.position.x),

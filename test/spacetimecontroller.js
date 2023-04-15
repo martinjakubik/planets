@@ -49,7 +49,7 @@ QUnit.test('get model after time increment', assert => {
     const expected = {
         same: true,
         difference: null
-    }
+    };
 
     const actualSpaceSnapshot = stc.getSpaceSnapshotAt(0);
     const actual = P.compareSpaceSnaphshot(actualSpaceSnapshot, expectedSpaceSnapshot);
