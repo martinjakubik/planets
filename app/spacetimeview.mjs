@@ -9,13 +9,17 @@ const TRAIL_LENGTH = 16;
 
 class SpaceTimeView {
     static getXYFromID (sId) {
-        let aCoordinates = sId.split(':');
-        let sX = aCoordinates[0];
-        let sY = aCoordinates[1];
+        let nYindex = sId.indexOf('y');
+        let sX = sId.substring(1, nYindex);
+        let sY = sId.substring(nYindex + 1);
         return {
             x: Number(sX),
             y: Number(sY)
         };
+    }
+
+    static getIDFromXY (x, y) {
+        return `x${x}y${y}`;
     }
 
     static modulo (n, d) {
@@ -36,7 +40,8 @@ class SpaceTimeView {
     static drawSparkle (position, isPenDown, gridSize) {
         const aNeighborBoxes = SpaceTimeView.getNeighborBoxes(position, 1, gridSize);
         aNeighborBoxes.forEach(neighborBoxPosition => {
-            let target = document.getElementById(`${neighborBoxPosition.x}:${neighborBoxPosition.y}`);
+            const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
+            let target = document.getElementById(sElementID);
             if (isPenDown) {
                 target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
             } else {
@@ -209,7 +214,8 @@ class SpaceTimeView {
     }
 
     eraseBox (position) {
-        const oTarget = document.getElementById(`${position.x}:${position.y}`);
+        const sElementID = SpaceTimeView.getIDFromXY(position.x, position.y);
+        const oTarget = document.getElementById(sElementID);
         oTarget.classList.remove(CSS_CLASS_BODY_BOX);
         oTarget.classList.remove(CSS_CLASS_TRAIL_BOX);
     }
@@ -253,7 +259,8 @@ class SpaceTimeView {
         let i;
         for (i = 1; i < aTrail.length - 1; i++) {
             let position = aTrail[i];
-            let oTarget = document.getElementById(`${position.x}:${position.y}`);
+            const sElementID = SpaceTimeView.getIDFromXY(position.x, position.y);
+            let oTarget = document.getElementById(sElementID);
             oTarget.classList.add(CSS_CLASS_BODY_BOX);
             oTarget.classList.add(CSS_CLASS_TRAIL_BOX);
         }
@@ -264,7 +271,8 @@ class SpaceTimeView {
             x: Math.floor(position.x),
             y: Math.floor(position.y)
         };
-        const oNewTarget = document.getElementById(`${floorPosition.x}:${floorPosition.y}`);
+        const sElementID = SpaceTimeView.getIDFromXY(floorPosition.x, floorPosition.y);
+        const oNewTarget = document.getElementById(sElementID);
         SpaceTimeView.incrementMass(oNewTarget, mass);
         if (isPenDown) {
             oNewTarget.classList.add(CSS_CLASS_BODY_BOX);
@@ -344,7 +352,7 @@ class SpaceTimeView {
                 rowBox = createDiv(`row${y}`, spaceTimeBox);
             }
             while (x < numberOfColumns) {
-                sBoxId = `${x}:${y}`;
+                sBoxId = SpaceTimeView.getIDFromXY(x, y);
                 box = document.getElementById(sBoxId);
                 if (!box) {
                     box = createDiv(sBoxId, rowBox);

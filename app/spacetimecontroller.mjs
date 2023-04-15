@@ -40,7 +40,7 @@ class SpaceTimeController {
     }
 
     isModelSizeAcceptable () {
-        console.table([`model 0 size: ${this.modelSize0}`, `model 1 size: ${this.modelSize1}`]);
+        // console.table([`model 0 size: ${this.modelSize0}`, `model 1 size: ${this.modelSize1}`]);
         return this.modelSize0 < this.appConfiguration.maxSpaceTimeSize;
     }
 
@@ -155,6 +155,9 @@ class SpaceTimeController {
         const sKey = SpaceTimeController.getKeyFromXY(dx, dy);
         if (this.spaceTimeModel1[nTime] && this.spaceTimeModel1[nTime][sKey]) {
             delete this.spaceTimeModel1[nTime][sKey];
+        }
+        if (Object.keys(this.spaceTimeModel1[nTime]).length > 2) {
+            console.log(`there are ${Object.keys(this.spaceTimeModel1[nTime]).length} objects in model 1`);
         }
     }
 
