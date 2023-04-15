@@ -19,7 +19,7 @@ class SpaceTimeController {
     constructor (oAppConfiguration) {
         this.appConfiguration = oAppConfiguration;
         this.time = 0;
-        this.spaceTimeModel = [];
+        this.spaceTimeModel0 = [];
         this.bodyPositions = {};
         this.modelSize = 0;
     }
@@ -60,7 +60,7 @@ class SpaceTimeController {
         const nTime = this.time;
         const x = Math.floor(dx);
         const y = Math.floor(dy);
-        const aSpace = this.spaceTimeModel[nTime];
+        const aSpace = this.spaceTimeModel0[nTime];
         const aXAxis = aSpace ? aSpace[x] : null;
         return aXAxis ? aXAxis[y] : null;
     }
@@ -71,21 +71,21 @@ class SpaceTimeController {
         const y = Math.floor(dy);
         const nMoveToX = Math.floor(oBody.position.x);
         const nMoveToY = Math.floor(oBody.position.y);
-        if (!this.spaceTimeModel[nTime]) {
-            this.spaceTimeModel[nTime] = [];
+        if (!this.spaceTimeModel0[nTime]) {
+            this.spaceTimeModel0[nTime] = [];
         }
         if (x === oBody.position.x && y === oBody.position.y) {
-            if (!this.spaceTimeModel[nTime][x]) {
-                this.spaceTimeModel[nTime][x] = [];
+            if (!this.spaceTimeModel0[nTime][x]) {
+                this.spaceTimeModel0[nTime][x] = [];
             }
-            this.spaceTimeModel[nTime][x][y] = oBody;
+            this.spaceTimeModel0[nTime][x][y] = oBody;
             this.bodyPositions[oBody.id] = { x: x, y: y };
         } else {
             this.deleteBodyAt(x, y);
-            if (!this.spaceTimeModel[nTime][nMoveToX]) {
-                this.spaceTimeModel[nTime][nMoveToX] = [];
+            if (!this.spaceTimeModel0[nTime][nMoveToX]) {
+                this.spaceTimeModel0[nTime][nMoveToX] = [];
             }
-            this.spaceTimeModel[nTime][nMoveToX][nMoveToY] = oBody;
+            this.spaceTimeModel0[nTime][nMoveToX][nMoveToY] = oBody;
             this.bodyPositions[oBody.id] = { x: nMoveToX, y: nMoveToY };
         }
     }
@@ -94,27 +94,27 @@ class SpaceTimeController {
         const nTime = this.time;
         const x = Math.floor(dx);
         const y = Math.floor(dy);
-        if (this.spaceTimeModel[nTime] && this.spaceTimeModel[nTime][x] && this.spaceTimeModel[nTime][x][y]) {
-            delete this.spaceTimeModel[nTime][x][y];
+        if (this.spaceTimeModel0[nTime] && this.spaceTimeModel0[nTime][x] && this.spaceTimeModel0[nTime][x][y]) {
+            delete this.spaceTimeModel0[nTime][x][y];
         }
     }
 
     getSpaceTimeModel () {
-        return this.spaceTimeModel;
+        return this.spaceTimeModel0;
     }
 
     setSpaceTimeModel (spaceTimeModel) {
-        this.spaceTimeModel = spaceTimeModel;
+        this.spaceTimeModel0 = spaceTimeModel;
     }
 
     resetSpaceTimeModel () {
         this.time = 0;
-        this.spaceTimeModel = [];
+        this.spaceTimeModel0 = [];
     }
 
     addSpaceSnapshot (oSpaceSnapshot) {
         const nTime = this.time;
-        this.spaceTimeModel[nTime] = oSpaceSnapshot;
+        this.spaceTimeModel0[nTime] = oSpaceSnapshot;
     }
 
     getSpaceSnapshot () {
@@ -135,7 +135,7 @@ class SpaceTimeController {
     }
 
     getSpaceSnapshotAt (nTime) {
-        return this.spaceTimeModel[nTime];
+        return this.spaceTimeModel0[nTime];
     }
 
     calculateAllGravity () {
