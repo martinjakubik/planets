@@ -1,0 +1,2 @@
+to compare model size:
+console.table([`model 0 size: ${this.modelSize0}`, `model 1 size: ${this.modelSize1}`, `ratio: ${this.modelSize1/this.modelSize0}`]);

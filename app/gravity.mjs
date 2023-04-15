@@ -13,16 +13,28 @@ const createBody = function (nTime, x, y) {
     };
 };
 
+const copyBody = function (oBody) {
+    let oBodyCopy = {};
+    oBodyCopy.id = oBody.id;
+    oBodyCopy.mass = oBody.mass;
+    oBodyCopy.position = {};
+    oBodyCopy.position.x = oBody.position.x;
+    oBodyCopy.position.y = oBody.position.y;
+    oBodyCopy.force = oBody.force;
+    oBodyCopy.angle = oBody.angle;
+    return oBodyCopy;
+};
+
 const getDistanceSquared = function (body, neighbour) {
     return (body.position.x - neighbour.position.x) ** 2 + (body.position.y - neighbour.position.y) ** 2;
-}
+};
 
 const getNeighbourVector = function (body, neighbour, distanceSquared) {
     return {
         force: G * body.mass * neighbour.mass / distanceSquared,
         angle: Math.atan2(neighbour.position.y - body.position.y, neighbour.position.x - body.position.x)
     };
-}
+};
 
 const calculateGravity = function (body, neighbour) {
     let nDistanceSquared = getDistanceSquared(body, neighbour);
@@ -40,17 +52,18 @@ const calculatePosition = function (body, time) {
     // modified from:
     // x(t) = x0 + v0 * t + 1/2 at^2,
     // see: https://phys.libretexts.org/Bookshelves/University_Physics/Book%3A_University_Physics_%28OpenStax%29/Book%3A_University_Physics_I_-_Mechanics_Sound_Oscillations_and_Waves_%28OpenStax%29/03%3A_Motion_Along_a_Straight_Line/3.08%3A_Finding_Velocity_and_Displacement_from_Acceleration
-    let initialPosition = body.position;
+    let oBodyCopy = copyBody(body);
+    let initialPosition = oBodyCopy.position;
     let v0 = 0;
-    let acceleration = body.force / body.mass;
+    let acceleration = oBodyCopy.force / oBodyCopy.mass;
     let displacementMagnitude = v0 * time + 1 / 2 * acceleration;
     let xDisplacement = Math.cos(body.angle) * displacementMagnitude;
     let yDisplacement = Math.sin(body.angle) * displacementMagnitude;
-    body.position = {
+    oBodyCopy.position = {
         x: initialPosition.x + xDisplacement,
         y: initialPosition.y + yDisplacement
     };
-    return body.position;
+    return oBodyCopy;
 };
 
 const addVectors = function (v1, v2) {

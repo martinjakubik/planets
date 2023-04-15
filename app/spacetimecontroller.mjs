@@ -40,7 +40,6 @@ class SpaceTimeController {
     }
 
     isModelSizeAcceptable () {
-        // console.table([`model 0 size: ${this.modelSize0}`, `model 1 size: ${this.modelSize1}`]);
         return this.modelSize0 < this.appConfiguration.maxSpaceTimeSize;
     }
 
@@ -156,9 +155,6 @@ class SpaceTimeController {
         if (this.spaceTimeModel1[nTime] && this.spaceTimeModel1[nTime][sKey]) {
             delete this.spaceTimeModel1[nTime][sKey];
         }
-        if (Object.keys(this.spaceTimeModel1[nTime]).length > 2) {
-            console.log(`there are ${Object.keys(this.spaceTimeModel1[nTime]).length} objects in model 1`);
-        }
     }
 
     getSpaceTimeModel () {
@@ -207,6 +203,16 @@ class SpaceTimeController {
         return aBodies;
     }
 
+    getBodies1 () {
+        let aBodies = [];
+        const nTime = this.time;
+        const oSpaceSnapshot = this.getSpaceSnapshot1At(nTime);
+        Object.values(oSpaceSnapshot).forEach(oBody => {
+            aBodies.push(oBody);
+        });
+        return aBodies;
+    }
+
     getSpaceSnapshot0At (nTime) {
         return this.spaceTimeModel0[nTime];
     }
@@ -233,7 +239,7 @@ class SpaceTimeController {
     }
 
     calculateAllGravity1 () {
-        const aBodies = this.getBodies0();
+        const aBodies = this.getBodies1();
         aBodies.forEach(oBody => {
             aBodies.forEach(oNeighbour => {
                 if (oNeighbour.id !== oBody.id) {
@@ -249,16 +255,16 @@ class SpaceTimeController {
         const aBodies = this.getBodies0();
         aBodies.forEach(oBody => {
             const oCoordinates = oBody.position;
-            calculatePosition(oBody, this.getTime());
-            this.updateBody0At(oCoordinates.x, oCoordinates.y, oBody);
+            const oRecalculatedBody = calculatePosition(oBody, this.getTime());
+            this.updateBody0At(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
         });
     }
     calculateAllPositions1 () {
-        const aBodies = this.getBodies0();
+        const aBodies = this.getBodies1();
         aBodies.forEach(oBody => {
             const oCoordinates = oBody.position;
-            calculatePosition(oBody, this.getTime());
-            this.updateBody1At(oCoordinates.x, oCoordinates.y, oBody);
+            const oRecalculatedBody = calculatePosition(oBody, this.getTime());
+            this.updateBody1At(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
         });
     }
 }
