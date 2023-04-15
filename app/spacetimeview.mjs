@@ -280,21 +280,17 @@ class SpaceTimeView {
                 }
             });
         }
-        const aCoordinates = this.spaceTimeController.getSpaceSnapshot();
-        if (aCoordinates) {
-            aCoordinates.forEach(aXAxis => {
-                aXAxis.forEach(oBody => {
-                    const floorPosition = {
-                        x: Math.floor(oBody.position.x),
-                        y: Math.floor(oBody.position.y)
-                    };
-                    if (floorPosition.x > 0 && floorPosition.x < this.appConfiguration.gridSize && floorPosition.y > 0 && floorPosition.y < this.appConfiguration.gridSize) {
-                        this.drawBody(floorPosition, isPenDown, oBody.mass, this.appConfiguration.gridSize);
-                        this.moveTrail(oBody.id, floorPosition);
-                    }
-                });
-            });
-        }
+        const aBodies = this.spaceTimeController.getBodies();
+        aBodies.forEach(oBody => {
+            const floorPosition = {
+                x: Math.floor(oBody.position.x),
+                y: Math.floor(oBody.position.y)
+            };
+            if (floorPosition.x > 0 && floorPosition.x < this.appConfiguration.gridSize && floorPosition.y > 0 && floorPosition.y < this.appConfiguration.gridSize) {
+                this.drawBody(floorPosition, isPenDown, oBody.mass, this.appConfiguration.gridSize);
+                this.moveTrail(oBody.id, floorPosition);
+            }
+        });
     }
 
     makeAppBox () {

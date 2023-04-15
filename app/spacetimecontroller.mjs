@@ -122,6 +122,18 @@ class SpaceTimeController {
         return this.getSpaceSnapshotAt(nTime);
     }
 
+    getBodies () {
+        let aBodies = [];
+        const nTime = this.time;
+        const aCoordinates = this.getSpaceSnapshotAt(nTime);
+        aCoordinates.forEach(aXAxis => {
+            aXAxis.forEach((oBody) => {
+                aBodies.push(oBody);
+            });
+        });
+        return aBodies;
+    }
+
     getSpaceSnapshotAt (nTime) {
         return this.spaceTimeModel[nTime];
     }
