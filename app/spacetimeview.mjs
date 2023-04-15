@@ -148,10 +148,16 @@ class SpaceTimeView {
         } else {
             oBody0 = this.createBody(this.spaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
         }
+        if (oBody1) {
+            oBody1.mass++;
+        } else {
+            oBody1 = oBody0;
+        }
 
         let bIsPenDown = true;
         if (oBody0.mass < 16) {
-            this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody0);
+            this.spaceTimeController.updateBody0At(oCoordinates.x, oCoordinates.y, oBody0);
+            this.spaceTimeController.updateBody1At(oCoordinates.x, oCoordinates.y, oBody1);
         } else {
             this.spaceTimeController.deleteBody0At(oCoordinates.x, oCoordinates.y);
             this.spaceTimeController.deleteBody1At(oCoordinates.x, oCoordinates.y);

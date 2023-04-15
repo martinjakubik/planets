@@ -40,6 +40,7 @@ class SpaceTimeController {
     }
 
     isModelSizeAcceptable () {
+        console.table([`model 0 size: ${this.modelSize0}`, `model 1 size: ${this.modelSize1}`]);
         return this.modelSize0 < this.appConfiguration.maxSpaceTimeSize;
     }
 
@@ -53,6 +54,7 @@ class SpaceTimeController {
 
     incrementTime (nTicks = 1) {
         const oSpaceSnapshot0 = this.getSpaceSnapshot0At(this.time);
+        const oSpaceSnapshot1 = this.getSpaceSnapshot1At(this.time);
         let oSpaceSnapshotCopy0;
         if (oSpaceSnapshot0 || oSpaceSnapshot1) {
             this.time = this.time + nTicks;
@@ -61,22 +63,21 @@ class SpaceTimeController {
             oSpaceSnapshotCopy0 = SpaceTimeController.copySpaceSnapshot0(oSpaceSnapshot0);
             if (!this.getSpaceSnapshot0()) {
                 this.addSpaceSnapshot0(oSpaceSnapshotCopy0);
-                this.calculateAllGravity();
-                this.calculateAllPositions();
+                this.calculateAllGravity0();
+                this.calculateAllPositions0();
                 const nSnapshotSize = JSON.stringify(oSpaceSnapshotCopy0).length;
                 this.modelSize0 = this.modelSize0 + nSnapshotSize;
             }
         }
-        const oSpaceSnapshot1 = this.getSpaceSnapshot1At(this.time);
         let oSpaceSnapshotCopy1;
         if (oSpaceSnapshot1) {
             oSpaceSnapshotCopy1 = SpaceTimeController.copySpaceSnapshot1(oSpaceSnapshot1);
             if (!this.getSpaceSnapshot1()) {
                 this.addSpaceSnapshot1(oSpaceSnapshotCopy1);
-                this.calculateAllGravity();
-                this.calculateAllPositions();
+                this.calculateAllGravity1();
+                this.calculateAllPositions1();
                 const nSnapshotSize = JSON.stringify(oSpaceSnapshotCopy1).length;
-                this.model1Size = this.model1Size + nSnapshotSize;
+                this.modelSize1 = this.modelSize1 + nSnapshotSize;
             }
         }
     }
@@ -107,7 +108,7 @@ class SpaceTimeController {
         return aSpaceSnapshot ? aSpaceSnapshot[sKey] : null;
     }
 
-    updateBodyAt (dx, dy, oBody) {
+    updateBody0At (dx, dy, oBody) {
         const nTime = this.time;
         const x = Math.floor(dx);
         const y = Math.floor(dy);
@@ -115,9 +116,6 @@ class SpaceTimeController {
         const nMoveToY = Math.floor(oBody.position.y);
         if (!this.spaceTimeModel0[nTime]) {
             this.spaceTimeModel0[nTime] = [];
-        }
-        if (!this.spaceTimeModel1[nTime]) {
-            this.spaceTimeModel1[nTime] = [];
         }
         if (x === oBody.position.x && y === oBody.position.y) {
             if (!this.spaceTimeModel0[nTime][x]) {
@@ -133,6 +131,10 @@ class SpaceTimeController {
             this.spaceTimeModel0[nTime][nMoveToX][nMoveToY] = oBody;
             this.bodyPositions[oBody.id] = { x: nMoveToX, y: nMoveToY };
         }
+    }
+
+    updateBody1At (dx, dy, oBody) {
+        const nTime = this.time;
         this.initializeSpaceSnapshotAt(nTime);
         this.deleteBody1At(dx, dy);
         const sKey = SpaceTimeController.getKeyFromXY(oBody.position.x, oBody.position.y);
@@ -214,25 +216,46 @@ class SpaceTimeController {
         return this.spaceTimeModel1[nTime];
     }
 
-    calculateAllGravity () {
+    calculateAllGravity0 () {
         const aBodies = this.getBodies0();
         aBodies.forEach(oBody => {
             aBodies.forEach(oNeighbour => {
                 if (oNeighbour.id !== oBody.id) {
                     const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
                     const oCoordinates = oBody.position;
-                    this.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
+                    this.updateBody0At(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
                 }
             });
         });
     }
 
-    calculateAllPositions () {
+    calculateAllGravity1 () {
+        const aBodies = this.getBodies0();
+        aBodies.forEach(oBody => {
+            aBodies.forEach(oNeighbour => {
+                if (oNeighbour.id !== oBody.id) {
+                    const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
+                    const oCoordinates = oBody.position;
+                    this.updateBody1At(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
+                }
+            });
+        });
+    }
+
+    calculateAllPositions0 () {
         const aBodies = this.getBodies0();
         aBodies.forEach(oBody => {
             const oCoordinates = oBody.position;
             calculatePosition(oBody, this.getTime());
-            this.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
+            this.updateBody0At(oCoordinates.x, oCoordinates.y, oBody);
+        });
+    }
+    calculateAllPositions1 () {
+        const aBodies = this.getBodies0();
+        aBodies.forEach(oBody => {
+            const oCoordinates = oBody.position;
+            calculatePosition(oBody, this.getTime());
+            this.updateBody1At(oCoordinates.x, oCoordinates.y, oBody);
         });
     }
 }
