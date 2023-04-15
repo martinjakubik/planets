@@ -146,7 +146,7 @@ class SpaceTimeView {
         const oTarget = event.currentTarget;
         let sId = oTarget.id;
         let oCoordinates = SpaceTimeView.getXYFromID(sId);
-        let oBody1 = this.spaceTimeController.getBody1At(oCoordinates.x, oCoordinates.y);
+        let oBody1 = this.spaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
         if (oBody1) {
             oBody1.mass++;
         } else {
@@ -155,9 +155,9 @@ class SpaceTimeView {
 
         let bIsPenDown = true;
         if (oBody1.mass < 16) {
-            this.spaceTimeController.updateBody1At(oCoordinates.x, oCoordinates.y, oBody1);
+            this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody1);
         } else {
-            this.spaceTimeController.deleteBody1At(oCoordinates.x, oCoordinates.y);
+            this.spaceTimeController.deleteBodyAt(oCoordinates.x, oCoordinates.y);
             oBody1 = null;
             bIsPenDown = false;
         }
@@ -288,7 +288,7 @@ class SpaceTimeView {
                 }
             });
         }
-        const aBodies = this.spaceTimeController.getBodies1();
+        const aBodies = this.spaceTimeController.getBodies();
         aBodies.forEach(oBody => {
             const floorPosition = {
                 x: Math.floor(oBody.position.x),
