@@ -40,7 +40,7 @@ class SpaceTimeController {
     }
 
     isModelSizeAcceptable () {
-        return this.modelSize0 < this.appConfiguration.maxSpaceTimeSize;
+        return this.modelSize1 < this.appConfiguration.maxSpaceTimeSize;
     }
 
     setTime (nTime) {

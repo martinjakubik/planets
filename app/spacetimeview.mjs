@@ -146,30 +146,22 @@ class SpaceTimeView {
         const oTarget = event.currentTarget;
         let sId = oTarget.id;
         let oCoordinates = SpaceTimeView.getXYFromID(sId);
-        let oBody0 = this.spaceTimeController.getBody0At(oCoordinates.x, oCoordinates.y);
         let oBody1 = this.spaceTimeController.getBody1At(oCoordinates.x, oCoordinates.y);
-        if (oBody0) {
-            oBody0.mass++;
-        } else {
-            oBody0 = this.createBody(this.spaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
-        }
         if (oBody1) {
             oBody1.mass++;
         } else {
-            oBody1 = oBody0;
+            oBody1 = this.createBody(this.spaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
         }
 
         let bIsPenDown = true;
-        if (oBody0.mass < 16) {
-            this.spaceTimeController.updateBody0At(oCoordinates.x, oCoordinates.y, oBody0);
+        if (oBody1.mass < 16) {
             this.spaceTimeController.updateBody1At(oCoordinates.x, oCoordinates.y, oBody1);
         } else {
-            this.spaceTimeController.deleteBody0At(oCoordinates.x, oCoordinates.y);
             this.spaceTimeController.deleteBody1At(oCoordinates.x, oCoordinates.y);
-            oBody0 = null;
+            oBody1 = null;
             bIsPenDown = false;
         }
-        const nMass = oBody0 ? oBody0.mass : 0;
+        const nMass = oBody1 ? oBody1.mass : 0;
         this.drawBody(oCoordinates, bIsPenDown, nMass, this.appConfiguration.gridSize);
         if (!this.isTimerRunning) {
             this.startTimer.call(this);
@@ -296,7 +288,7 @@ class SpaceTimeView {
                 }
             });
         }
-        const aBodies = this.spaceTimeController.getBodies0();
+        const aBodies = this.spaceTimeController.getBodies1();
         aBodies.forEach(oBody => {
             const floorPosition = {
                 x: Math.floor(oBody.position.x),
