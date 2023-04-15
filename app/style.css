@@ -1,7 +1,3 @@
-div#x10y60, div#x50y60 {
-  border: 1px solid blue;
-  box-sizing: border-box;
-}
 body {
   background-image: url('https://www.supertitle.org/background.png');
   background-size: cover;
