@@ -154,7 +154,7 @@ class SpaceTimeController {
         const nTime = this.time;
         const sKey = SpaceTimeController.getKeyFromXY(dx, dy);
         if (this.spaceTimeModel1[nTime] && this.spaceTimeModel1[nTime][sKey]) {
-            delete this.spaceTimeModel0[nTime][sKey];
+            delete this.spaceTimeModel1[nTime][sKey];
         }
     }
 
