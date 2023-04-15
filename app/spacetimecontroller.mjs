@@ -139,35 +139,25 @@ class SpaceTimeController {
     }
 
     calculateAllGravity () {
-        const aCoordinates = this.getSpaceSnapshot();
-        if (aCoordinates) {
-            aCoordinates.forEach(aXAxis => {
-                aXAxis.forEach((oBody) => {
-                    aCoordinates.forEach(aXAxis => {
-                        aXAxis.forEach(oNeighbour => {
-                            if (oNeighbour.id !== oBody.id) {
-                                const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
-                                const oCoordinates = oBody.position;
-                                this.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
-                            }
-                        });
-                    });
-                });
+        const aBodies = this.getBodies();
+        aBodies.forEach(oBody => {
+            aBodies.forEach(oNeighbour => {
+                if (oNeighbour.id !== oBody.id) {
+                    const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
+                    const oCoordinates = oBody.position;
+                    this.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
+                }
             });
-        }
+        });
     }
 
     calculateAllPositions () {
-        const aCoordinates = this.getSpaceSnapshot();
-        if (aCoordinates) {
-            aCoordinates.forEach(aXAxis => {
-                aXAxis.forEach(oBody => {
-                    const oCoordinates = oBody.position;
-                    calculatePosition(oBody, this.getTime());
-                    this.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
-                });
-            });
-        }
+        const aBodies = this.getBodies();
+        aBodies.forEach(oBody => {
+            const oCoordinates = oBody.position;
+            calculatePosition(oBody, this.getTime());
+            this.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody);
+        });
     }
 }
 
