@@ -81,6 +81,12 @@ class SpaceTimeController {
         }
     }
 
+    initializeSpaceSnapshotAt (nTime) {
+        if (!this.spaceTimeModel1[nTime]) {
+            this.spaceTimeModel1[nTime] = {};
+        }
+    }
+
     getBodyWithId (key) {
         return this.bodyPositions[key];
     }
@@ -127,6 +133,7 @@ class SpaceTimeController {
             this.spaceTimeModel0[nTime][nMoveToX][nMoveToY] = oBody;
             this.bodyPositions[oBody.id] = { x: nMoveToX, y: nMoveToY };
         }
+        this.initializeSpaceSnapshotAt(nTime);
         this.deleteBody1At(dx, dy);
         const sKey = SpaceTimeController.getKeyFromXY(oBody.position.x, oBody.position.y);
         this.spaceTimeModel1[nTime][sKey] = oBody;
