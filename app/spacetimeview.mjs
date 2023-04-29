@@ -305,7 +305,7 @@ class SpaceTimeView {
         this.appBox = document.getElementById('app');
         if (!this.appBox) {
             const oContainer = document.getElementById('container');
-            let oParentElement = document.getElementsByTagName('body');
+            let oParentElement = document.body;
             if (oContainer) {
                 oParentElement = oContainer;
             }
