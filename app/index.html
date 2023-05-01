@@ -1,26 +1,36 @@
 <html>
 
 <head>
+    <link rel='stylesheet' type='text/css' href='../../../screen.css'></link>
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
     <div class="navigation">
         <button class="navigationButton">
-            <a href="https://www.supertitle.org"><img src="https://www.supertitle.org/logo.png" /></a>
+          <a href="https://www.supertitle.org"><img src="https://www.supertitle.org/logo.png" /></a>
         </button>
-    </div>
-    <div id="container">
-        <script type="module" src="./app.js"></script>
-    </div>
-
-    <div id="footer">
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons Licence"
-                style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This
-        work is
-        licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
-            Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-    </div>
-</body>
+        <button class="navigationButton" disabled>
+          <img src="logo.png" />
+        </button>
+        <button class="navigationButton">
+          <a href="../../fractals/app/index.html"><img src="../../fractals/app/logo.png" /></a>
+        </button>
+      </div>
+      <div id="containerShell">
+        <div id="containerHeader">- * - planets - * -</div>
+        <div id="container">
+            <script type="module" src="./app.js"></script>
+        </div>
+      </div>
+    
+      <div id="footer">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+          <img alt="Creative Commons Licence" style="border-width:0"
+            src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
+        </a>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+          Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+      </div>
+    </body>
 
 </html>
