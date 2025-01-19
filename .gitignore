@@ -5,5 +5,3 @@ lib/**
 .DS_Store
 
 package.sh
-
-app/logo.png
