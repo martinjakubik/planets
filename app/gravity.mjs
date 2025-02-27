@@ -43,7 +43,7 @@ const invertVectorHorizontally = function (body) {
         x: oCartesian.x * -1,
         y: oCartesian.y
     };
-    oBodyCopy.magnitude = oBodyCopy.magnitude * 0.9;
+    oBodyCopy.force = oBodyCopy.force * 0.7;
     oBodyCopy.angle = Math.atan2(oResultant.y, oResultant.x);
     return oBodyCopy;
 }
@@ -55,17 +55,17 @@ const invertVectorVertically = function (body) {
         x: oCartesian.x,
         y: oCartesian.y * -1
     };
-    oBodyCopy.magnitude = oBodyCopy.magnitude * 0.9;
+    oBodyCopy.force = oBodyCopy.force * 0.7;
     oBodyCopy.angle = Math.atan2(oResultant.y, oResultant.x);
     return oBodyCopy;
 }
 
 const updateBodyAfterCollisionWithBoundary = function (body, oBoundary) {
     let oBodyCopy = copyBody(body);
-    if (body.position.x <= 0 || body.position.x >= oBoundary.w) {
+    if (body.position.x <= 1 || body.position.x >= (oBoundary.w - 1)) {
         oBodyCopy = invertVectorHorizontally(oBodyCopy);
     }
-    if (body.position.y <= 0 || body.position.y >= oBoundary.h) {
+    if (body.position.y <= 1 || body.position.y >= (oBoundary.h - 1)) {
         oBodyCopy = invertVectorVertically(oBodyCopy);
     }
     return oBodyCopy
@@ -81,7 +81,6 @@ const calculateGravity = function (body, neighbour, oBoundary = { w: 100, h: 100
     body.force = sumOfMagnitudes;
     const oBodyCopy = updateBodyAfterCollisionWithBoundary(body, oBoundary);
     body.angle = oBodyCopy.angle;
-    body.magnitude = oBodyCopy.magnitude;
 
     return body;
 };
