@@ -42,7 +42,7 @@ class SpaceTimeView {
         target.classList.add(`m${sSanitizedMassId}`);
     }
 
-    static drawSpaceshipWings(position, isPenDown, gridSize) {
+    static drawSpaceshipWings(position, isPenDown, orientationAngle, gridSize) {
         const aNeighborBoxes = [];
         aNeighborBoxes.push({ x: position.x, y: position.y + 1 });
         aNeighborBoxes.push({ x: position.x, y: position.y - 1 });
@@ -101,6 +101,10 @@ class SpaceTimeView {
         this.timerIntervalId = 0;
         this.isTimerRunning = false;
         this.timeFwdButton;
+
+        this.spaceship = {
+            orientationAngle: 0
+        };
 
         this.audioOn = false;
         this.settingsVisible = false;
@@ -305,7 +309,7 @@ class SpaceTimeView {
         }
         switch (eType) {
             case E_BODY_TYPES.SPACESHIP:
-                SpaceTimeView.drawSpaceshipWings(floorPosition, isPenDown, gridSize);
+                SpaceTimeView.drawSpaceshipWings(floorPosition, isPenDown, this.spaceship.orientationAngle, gridSize);
                 break;
             case E_BODY_TYPES.STAR:
             default:
