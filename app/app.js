@@ -14,5 +14,5 @@ const oAppConfiguration = {
 
 const oSpaceTimeController = new SpaceTimeController(oAppConfiguration);
 const oSpaceTimeView = new SpaceTimeView(oAppConfiguration);
-oSpaceTimeView.makeSpaceGrid(160, oSpaceTimeController);
+oSpaceTimeView.makeSpaceGrid(100, oSpaceTimeController);
 oSpaceTimeView.makeSpaceTimeButtonBar();
