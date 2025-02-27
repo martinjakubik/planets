@@ -6,6 +6,10 @@ const CSS_CLASS_BODY_BOX = 'bodyBox';
 const CSS_CLASS_NEIGHBOR_BOX = 'neighborBox';
 const CSS_CLASS_TRAIL_BOX = 'trailBox';
 const TRAIL_LENGTH = 16;
+const E_BODY_TYPES = {
+    STAR: 'star',
+    SPACESHIP: 'spaceship'
+}
 
 class SpaceTimeView {
     static getXYFromID(sId) {
@@ -142,6 +146,16 @@ class SpaceTimeView {
         return createBody(time, x, y);
     }
 
+    createSpaceship(x, y) {
+        const oSpaceship = createBody(0, x, y);
+        const nMass = 0.1;
+        const bIsPenDown = true;
+        oSpaceship.mass = nMass;
+        this.spaceTimeController.updateBodyAt(x, y, oSpaceship);
+        this.drawBody({ x: x, y: y }, E_BODY_TYPES.SPACESHIP, bIsPenDown, nMass, this.appConfiguration.gridSize);
+        return oSpaceship;
+    }
+
     handleSpaceClick(event) {
         const oTarget = event.currentTarget;
         let sId = oTarget.id;
@@ -162,7 +176,7 @@ class SpaceTimeView {
             bIsPenDown = false;
         }
         const nMass = oBody1 ? oBody1.mass : 0;
-        this.drawBody(oCoordinates, bIsPenDown, nMass, this.appConfiguration.gridSize);
+        this.drawBody(oCoordinates, E_BODY_TYPES.STAR, bIsPenDown, nMass, this.appConfiguration.gridSize);
         if (!this.isTimerRunning) {
             this.startTimer.call(this);
         }
@@ -258,7 +272,7 @@ class SpaceTimeView {
         }
     }
 
-    drawBody(position, isPenDown, mass = 0, gridSize) {
+    drawBody(position, eType = E_BODY_TYPES.STAR, isPenDown, mass = 0, gridSize) {
         const floorPosition = {
             x: Math.floor(position.x),
             y: Math.floor(position.y)
@@ -295,7 +309,7 @@ class SpaceTimeView {
                 y: Math.floor(oBody.position.y)
             };
             if (floorPosition.x > 0 && floorPosition.x < this.appConfiguration.gridSize && floorPosition.y > 0 && floorPosition.y < this.appConfiguration.gridSize) {
-                this.drawBody(floorPosition, isPenDown, oBody.mass, this.appConfiguration.gridSize);
+                this.drawBody(floorPosition, E_BODY_TYPES.STAR, isPenDown, oBody.mass, this.appConfiguration.gridSize);
                 this.moveTrail(oBody.id, floorPosition);
             }
         });
@@ -359,6 +373,9 @@ class SpaceTimeView {
 
             y = y - 1;
         }
+        const nSpaceshipX = Math.floor(numberOfColumns / 2);
+        const nSpaceshipY = Math.floor(numberOfRows / 2);
+        this.createSpaceship(nSpaceshipX, nSpaceshipY);
     }
 
     makeTimeFwdButton(parentBox) {
