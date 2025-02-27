@@ -1,4 +1,7 @@
 const G = 6.674 * 10 ** -1;
+const DAMPENING_COEFFICIENT = {
+    BOUNDARY: 0.999
+}
 
 const createBody = function (nTime, x, y) {
     return {
@@ -43,7 +46,7 @@ const invertVectorHorizontally = function (body) {
         x: oCartesian.x * -1,
         y: oCartesian.y
     };
-    oBodyCopy.force = oBodyCopy.force * 0.7;
+    oBodyCopy.force = oBodyCopy.force * DAMPENING_COEFFICIENT.BOUNDARY;
     oBodyCopy.angle = Math.atan2(oResultant.y, oResultant.x);
     return oBodyCopy;
 }
@@ -55,7 +58,7 @@ const invertVectorVertically = function (body) {
         x: oCartesian.x,
         y: oCartesian.y * -1
     };
-    oBodyCopy.force = oBodyCopy.force * 0.7;
+    oBodyCopy.force = oBodyCopy.force * DAMPENING_COEFFICIENT.BOUNDARY;
     oBodyCopy.angle = Math.atan2(oResultant.y, oResultant.x);
     return oBodyCopy;
 }
@@ -81,6 +84,7 @@ const calculateGravity = function (body, neighbour, oBoundary = { w: 100, h: 100
     body.force = sumOfMagnitudes;
     const oBodyCopy = updateBodyAfterCollisionWithBoundary(body, oBoundary);
     body.angle = oBodyCopy.angle;
+    body.force = oBodyCopy.force;
 
     return body;
 };
