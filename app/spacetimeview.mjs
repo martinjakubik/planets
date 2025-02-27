@@ -338,8 +338,9 @@ class SpaceTimeView {
                 x: Math.floor(oBody.position.x),
                 y: Math.floor(oBody.position.y)
             };
+            const sBodyType = oBody.id === '0:45:45' ? E_BODY_TYPES.SPACESHIP : E_BODY_TYPES.STAR;
             if (floorPosition.x > 0 && floorPosition.x < this.appConfiguration.gridSize && floorPosition.y > 0 && floorPosition.y < this.appConfiguration.gridSize) {
-                this.drawBody(floorPosition, E_BODY_TYPES.STAR, isPenDown, oBody.mass, this.appConfiguration.gridSize);
+                this.drawBody(floorPosition, sBodyType, isPenDown, oBody.mass, this.appConfiguration.gridSize);
                 this.moveTrail(oBody.id, floorPosition);
             }
         });
