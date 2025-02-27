@@ -2,7 +2,7 @@ import { SpaceTimeView } from './spacetimeview.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
 const oAppConfiguration = {
-    gridSize: 60,
+    gridSize: 90,
     maxSpaceTimeSize: 10 ** 6,
     hoverSound: 'https://www.supertitle.org/chirp.mp3',
     volumeIcon: {

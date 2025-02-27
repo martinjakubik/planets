@@ -62,10 +62,10 @@ const invertVectorVertically = function (body) {
 
 const updateBodyAfterCollisionWithBoundary = function (body, oBoundary) {
     let oBodyCopy = copyBody(body);
-    if (body.position.x <= 1 || body.position.x >= (oBoundary.w - 1)) {
+    if (body.position.x <= 2 || body.position.x >= (oBoundary.w - 2)) {
         oBodyCopy = invertVectorHorizontally(oBodyCopy);
     }
-    if (body.position.y <= 1 || body.position.y >= (oBoundary.h - 1)) {
+    if (body.position.y <= 2 || body.position.y >= (oBoundary.h - 2)) {
         oBodyCopy = invertVectorVertically(oBodyCopy);
     }
     return oBodyCopy
