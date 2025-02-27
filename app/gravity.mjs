@@ -65,7 +65,7 @@ const updateBodyAfterCollisionWithBoundary = function (body, oBoundary) {
     if (body.position.x <= 0 || body.position.x >= oBoundary.w) {
         oBodyCopy = invertVectorHorizontally(oBodyCopy);
     }
-    if (body.position.y <= 0 || body.position.y >= oBodyCopy.h) {
+    if (body.position.y <= 0 || body.position.y >= oBoundary.h) {
         oBodyCopy = invertVectorVertically(oBodyCopy);
     }
     return oBodyCopy
