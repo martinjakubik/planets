@@ -33,6 +33,9 @@ div#buttonBar {
 
 div#spaceTime>div>div {
   border-radius: 30%;
+  border-color: aliceblue;
+  border-width: 1px;
+  border-style: solid;
 }
 
 div#spaceTime>div>div.m0 {
