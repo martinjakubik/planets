@@ -48,10 +48,25 @@ const invertVectorHorizontally = function (body) {
     return oBodyCopy;
 }
 
+const invertVectorVertically = function (body) {
+    const oBodyCopy = copyBody(body);
+    let oCartesian = convertRadialVectorToCartesian(body);
+    let oResultant = {
+        x: oCartesian.x,
+        y: oCartesian.y * -1
+    };
+    oBodyCopy.magnitude = oBodyCopy.magnitude * 0.9;
+    oBodyCopy.angle = Math.atan2(oResultant.y, oResultant.x);
+    return oBodyCopy;
+}
+
 const updateBodyAfterCollisionWithBoundary = function (body, oBoundary) {
     let oBodyCopy = copyBody(body);
-    if (body.position.x <= 0) {
+    if (body.position.x <= 0 || body.position.x >= oBoundary.w) {
         oBodyCopy = invertVectorHorizontally(oBodyCopy);
+    }
+    if (body.position.y <= 0 || body.position.y >= oBodyCopy.h) {
+        oBodyCopy = invertVectorVertically(oBodyCopy);
     }
     return oBodyCopy
 }
