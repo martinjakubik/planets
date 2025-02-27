@@ -1,3 +1,15 @@
+div.navigation>button.navigationButton,
+div.navigation>button.controlButton {
+  width: 2em;
+  height: 1em;
+  margin: 2em;
+  border-width: 0;
+}
+
+div.navigation>button.navigationButton>img,
+div.navigation>button.controlButton>img {
+  display: none;
+}
 
 div#dataView {
   display: flex;
