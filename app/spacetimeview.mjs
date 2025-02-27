@@ -37,8 +37,26 @@ class SpaceTimeView {
 
     static incrementMass(target, mass) {
         const nPreviousMass = this.modulo((mass - 1), 16);
+        const sSanitizedMassId = (mass + '').replace('.', '_');
         target.classList.remove(`m${nPreviousMass}`);
-        target.classList.add(`m${mass}`);
+        target.classList.add(`m${sSanitizedMassId}`);
+    }
+
+    static drawSpaceshipWings(position, isPenDown, gridSize) {
+        const aNeighborBoxes = [];
+        aNeighborBoxes.push({ x: position.x, y: position.y + 1 });
+        aNeighborBoxes.push({ x: position.x, y: position.y - 1 });
+        aNeighborBoxes.push({ x: position.x - 1, y: position.y - 1 });
+        aNeighborBoxes.push({ x: position.x + 1, y: position.y - 1 });
+        aNeighborBoxes.forEach(neighborBoxPosition => {
+            const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
+            let target = document.getElementById(sElementID);
+            if (isPenDown) {
+                target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
+            } else {
+                target.classList.remove(CSS_CLASS_NEIGHBOR_BOX);
+            }
+        });
     }
 
     static drawSparkle(position, isPenDown, gridSize) {
@@ -285,7 +303,15 @@ class SpaceTimeView {
         } else {
             SpaceTimeView.eraseBody(oNewTarget, mass);
         }
-        SpaceTimeView.drawSparkle(floorPosition, isPenDown, gridSize);
+        switch (eType) {
+            case E_BODY_TYPES.SPACESHIP:
+                SpaceTimeView.drawSpaceshipWings(floorPosition, isPenDown, gridSize);
+                break;
+            case E_BODY_TYPES.STAR:
+            default:
+                SpaceTimeView.drawSparkle(floorPosition, isPenDown, gridSize);
+                break;
+        }
     }
 
     drawSpace(isPenDown = true) {
