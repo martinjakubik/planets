@@ -31,7 +31,8 @@ class SpaceTimeView {
     }
 
     static eraseBody(target, mass) {
-        target.classList.remove(`m${mass}`);
+        const sSanitizedMassId = (mass + '').replace('.', '_');
+        target.classList.remove(`m${sSanitizedMassId}`);
         target.classList.remove(CSS_CLASS_BODY_BOX);
     }
 
