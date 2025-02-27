@@ -36,6 +36,26 @@ const getNeighbourVector = function (body, neighbour, distanceSquared) {
     };
 };
 
+const invertVectorHorizontally = function (body) {
+    const oBodyCopy = copyBody(body);
+    let oCartesian = convertRadialVectorToCartesian(body);
+    let oResultant = {
+        x: oCartesian.x * -1,
+        y: oCartesian.y
+    };
+    oBodyCopy.magnitude = oBodyCopy.magnitude * 0.9;
+    oBodyCopy.angle = Math.atan2(oResultant.y, oResultant.x);
+    return oBodyCopy;
+}
+
+const updateBodyAfterCollisionWithBoundary = function (body) {
+    let oBodyCopy = copyBody(body);
+    if (body.position.x <= 0) {
+        oBodyCopy = invertVectorHorizontally(oBodyCopy);
+    }
+    return oBodyCopy
+}
+
 const calculateGravity = function (body, neighbour) {
     let nDistanceSquared = getDistanceSquared(body, neighbour);
     let neighbourVector = getNeighbourVector(body, neighbour, nDistanceSquared);
@@ -44,6 +64,9 @@ const calculateGravity = function (body, neighbour) {
     let sumOfAngles = vectorSum.angle;
     body.angle = sumOfAngles;
     body.force = sumOfMagnitudes;
+    const oBodyCopy = updateBodyAfterCollisionWithBoundary(body);
+    body.angle = oBodyCopy.angle;
+    body.magnitude = oBodyCopy.magnitude;
 
     return body;
 };
