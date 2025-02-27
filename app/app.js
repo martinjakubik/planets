@@ -2,7 +2,7 @@ import { SpaceTimeView } from './spacetimeview.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
 const oAppConfiguration = {
-    gridSize: 0,
+    gridSize: 60,
     maxSpaceTimeSize: 10 ** 6,
     hoverSound: 'https://www.supertitle.org/chirp.mp3',
     volumeIcon: {
@@ -14,5 +14,5 @@ const oAppConfiguration = {
 
 const oSpaceTimeController = new SpaceTimeController(oAppConfiguration);
 const oSpaceTimeView = new SpaceTimeView(oAppConfiguration);
-oSpaceTimeView.makeSpaceGrid(100, oSpaceTimeController);
+oSpaceTimeView.makeSpaceGrid(oSpaceTimeController);
 oSpaceTimeView.makeSpaceTimeButtonBar();

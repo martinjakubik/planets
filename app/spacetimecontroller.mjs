@@ -124,12 +124,16 @@ class SpaceTimeController {
 
     calculateAllGravity() {
         const aBodies = this.getBodies();
+        let oBoundary = {
+            w: this.appConfiguration.gridSize,
+            h: this.appConfiguration.gridSize
+        }
         let iBody, iNeighbour = 0;
         for (iBody = 0; iBody < aBodies.length; iBody++) {
             let oBody = aBodies[iBody];
             for (iNeighbour = iBody + 1; iNeighbour < aBodies.length; iNeighbour++) {
                 let oNeighbour = aBodies[iNeighbour];
-                const oRecalculatedBody = calculateGravity(oBody, oNeighbour);
+                const oRecalculatedBody = calculateGravity(oBody, oNeighbour, oBoundary);
                 const oCoordinates = oBody.position;
                 this.updateBodyAt(oCoordinates.x, oCoordinates.y, oRecalculatedBody);
             }

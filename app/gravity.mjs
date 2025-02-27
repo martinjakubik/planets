@@ -48,7 +48,7 @@ const invertVectorHorizontally = function (body) {
     return oBodyCopy;
 }
 
-const updateBodyAfterCollisionWithBoundary = function (body) {
+const updateBodyAfterCollisionWithBoundary = function (body, oBoundary) {
     let oBodyCopy = copyBody(body);
     if (body.position.x <= 0) {
         oBodyCopy = invertVectorHorizontally(oBodyCopy);
@@ -56,7 +56,7 @@ const updateBodyAfterCollisionWithBoundary = function (body) {
     return oBodyCopy
 }
 
-const calculateGravity = function (body, neighbour) {
+const calculateGravity = function (body, neighbour, oBoundary = { w: 100, h: 100 }) {
     let nDistanceSquared = getDistanceSquared(body, neighbour);
     let neighbourVector = getNeighbourVector(body, neighbour, nDistanceSquared);
     let vectorSum = addVectors(body, neighbourVector);
@@ -64,7 +64,7 @@ const calculateGravity = function (body, neighbour) {
     let sumOfAngles = vectorSum.angle;
     body.angle = sumOfAngles;
     body.force = sumOfMagnitudes;
-    const oBodyCopy = updateBodyAfterCollisionWithBoundary(body);
+    const oBodyCopy = updateBodyAfterCollisionWithBoundary(body, oBoundary);
     body.angle = oBodyCopy.angle;
     body.magnitude = oBodyCopy.magnitude;
 
