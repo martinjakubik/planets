@@ -48,6 +48,7 @@ div#spaceTime>div>div {
   border-color: aliceblue;
   border-width: 1px;
   border-style: solid;
+  box-sizing: border-box;
 }
 
 div#spaceTime>div>div.m0 {
