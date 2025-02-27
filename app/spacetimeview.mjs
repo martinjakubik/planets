@@ -44,10 +44,18 @@ class SpaceTimeView {
 
     static drawSpaceshipWings(position, isPenDown, orientationAngle, gridSize) {
         const aNeighborBoxes = [];
-        aNeighborBoxes.push({ x: position.x, y: position.y + 1 });
-        aNeighborBoxes.push({ x: position.x, y: position.y - 1 });
-        aNeighborBoxes.push({ x: position.x - 1, y: position.y - 1 });
-        aNeighborBoxes.push({ x: position.x + 1, y: position.y - 1 });
+        if ((position.y + 1) < gridSize) {
+            aNeighborBoxes.push({ x: position.x, y: position.y + 1 });
+        }
+        if ((position.y - 1) >= 0) {
+            aNeighborBoxes.push({ x: position.x, y: position.y - 1 });
+        }
+        if ((position.x - 1) >= 0 && (position.y - 1) >= 0) {
+            aNeighborBoxes.push({ x: position.x - 1, y: position.y - 1 });
+        }
+        if ((position.x + 1) < gridSize && (position.y - 1) >= 0) {
+            aNeighborBoxes.push({ x: position.x + 1, y: position.y - 1 });
+        }
         aNeighborBoxes.forEach(neighborBoxPosition => {
             const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
             let target = document.getElementById(sElementID);
