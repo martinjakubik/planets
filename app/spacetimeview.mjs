@@ -99,10 +99,6 @@ class SpaceTimeView {
         return aNeighborBoxes;
     }
 
-    static modulo(n, d) {
-        return ((n % d) + d) % d;
-    }
-
     constructor(oAppConfiguration) {
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
 
