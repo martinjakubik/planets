@@ -43,22 +43,21 @@ class SpaceTimeView {
         target.classList.add(`m${sSanitizedMassId}`);
     }
 
+    static addBoxAfterRotation(boxes, rotatedX, rotatedY, gridSize) {
+        if (Math.floor(rotatedX) < gridSize && Math.floor(rotatedY) < gridSize) {
+            boxes.push({ x: Math.floor(rotatedX), y: Math.floor(rotatedY) });
+        }
+    }
+
     static drawSpaceshipWings(position, isPenDown, orientationTick, gridSize) {
         const aNeighborBoxes = [];
-        const xNose = Math.cos(2 * Math.PI / 12 * orientationTick);
-        console.log(xNose);
-        if ((position.y + 1) < gridSize) {
-            aNeighborBoxes.push({ x: position.x, y: position.y + 1 });
-        }
-        if ((position.y - 1) >= 0) {
-            aNeighborBoxes.push({ x: position.x, y: position.y - 1 });
-        }
-        if ((position.x - 1) >= 0 && (position.y - 1) >= 0) {
-            aNeighborBoxes.push({ x: position.x - 1, y: position.y - 1 });
-        }
-        if ((position.x + 1) < gridSize && (position.y - 1) >= 0) {
-            aNeighborBoxes.push({ x: position.x + 1, y: position.y - 1 });
-        }
+        const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
+        const rotatedComponentX = Math.cos(radOrientationAngle);
+        const rotatedComponentY = Math.sin(radOrientationAngle);
+        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x + rotatedComponentX, position.y + rotatedComponentY, gridSize);
+        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - rotatedComponentX, position.y + rotatedComponentY, gridSize);
+        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - rotatedComponentX, position.y - rotatedComponentY, gridSize);
+        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x + rotatedComponentX, position.y - rotatedComponentY, gridSize);
         aNeighborBoxes.forEach(neighborBoxPosition => {
             const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
             let target = document.getElementById(sElementID);
