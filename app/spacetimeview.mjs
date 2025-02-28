@@ -43,9 +43,10 @@ class SpaceTimeView {
         target.classList.add(`m${sSanitizedMassId}`);
     }
 
-    static drawSpaceshipWings(position, isPenDown, orientationAngle, gridSize) {
+    static drawSpaceshipWings(position, isPenDown, orientationTick, gridSize) {
         const aNeighborBoxes = [];
-        console.log(orientationAngle);
+        const xNose = Math.cos(2 * Math.PI / 12 * orientationTick);
+        console.log(xNose);
         if ((position.y + 1) < gridSize) {
             aNeighborBoxes.push({ x: position.x, y: position.y + 1 });
         }
@@ -113,7 +114,7 @@ class SpaceTimeView {
         this.timeFwdButton;
 
         this.spaceship = {
-            orientationAngle: 0
+            orientationTick: 0
         };
 
         this.audioOn = false;
@@ -319,7 +320,7 @@ class SpaceTimeView {
         }
         switch (eType) {
             case E_BODY_TYPES.SPACESHIP:
-                SpaceTimeView.drawSpaceshipWings(floorPosition, isPenDown, this.spaceship.orientationAngle, gridSize);
+                SpaceTimeView.drawSpaceshipWings(floorPosition, isPenDown, this.spaceship.orientationTick, gridSize);
                 break;
             case E_BODY_TYPES.STAR:
             default:
@@ -445,9 +446,9 @@ class SpaceTimeView {
             this.stopTimer.call(this);
             this.moveTimeForward.call(this);
         } else if (keyCode === 37) {
-            this.spaceship.orientationAngle = SpaceTimeView.modulo((this.spaceship.orientationAngle - 1), 12);
+            this.spaceship.orientationTick = SpaceTimeView.modulo((this.spaceship.orientationTick - 1), 12);
         } else if (keyCode === 39) {
-            this.spaceship.orientationAngle = SpaceTimeView.modulo((this.spaceship.orientationAngle + 1), 12);
+            this.spaceship.orientationTick = SpaceTimeView.modulo((this.spaceship.orientationTick + 1), 12);
         }
     }
 }
