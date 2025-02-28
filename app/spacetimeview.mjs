@@ -37,7 +37,7 @@ class SpaceTimeView {
     }
 
     static drawBodyWithMass(target, mass) {
-        const nPreviousMass = this.modulo((mass - 1), 16);
+        const nPreviousMass = SpaceTimeView.modulo((mass - 1), 16);
         const sSanitizedMassId = (mass + '').replace('.', '_');
         target.classList.remove(`m${nPreviousMass}`);
         target.classList.add(`m${sSanitizedMassId}`);
