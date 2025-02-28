@@ -36,7 +36,7 @@ class SpaceTimeView {
         target.classList.remove(CSS_CLASS_BODY_BOX);
     }
 
-    static incrementMass(target, mass) {
+    static drawBodyWithMass(target, mass) {
         const nPreviousMass = this.modulo((mass - 1), 16);
         const sSanitizedMassId = (mass + '').replace('.', '_');
         target.classList.remove(`m${nPreviousMass}`);
@@ -315,7 +315,7 @@ class SpaceTimeView {
         };
         const sElementID = SpaceTimeView.getIDFromXY(floorPosition.x, floorPosition.y);
         const oNewTarget = document.getElementById(sElementID);
-        SpaceTimeView.incrementMass(oNewTarget, mass);
+        SpaceTimeView.drawBodyWithMass(oNewTarget, mass);
         if (isPenDown) {
             oNewTarget.classList.add(CSS_CLASS_BODY_BOX);
         } else {
