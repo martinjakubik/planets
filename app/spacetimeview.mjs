@@ -45,6 +45,7 @@ class SpaceTimeView {
 
     static drawSpaceshipWings(position, isPenDown, orientationAngle, gridSize) {
         const aNeighborBoxes = [];
+        console.log(orientationAngle);
         if ((position.y + 1) < gridSize) {
             aNeighborBoxes.push({ x: position.x, y: position.y + 1 });
         }
@@ -96,6 +97,10 @@ class SpaceTimeView {
             aNeighborBoxes.push({ x: position.x, y: position.y + radius });
         }
         return aNeighborBoxes;
+    }
+
+    static modulo(n, d) {
+        return ((n % d) + d) % d;
     }
 
     constructor(oAppConfiguration) {
@@ -438,11 +443,15 @@ class SpaceTimeView {
 
     handleKeyDown(event) {
         const keyCode = event.keyCode;
-        if (keyCode === 37) {
+        if (keyCode === 66) {
             this.moveTimeBackward();
-        } else if (keyCode === 39) {
+        } else if (keyCode === 70) {
             this.stopTimer.call(this);
             this.moveTimeForward.call(this);
+        } else if (keyCode === 37) {
+            this.spaceship.orientationAngle = SpaceTimeView.modulo((this.spaceship.orientationAngle - 1), 12);
+        } else if (keyCode === 39) {
+            this.spaceship.orientationAngle = SpaceTimeView.modulo((this.spaceship.orientationAngle + 1), 12);
         }
     }
 }
