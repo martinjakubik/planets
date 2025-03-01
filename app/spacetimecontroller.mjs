@@ -69,12 +69,24 @@ class SpaceTimeController {
         return aSpaceSnapshot ? aSpaceSnapshot[sKey] : null;
     }
 
+    getSpaceship() {
+        const aBodies = this.getBodies();
+        const oSpaceship = aBodies.find(
+            (oBody) => oBody.id === '0:45:45'
+        )
+        return oSpaceship;
+    }
+
     updateBodyAt(dx, dy, oBody) {
         const nTime = this.time;
         this.initializeSpaceSnapshotAt(nTime);
         this.deleteBodyAt(dx, dy);
         const sKey = SpaceTimeController.getKeyFromXY(oBody.position.x, oBody.position.y);
         this.spaceTimeModel[nTime][sKey] = oBody;
+    }
+
+    updateSpaceship(oBody) {
+        this.updateBodyAt(45, 45, oBody);
     }
 
     deleteBodyAt(dx, dy) {

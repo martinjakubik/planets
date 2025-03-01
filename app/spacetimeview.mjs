@@ -1,4 +1,4 @@
-import { createBody } from './gravity.mjs';
+import { addVectors, createBody } from './gravity.mjs';
 import { createDiv, createButton } from './learnhypertext.mjs';
 
 const TIMER_INTERVAL = 70;
@@ -227,6 +227,26 @@ class SpaceTimeView {
         }
     }
 
+    spaceshipThrust() {
+        const radOrientationAngle = 2 * Math.PI * this.spaceship.orientationTick / 12;
+        const thrustVector = {
+            force: 0.001,
+            angle: radOrientationAngle
+        };
+        const oSpaceship = this.spaceTimeController.getSpaceship();
+        const spaceshipVector = oSpaceship ? {
+            force: oSpaceship.force,
+            angle: oSpaceship.angle
+        } : {
+            force: 0,
+            angle: 0
+        };
+        const resultantVector = addVectors(spaceshipVector, thrustVector);
+        oSpaceship.force = resultantVector.magnitude;
+        oSpaceship.angle = resultantVector.angle;
+        this.spaceTimeController.updateSpaceship(oSpaceship);
+    };
+
     moveTimeForward() {
         const bIsPenDown = false;
         this.drawSpace(bIsPenDown);
@@ -450,6 +470,10 @@ class SpaceTimeView {
         this.makeTimeFwdButton(this.buttonBar);
     }
 
+    upArrowPressed() {
+        this.spaceshipThrust();
+    }
+
     handleKeyDown(event) {
         const keyCode = event.keyCode;
         if (keyCode === 66) {
@@ -457,6 +481,8 @@ class SpaceTimeView {
         } else if (keyCode === 70) {
             this.stopTimer.call(this);
             this.moveTimeForward.call(this);
+        } else if (keyCode === 38) {
+            this.upArrowPressed();
         } else if (keyCode === 37) {
             this.spaceship.orientationTick = SpaceTimeView.modulo((this.spaceship.orientationTick - 1), 12);
         } else if (keyCode === 39) {
