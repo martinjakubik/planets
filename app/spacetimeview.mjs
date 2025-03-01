@@ -122,20 +122,20 @@ class SpaceTimeView {
     }
 
     static getSparkleBoxes(position, radius, gridSize) {
-        const aNeighborBoxes = [];
+        const aSparkleBoxes = [];
         if ((position.x - radius) >= 0) {
-            aNeighborBoxes.push({ x: position.x - radius, y: position.y });
+            aSparkleBoxes.push({ x: position.x - radius, y: position.y });
         }
         if ((position.y - radius) >= 0) {
-            aNeighborBoxes.push({ x: position.x, y: position.y - 1 });
+            aSparkleBoxes.push({ x: position.x, y: position.y - 1 });
         }
         if ((position.x + radius) < gridSize) {
-            aNeighborBoxes.push({ x: position.x + radius, y: position.y });
+            aSparkleBoxes.push({ x: position.x + radius, y: position.y });
         }
         if ((position.y + radius) < gridSize) {
-            aNeighborBoxes.push({ x: position.x, y: position.y + radius });
+            aSparkleBoxes.push({ x: position.x, y: position.y + radius });
         }
-        return aNeighborBoxes;
+        return aSparkleBoxes;
     }
 
     constructor(oAppConfiguration) {
