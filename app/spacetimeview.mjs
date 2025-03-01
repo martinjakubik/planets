@@ -109,7 +109,7 @@ class SpaceTimeView {
     }
 
     static drawSparkle(position, isPenDown, gridSize) {
-        const aNeighborBoxes = SpaceTimeView.getNeighborBoxes(position, 1, gridSize);
+        const aNeighborBoxes = SpaceTimeView.getSparkleBoxes(position, 1, gridSize);
         aNeighborBoxes.forEach(neighborBoxPosition => {
             const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
             let target = document.getElementById(sElementID);
@@ -121,7 +121,7 @@ class SpaceTimeView {
         });
     }
 
-    static getNeighborBoxes(position, radius, gridSize) {
+    static getSparkleBoxes(position, radius, gridSize) {
         const aNeighborBoxes = [];
         if ((position.x - radius) >= 0) {
             aNeighborBoxes.push({ x: position.x - radius, y: position.y });
