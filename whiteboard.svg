@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.3786088"
-     inkscape:cx="482.21465"
-     inkscape:cy="211.67836"
+     inkscape:cx="631.88196"
+     inkscape:cy="332.75753"
      inkscape:window-width="1424"
      inkscape:window-height="831"
      inkscape:window-x="8"
@@ -944,5 +944,53 @@
          sodipodi:role="line"
          id="tspan15248"
          style="stroke-width:0.2"></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-opacity:1"
+       x="186.41364"
+       y="105.82188"
+       id="text20914"><tspan
+         sodipodi:role="line"
+         id="tspan20910"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="186.41364"
+         y="105.82188">x = 0 + ho</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="186.41364"
+         y="108.46771"
+         id="tspan20912">y = 0 - vo</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-opacity:1"
+       x="173.51044"
+       y="101.92867"
+       id="text21085"><tspan
+         sodipodi:role="line"
+         id="tspan21081"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="173.51044"
+         y="101.92867">x = -1 - ho</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="173.51044"
+         y="104.57451"
+         id="tspan21083">y = 0 - vo</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-opacity:1"
+       x="199.31683"
+       y="104.70953"
+       id="text21091"><tspan
+         sodipodi:role="line"
+         id="tspan21087"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="199.31683"
+         y="104.70953">x = 1 + ho</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="199.31683"
+         y="107.35537"
+         id="tspan21089">y = 0 - vo</tspan></text>
   </g>
 </svg>

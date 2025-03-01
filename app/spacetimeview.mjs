@@ -44,7 +44,7 @@ class SpaceTimeView {
     }
 
     static addBoxAfterRotation(boxes, rotatedX, rotatedY, gridSize) {
-        if (Math.floor(rotatedX) < gridSize && Math.floor(rotatedY) < gridSize) {
+        if (Math.floor(rotatedX) >= 0 && Math.floor(rotatedY) >= 0 && Math.floor(rotatedX) < gridSize && Math.floor(rotatedY) < gridSize) {
             boxes.push({ x: Math.floor(rotatedX), y: Math.floor(rotatedY) });
         }
     }
@@ -55,9 +55,9 @@ class SpaceTimeView {
         const rotatedComponentX = Math.cos(radOrientationAngle);
         const rotatedComponentY = Math.sin(radOrientationAngle);
         SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x + rotatedComponentX, position.y + rotatedComponentY, gridSize);
-        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - rotatedComponentX, position.y + rotatedComponentY, gridSize);
-        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - rotatedComponentX, position.y - rotatedComponentY, gridSize);
-        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x + rotatedComponentX, position.y - rotatedComponentY, gridSize);
+        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - 1 - rotatedComponentX, position.y - rotatedComponentY, gridSize);
+        // SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - rotatedComponentX, position.y - rotatedComponentY, gridSize);
+        // SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x + 1 - rotatedComponentX, position.y - rotatedComponentY, gridSize);
         aNeighborBoxes.forEach(neighborBoxPosition => {
             const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
             let target = document.getElementById(sElementID);
