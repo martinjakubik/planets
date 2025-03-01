@@ -45,7 +45,7 @@ class SpaceTimeView {
         target.classList.add(`m${sSanitizedMassId}`);
     }
 
-    static addBoxAndRotate(boxes, x, y, gridSize) {
+    static addBoxToDraw(boxes, x, y, gridSize) {
         if (Math.round(x) >= 0 && Math.round(y) >= 0 && Math.round(x) < gridSize && Math.round(y) < gridSize) {
             boxes.push({ x: Math.round(x), y: Math.round(y) });
         }
@@ -75,7 +75,7 @@ class SpaceTimeView {
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addBoxAndRotate(aNeighborBoxes, position.x - xoffset, position.y + yoffset, gridSize);
+        SpaceTimeView.addBoxToDraw(aNeighborBoxes, position.x - xoffset, position.y + yoffset, gridSize);
         if (isPenDown) {
             SpaceTimeView.drawSpaceshipWingPixels(aNeighborBoxes, currentPixels);
         } else {
@@ -88,7 +88,7 @@ class SpaceTimeView {
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addBoxAndRotate(aThrustBoxes, position.x - 3 * xoffset, position.y + 3 * yoffset, gridSize);
+        SpaceTimeView.addBoxToDraw(aThrustBoxes, position.x - 3 * xoffset, position.y + 3 * yoffset, gridSize);
         aThrustBoxes.forEach(boxPosition => {
             const sElementID = SpaceTimeView.getIDFromXY(boxPosition.x, boxPosition.y);
             let target = document.getElementById(sElementID);
