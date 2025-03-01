@@ -483,10 +483,13 @@ class SpaceTimeView {
             this.moveTimeForward.call(this);
         } else if (keyCode === 38) {
             this.upArrowPressed();
+            event.preventDefault();
         } else if (keyCode === 37) {
             this.spaceship.orientationTick = SpaceTimeView.modulo((this.spaceship.orientationTick - 1), 12);
+            event.preventDefault();
         } else if (keyCode === 39) {
             this.spaceship.orientationTick = SpaceTimeView.modulo((this.spaceship.orientationTick + 1), 12);
+            event.preventDefault();
         }
     }
 }
