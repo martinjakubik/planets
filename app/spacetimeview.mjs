@@ -123,18 +123,10 @@ class SpaceTimeView {
 
     static getSparkleBoxes(position, radius, gridSize) {
         const aSparkleBoxes = [];
-        if ((position.x - radius) >= 0) {
-            aSparkleBoxes.push({ x: position.x - radius, y: position.y });
-        }
-        if ((position.y - radius) >= 0) {
-            aSparkleBoxes.push({ x: position.x, y: position.y - 1 });
-        }
-        if ((position.x + radius) < gridSize) {
-            aSparkleBoxes.push({ x: position.x + radius, y: position.y });
-        }
-        if ((position.y + radius) < gridSize) {
-            aSparkleBoxes.push({ x: position.x, y: position.y + radius });
-        }
+        SpaceTimeView.addBoxToDraw(aSparkleBoxes, position.x - radius, position.y, gridSize);
+        SpaceTimeView.addBoxToDraw(aSparkleBoxes, position.x, position.y - radius, gridSize);
+        SpaceTimeView.addBoxToDraw(aSparkleBoxes, position.x + radius, position.y, gridSize);
+        SpaceTimeView.addBoxToDraw(aSparkleBoxes, position.x, position.y + radius, gridSize);
         return aSparkleBoxes;
     }
 
