@@ -49,7 +49,17 @@ class SpaceTimeView {
         }
     }
 
-    static drawSpaceshipWings(position, isPenDown, orientationTick, gridSize) {
+    static erasePixels(pixels) {
+        while (pixels.length > 0) {
+            const pixelElementID = pixels.pop();
+            let target = document.getElementById(pixelElementID);
+            if (target) {
+                target.classList.remove(CSS_CLASS_NEIGHBOR_BOX);
+            }
+        }
+    }
+
+    static drawSpaceshipWings(position, isPenDown, orientationTick, currentPixels, gridSize) {
         const aNeighborBoxes = [];
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const rotatedComponentX = Math.cos(radOrientationAngle);
@@ -58,15 +68,16 @@ class SpaceTimeView {
         SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - 1 - rotatedComponentX, position.y - rotatedComponentY, gridSize);
         // SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - rotatedComponentX, position.y - rotatedComponentY, gridSize);
         // SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x + 1 - rotatedComponentX, position.y - rotatedComponentY, gridSize);
-        aNeighborBoxes.forEach(neighborBoxPosition => {
-            const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
-            let target = document.getElementById(sElementID);
-            if (isPenDown) {
+        if (isPenDown) {
+            aNeighborBoxes.forEach(neighborBoxPosition => {
+                const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
+                let target = document.getElementById(sElementID);
                 target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
-            } else {
-                target.classList.remove(CSS_CLASS_NEIGHBOR_BOX);
-            }
-        });
+                currentPixels.push(sElementID);
+            });
+        } else {
+            SpaceTimeView.erasePixels(currentPixels);
+        }
     }
 
     static drawSparkle(position, isPenDown, gridSize) {
@@ -113,7 +124,8 @@ class SpaceTimeView {
         this.timeFwdButton;
 
         this.spaceship = {
-            orientationTick: 0
+            orientationTick: 0,
+            pixels: []
         };
 
         this.audioOn = false;
@@ -319,7 +331,7 @@ class SpaceTimeView {
         }
         switch (eType) {
             case E_BODY_TYPES.SPACESHIP:
-                SpaceTimeView.drawSpaceshipWings(floorPosition, isPenDown, this.spaceship.orientationTick, gridSize);
+                SpaceTimeView.drawSpaceshipWings(floorPosition, isPenDown, this.spaceship.orientationTick, this.spaceship.pixels, gridSize);
                 break;
             case E_BODY_TYPES.STAR:
             default:
