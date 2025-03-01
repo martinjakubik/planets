@@ -228,7 +228,7 @@ class SpaceTimeView {
     }
 
     spaceshipThrust() {
-        const radOrientationAngle = 2 * Math.PI * this.spaceship.orientationTick / 12;
+        const radOrientationAngle = -2 * Math.PI * this.spaceship.orientationTick / 12;
         const thrustVector = {
             force: 0.001,
             angle: radOrientationAngle
