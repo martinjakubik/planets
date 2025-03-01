@@ -247,6 +247,14 @@ class SpaceTimeView {
         this.spaceTimeController.updateSpaceship(oSpaceship);
     };
 
+    spaceshipTurnRightClockwise() {
+        this.spaceship.orientationTick = SpaceTimeView.modulo((this.spaceship.orientationTick - 1), 12);
+    }
+
+    spaceshipTurnLeftCounterclockwise() {
+        this.spaceship.orientationTick = SpaceTimeView.modulo((this.spaceship.orientationTick + 1), 12);
+    }
+
     moveTimeForward() {
         const bIsPenDown = false;
         this.drawSpace(bIsPenDown);
@@ -474,6 +482,14 @@ class SpaceTimeView {
         this.spaceshipThrust();
     }
 
+    rightArrowPressed() {
+        this.spaceshipTurnRightClockwise();
+    }
+
+    leftArrowPressed() {
+        this.spaceshipTurnLeftCounterclockwise();
+    }
+
     handleKeyDown(event) {
         const keyCode = event.keyCode;
         if (keyCode === 66) {
@@ -485,10 +501,10 @@ class SpaceTimeView {
             this.upArrowPressed();
             event.preventDefault();
         } else if (keyCode === 37) {
-            this.spaceship.orientationTick = SpaceTimeView.modulo((this.spaceship.orientationTick - 1), 12);
+            this.leftArrowPressed();
             event.preventDefault();
         } else if (keyCode === 39) {
-            this.spaceship.orientationTick = SpaceTimeView.modulo((this.spaceship.orientationTick + 1), 12);
+            this.rightArrowPressed();
             event.preventDefault();
         }
     }
