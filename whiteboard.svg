@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.8284271"
-     inkscape:cx="440.52753"
-     inkscape:cy="602.2782"
+     inkscape:cx="560.02857"
+     inkscape:cy="577.52946"
      inkscape:window-width="1424"
      inkscape:window-height="831"
      inkscape:window-x="8"
@@ -954,7 +954,7 @@
          id="tspan20910"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
          x="152.15341"
-         y="135.18777">x = 0 + ho</tspan><tspan
+         y="135.18777">x = 0 - ho</tspan><tspan
          sodipodi:role="line"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
          x="152.15341"
@@ -1312,15 +1312,15 @@
        y="166.16055"
        id="text37576"><tspan
          sodipodi:role="line"
-         id="tspan37572"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#fb00ff;fill-opacity:0.901961;stroke:none;stroke-width:0.2"
          x="169.30109"
-         y="166.16055">x = 0</tspan><tspan
+         y="166.16055"
+         id="tspan37574">x = +1</tspan><tspan
          sodipodi:role="line"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#fb00ff;fill-opacity:0.901961;stroke:none;stroke-width:0.2"
          x="169.30109"
          y="168.8064"
-         id="tspan37574">y = -1</tspan></text>
+         id="tspan44914">y = 0</tspan></text>
     <path
        style="fill:none;fill-opacity:0.901961;stroke:#fb00ff;stroke-width:0.2;stroke-dasharray:0.8, 0.2;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker6064)"
        d="m 166.17319,166.80457 -3.39239,0.18533"
@@ -1343,7 +1343,7 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#fb00ff;fill-opacity:0.901961;stroke:none;stroke-width:0.2"
          x="167.33974"
          y="159.52785"
-         id="tspan37582">y = -1</tspan></text>
+         id="tspan37582">y = +1</tspan></text>
     <path
        style="fill:none;fill-opacity:0.901961;stroke:#fb00ff;stroke-width:0.2;stroke-dasharray:0.8, 0.2;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker6064)"
        d="m 163.90841,158.70913 -1.84205,3.164"
@@ -1401,7 +1401,7 @@
          id="tspan37598"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#fb00ff;fill-opacity:0.901961;stroke:none;stroke-width:0.2"
          x="162.21753"
-         y="176.10745">x = -1</tspan><tspan
+         y="176.10745">x = +1</tspan><tspan
          sodipodi:role="line"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#fb00ff;fill-opacity:0.901961;stroke:none;stroke-width:0.2"
          x="162.21753"
@@ -1440,7 +1440,7 @@
          id="tspan37612"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
          x="177.51486"
-         y="166.2222">x = 0 + ho</tspan><tspan
+         y="166.2222">x = 0 - ho</tspan><tspan
          sodipodi:role="line"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
          x="177.51486"
@@ -1456,7 +1456,7 @@
          id="tspan37618"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
          x="172.17561"
-         y="177.01195">x = -1 - ho</tspan><tspan
+         y="177.01195">x = 0 - ho</tspan><tspan
          sodipodi:role="line"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
          x="172.17561"

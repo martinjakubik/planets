@@ -127,6 +127,10 @@ div#spaceTime>div>div.trailBox {
   background-color: var(--bg-1-color);
 }
 
+div#spaceTime>div>div.thrustBox {
+  background-color: var(--spaceship-thrust-color);
+}
+
 div#spaceTime>div>div:hover {
   border: 1px dotted var(--bg-0-inverted-color);
   box-sizing: border-box;
@@ -228,6 +232,7 @@ input[type='file'] {
   --font-0-family: normal helvetica-w01-roman, helvetica-w02-roman, helvetica-lt-w10-roman, sans-serif;
   --copy-column-width: 520px;
   --mass-spaceship-color: rgb(35, 147, 216);
+  --spaceship-thrust-color: rgb(218, 137, 14);
   --mass-m0-color: rgb(237, 237, 237);
   --mass-m1-color: rgb(222, 222, 222);
   --mass-m2-color: rgb(201, 201, 201);

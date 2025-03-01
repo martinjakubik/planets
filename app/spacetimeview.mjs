@@ -2,9 +2,11 @@ import { addVectors, createBody } from './gravity.mjs';
 import { createDiv, createButton } from './learnhypertext.mjs';
 
 const TIMER_INTERVAL = 70;
+const TIMER_INTERVAL_THRUST = 1000;
 const CSS_CLASS_BODY_BOX = 'bodyBox';
 const CSS_CLASS_NEIGHBOR_BOX = 'neighborBox';
 const CSS_CLASS_TRAIL_BOX = 'trailBox';
+const CSS_CLASS_THRUST_BOX = 'thrustBox';
 const TRAIL_LENGTH = 16;
 const E_BODY_TYPES = {
     STAR: 'star',
@@ -81,6 +83,31 @@ class SpaceTimeView {
         }
     }
 
+    static drawSpaceshipThrust(position, orientationTick, currentPixels, gridSize) {
+        const aThrustBoxes = [];
+        const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
+        const xoffset = Math.cos(radOrientationAngle);
+        const yoffset = Math.sin(radOrientationAngle);
+        SpaceTimeView.addBoxAndRotate(aThrustBoxes, position.x - 3 * xoffset, position.y + 3 * yoffset, gridSize);
+        aThrustBoxes.forEach(boxPosition => {
+            const sElementID = SpaceTimeView.getIDFromXY(boxPosition.x, boxPosition.y);
+            let target = document.getElementById(sElementID);
+            target.classList.add(CSS_CLASS_THRUST_BOX);
+            currentPixels.push(sElementID);
+        });
+    }
+
+    static eraseSpaceshipThrust(pixels) {
+        console.log('erasing thrust');
+        while (pixels.length > 0) {
+            const pixelElementID = pixels.pop();
+            let target = document.getElementById(pixelElementID);
+            if (target) {
+                target.classList.remove(CSS_CLASS_THRUST_BOX);
+            }
+        }
+    }
+
     static drawSparkle(position, isPenDown, gridSize) {
         const aNeighborBoxes = SpaceTimeView.getNeighborBoxes(position, 1, gridSize);
         aNeighborBoxes.forEach(neighborBoxPosition => {
@@ -124,9 +151,12 @@ class SpaceTimeView {
         this.isTimerRunning = false;
         this.timeFwdButton;
 
+        this.thrustTimerTimeoutId = 1;
+
         this.spaceship = {
             orientationTick: 0,
-            pixels: []
+            pixels: [],
+            thrustPixels: []
         };
 
         this.audioOn = false;
@@ -245,6 +275,12 @@ class SpaceTimeView {
         oSpaceship.force = resultantVector.magnitude;
         oSpaceship.angle = resultantVector.angle;
         this.spaceTimeController.updateSpaceship(oSpaceship);
+        const floorPosition = {
+            x: Math.floor(oSpaceship.position.x),
+            y: Math.floor(oSpaceship.position.y)
+        };
+        SpaceTimeView.drawSpaceshipThrust(floorPosition, this.spaceship.orientationTick, this.spaceship.thrustPixels, this.appConfiguration.gridSize);
+        this.thrustTimerTimeoutId = window.setTimeout(SpaceTimeView.eraseSpaceshipThrust, TIMER_INTERVAL_THRUST, this.spaceship.thrustPixels);
     };
 
     spaceshipTurnRightClockwise() {
