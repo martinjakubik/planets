@@ -73,7 +73,7 @@ class SpaceTimeView {
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addBoxAndRotate(aNeighborBoxes, position.x + xoffset, position.y + yoffset, gridSize);
+        SpaceTimeView.addBoxAndRotate(aNeighborBoxes, position.x - xoffset, position.y + yoffset, gridSize);
         if (isPenDown) {
             SpaceTimeView.drawSpaceshipWingPixels(aNeighborBoxes, currentPixels);
         } else {
