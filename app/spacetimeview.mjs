@@ -43,9 +43,9 @@ class SpaceTimeView {
         target.classList.add(`m${sSanitizedMassId}`);
     }
 
-    static addBoxAfterRotation(boxes, rotatedX, rotatedY, gridSize) {
-        if (Math.floor(rotatedX) >= 0 && Math.floor(rotatedY) >= 0 && Math.floor(rotatedX) < gridSize && Math.floor(rotatedY) < gridSize) {
-            boxes.push({ x: Math.floor(rotatedX), y: Math.floor(rotatedY) });
+    static addBoxAndRotate(boxes, x, y, gridSize) {
+        if (Math.round(x) >= 0 && Math.round(y) >= 0 && Math.round(x) < gridSize && Math.round(y) < gridSize) {
+            boxes.push({ x: Math.round(x), y: Math.round(y) });
         }
     }
 
@@ -71,12 +71,9 @@ class SpaceTimeView {
     static drawSpaceshipWings(position, isPenDown, orientationTick, currentPixels, gridSize) {
         const aNeighborBoxes = [];
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
-        const rotatedComponentX = Math.cos(radOrientationAngle);
-        const rotatedComponentY = Math.sin(radOrientationAngle);
-        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x + rotatedComponentX, position.y + rotatedComponentY, gridSize);
-        SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - 1 - rotatedComponentX, position.y - rotatedComponentY, gridSize);
-        // SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - rotatedComponentX, position.y - rotatedComponentY, gridSize);
-        // SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x + 1 - rotatedComponentX, position.y - rotatedComponentY, gridSize);
+        const xoffset = Math.cos(radOrientationAngle);
+        const yoffset = Math.sin(radOrientationAngle);
+        SpaceTimeView.addBoxAndRotate(aNeighborBoxes, position.x + xoffset, position.y + yoffset, gridSize);
         if (isPenDown) {
             SpaceTimeView.drawSpaceshipWingPixels(aNeighborBoxes, currentPixels);
         } else {
