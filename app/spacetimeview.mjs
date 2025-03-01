@@ -49,7 +49,16 @@ class SpaceTimeView {
         }
     }
 
-    static erasePixels(pixels) {
+    static drawSpaceshipWingPixels(aNeighborBoxes, currentPixels) {
+        aNeighborBoxes.forEach(neighborBoxPosition => {
+            const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
+            let target = document.getElementById(sElementID);
+            target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
+            currentPixels.push(sElementID);
+        });
+    }
+
+    static eraseSpaceshipWingPixels(pixels) {
         while (pixels.length > 0) {
             const pixelElementID = pixels.pop();
             let target = document.getElementById(pixelElementID);
@@ -69,14 +78,9 @@ class SpaceTimeView {
         // SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x - rotatedComponentX, position.y - rotatedComponentY, gridSize);
         // SpaceTimeView.addBoxAfterRotation(aNeighborBoxes, position.x + 1 - rotatedComponentX, position.y - rotatedComponentY, gridSize);
         if (isPenDown) {
-            aNeighborBoxes.forEach(neighborBoxPosition => {
-                const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
-                let target = document.getElementById(sElementID);
-                target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
-                currentPixels.push(sElementID);
-            });
+            SpaceTimeView.drawSpaceshipWingPixels(aNeighborBoxes, currentPixels);
         } else {
-            SpaceTimeView.erasePixels(currentPixels);
+            SpaceTimeView.eraseSpaceshipWingPixels(currentPixels);
         }
     }
 
