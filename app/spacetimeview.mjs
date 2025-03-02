@@ -1,5 +1,5 @@
 import { addVectors, createBody } from './gravity.mjs';
-import { createDiv, createButton } from './learnhypertext.mjs';
+import { createDiv, createButton, createParagraph } from './learnhypertext.mjs';
 
 const TIMER_INTERVAL = 70;
 const TIMER_INTERVAL_THRUST = 1000;
@@ -479,8 +479,6 @@ class SpaceTimeView {
                     box = createDiv(sBoxId, rowBox);
                 }
                 box.onclick = this.handleSpaceClick.bind(this);
-                box.style.height = nSizeOfBox;
-                box.style.width = nSizeOfBox;
                 box.onmouseenter = this.playChirp.bind(this);
                 x = x + 1;
             }
@@ -504,15 +502,16 @@ class SpaceTimeView {
     }
 
     makeSpaceshipTurnLeftButton(parentBox) {
-        this.spaceshipTurnLeftButton = createButton('spaceshipTurnLeftButton', 'left', parentBox);
+        this.spaceshipTurnLeftButton = createButton('spaceshipTurnLeftButton', '', parentBox);
         const oTurnLeftIcon = document.createElement('img');
         oTurnLeftIcon.src = this.appConfiguration.turnLeftIcon;
         this.spaceshipTurnLeftButton.appendChild(oTurnLeftIcon);
+        createParagraph('leftLabel', '', this.spaceshipTurnLeftButton);
         this.spaceshipTurnLeftButton.onclick = this.spaceshipTurnLeftCounterclockwise.bind(this);
     }
 
     makeSpaceshipThrustButton(parentBox) {
-        this.spaceshipThrustButton = createButton('spaceshipThrustButton', 'thrust', parentBox);
+        this.spaceshipThrustButton = createButton('spaceshipThrustButton', '', parentBox);
         const oThrustIcon = document.createElement('img');
         oThrustIcon.src = this.appConfiguration.thrustIcon;
         this.spaceshipThrustButton.appendChild(oThrustIcon);
@@ -520,7 +519,7 @@ class SpaceTimeView {
     }
 
     makeSpaceshipTurnRightButton(parentBox) {
-        this.spaceshipTurnRightButton = createButton('spaceshipTurnRightButton', 'right', parentBox);
+        this.spaceshipTurnRightButton = createButton('spaceshipTurnRightButton', '', parentBox);
         const oTurnRightIcon = document.createElement('img');
         oTurnRightIcon.src = this.appConfiguration.turnRightIcon;
         this.spaceshipTurnRightButton.appendChild(oTurnRightIcon);
