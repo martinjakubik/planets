@@ -98,7 +98,6 @@ class SpaceTimeView {
     }
 
     static eraseSpaceshipThrust(pixels) {
-        console.log('erasing thrust');
         while (pixels.length > 0) {
             const pixelElementID = pixels.pop();
             let target = document.getElementById(pixelElementID);
