@@ -518,7 +518,7 @@ class SpaceTimeView {
         this.spaceshipTurnRightButton = createButton('spaceshipTurnRightButton', 'right', parentBox);
         const oTurnRightIcon = document.createElement('img');
         oTurnRightIcon.src = this.appConfiguration.oTurnRightIcon;
-        this.spaceshiptTurnRightButton.appendChild(oTurnRightIcon);
+        this.spaceshipTurnRightButton.appendChild(oTurnRightIcon);
         this.spaceshipTurnRightButton.onclick = this.spaceshipTurnRightClockwise.bind(this);
     }
 
