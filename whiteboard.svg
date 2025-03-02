@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.8284271"
-     inkscape:cx="560.02857"
-     inkscape:cy="577.52946"
+     inkscape:cx="570.28162"
+     inkscape:cy="545.00255"
      inkscape:window-width="1424"
      inkscape:window-height="831"
      inkscape:window-x="8"
@@ -1510,5 +1510,21 @@
          x="89.528397"
          y="146.28746"
          id="tspan38952">vo = .5</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-opacity:1"
+       x="81.433891"
+       y="118.1627"
+       id="text45180"><tspan
+         sodipodi:role="line"
+         id="tspan45176"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="81.433891"
+         y="118.1627">x = 0 - ho</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#0c00ff;fill-opacity:1;stroke:none;stroke-width:0.2"
+         x="81.433891"
+         y="120.80855"
+         id="tspan45178">y = 0 - vo</tspan></text>
   </g>
 </svg>
