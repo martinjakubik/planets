@@ -46,15 +46,13 @@ class SpaceTimeController {
                 this.addSpaceSnapshot(oSpaceSnapshotCopy);
                 this.calculateAllGravity();
                 this.calculateAllPositions();
-                const nSnapshotSize = JSON.stringify(oSpaceSnapshotCopy).length;
-                this.modelSize = this.modelSize + nSnapshotSize;
             }
         }
     }
 
     initializeSpaceSnapshotAt(nTime) {
-        if (!this.spaceTimeModel[nTime]) {
-            this.spaceTimeModel[nTime] = {};
+        if (!this.getSpaceSnapshotAt(nTime)) {
+            this.setSpaceSnapshotAt(nTime, {});
         }
     }
 
@@ -65,7 +63,7 @@ class SpaceTimeController {
     getBodyAt(dx, dy) {
         const sKey = SpaceTimeController.getKeyFromXY(dx, dy);
         const nTime = this.time;
-        const aSpaceSnapshot = this.spaceTimeModel[nTime];
+        const aSpaceSnapshot = this.getSpaceSnapshotAt(nTime);
         return aSpaceSnapshot ? aSpaceSnapshot[sKey] : null;
     }
 
@@ -82,7 +80,10 @@ class SpaceTimeController {
         this.initializeSpaceSnapshotAt(nTime);
         this.deleteBodyAt(dx, dy);
         const sKey = SpaceTimeController.getKeyFromXY(oBody.position.x, oBody.position.y);
-        this.spaceTimeModel[nTime][sKey] = oBody;
+        const aSpaceSnapshot = this.getSpaceSnapshotAt(nTime);
+        if (aSpaceSnapshot) {
+            aSpaceSnapshot[sKey] = oBody;
+        }
     }
 
     updateSpaceship(oBody) {
@@ -92,8 +93,9 @@ class SpaceTimeController {
     deleteBodyAt(dx, dy) {
         const nTime = this.time;
         const sKey = SpaceTimeController.getKeyFromXY(dx, dy);
-        if (this.spaceTimeModel[nTime] && this.spaceTimeModel[nTime][sKey]) {
-            delete this.spaceTimeModel[nTime][sKey];
+        const aSpaceSnapshot = this.getSpaceSnapshotAt(nTime);
+        if (aSpaceSnapshot && aSpaceSnapshot[sKey]) {
+            delete aSpaceSnapshot[sKey];
         }
     }
 
@@ -112,7 +114,9 @@ class SpaceTimeController {
 
     addSpaceSnapshot(oSpaceSnapshot) {
         const nTime = this.time;
-        this.spaceTimeModel[nTime] = oSpaceSnapshot;
+        this.setSpaceSnapshotAt(nTime, oSpaceSnapshot);
+        const nSnapshotSize = JSON.stringify(oSpaceSnapshot).length;
+        this.modelSize = this.modelSize + nSnapshotSize;
     }
 
     getSpaceSnapshot() {
@@ -128,6 +132,10 @@ class SpaceTimeController {
             aBodies.push(oBody);
         });
         return aBodies;
+    }
+
+    setSpaceSnapshotAt(nTime, oSpaceSnapshot) {
+        this.spaceTimeModel[nTime] = oSpaceSnapshot;
     }
 
     getSpaceSnapshotAt(nTime) {
