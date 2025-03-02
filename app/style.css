@@ -137,9 +137,16 @@ div#spaceTime>div>div:hover {
 }
 
 #buttonBar>button {
-  width: 240px;
-  height: 60px;
-  margin: 0 -1px 0 0;
+  width: 2em;
+  margin: 1em;
+}
+
+#buttonBar>button#timeFwdButton {
+  display: none;
+}
+
+#buttonBar>button#timeBackButton {
+  display: none;
 }
 
 #storageView>div {
@@ -216,6 +223,13 @@ input[type='file'] {
 #storageView>div>.additionalButtons>.delete:hover {
   background-image: url('./delete-hover.png');
   background-color: var(--bg-0-inverted-color);
+}
+
+@media (width <= 480px), screen and (orientation: portrait) {
+  #buttonBar>button {
+    width: 2em;
+    margin: 1em;
+  }
 }
 
 :root {
