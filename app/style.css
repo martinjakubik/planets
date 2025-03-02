@@ -141,15 +141,13 @@ div.navigation>button.controlButton#settingsControlButton {
   display: none;
 }
 
-#buttonBar>button {
-  padding: .2em .2em 0 .2em;
-  background-color: var(--bg-0-color);
-  color: var(--text-0-fg-color);
-  border-color: var(--text-0-fg-color);
-  border-style: solid;
-  font-family: var(--font-0-family);
-  font-size: 1em;
-  text-align: center;
+div#buttonBar>button {
+  width: 12em;
+  height: 12em;
+  margin: .2em;
+  border-width: 1em;
+  border-radius: 1em;
+  max-width: 8em;
 }
 
 #buttonBar>button#spaceshipTurnLeftButton,
@@ -158,6 +156,11 @@ div.navigation>button.controlButton#settingsControlButton {
 #buttonBar>button#timeFwdButton,
 #buttonBar>button#timeBackButton {
   display: none;
+}
+
+div#buttonBar>button>img {
+  width: 90%;
+  cursor: pointer;
 }
 
 #storageView>div {
