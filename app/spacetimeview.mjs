@@ -8,6 +8,7 @@ const CSS_CLASS_NEIGHBOR_BOX = 'neighborBox';
 const CSS_CLASS_TRAIL_BOX = 'trailBox';
 const CSS_CLASS_THRUST_BOX = 'thrustBox';
 const TRAIL_LENGTH = 16;
+const SPACESHIP_THRUST_FORCE = 0.001;
 const E_BODY_TYPES = {
     STAR: 'star',
     SPACESHIP: 'spaceship'
@@ -252,10 +253,10 @@ class SpaceTimeView {
         this.drawOnSpaceAtBoxId(sId);
     }
 
-    spaceshipThrust() {
+    spaceshipThrust(nForce = SPACESHIP_THRUST_FORCE) {
         const radOrientationAngle = -2 * Math.PI * this.spaceship.orientationTick / 12;
         const thrustVector = {
-            force: 0.001,
+            force: nForce,
             angle: radOrientationAngle
         };
         const oSpaceship = this.spaceTimeController.getSpaceship();
@@ -515,7 +516,7 @@ class SpaceTimeView {
         const oThrustIcon = document.createElement('img');
         oThrustIcon.src = this.appConfiguration.thrustIcon;
         this.spaceshipThrustButton.appendChild(oThrustIcon);
-        this.spaceshipThrustButton.onclick = this.spaceshipThrust.bind(this);
+        this.spaceshipThrustButton.onclick = this.spaceshipThrust.bind(this, SPACESHIP_THRUST_FORCE * 4);
     }
 
     makeSpaceshipTurnRightButton(parentBox) {
