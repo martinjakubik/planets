@@ -136,9 +136,20 @@ div#spaceTime>div>div:hover {
   box-sizing: border-box;
 }
 
+div.navigation>button.controlButton#volumeControlButton,
+div.navigation>button.controlButton#settingsControlButton {
+  display: none;
+}
+
 #buttonBar>button {
-  width: 2em;
-  margin: 1em;
+  padding: .2em .2em 0 .2em;
+  background-color: var(--bg-0-color);
+  color: var(--text-0-fg-color);
+  border-color: var(--text-0-fg-color);
+  border-style: solid;
+  font-family: var(--font-0-family);
+  font-size: 1em;
+  text-align: center;
 }
 
 #buttonBar>button#spaceshipTurnLeftButton,
@@ -229,7 +240,7 @@ input[type='file'] {
   #buttonBar>button#spaceshipTurnLeftButton,
   #buttonBar>button#spaceshipTurnRightButton,
   #buttonBar>button#spaceshipThrustButton {
-    display: initial;
+    display: flex;
   }
 
 
