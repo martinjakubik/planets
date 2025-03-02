@@ -222,10 +222,8 @@ class SpaceTimeView {
         return oSpaceship;
     }
 
-    handleSpaceClick(event) {
-        const oTarget = event.currentTarget;
-        let sId = oTarget.id;
-        let oCoordinates = SpaceTimeView.getXYFromID(sId);
+    drawOnSpaceAtBoxId(sBoxId) {
+        let oCoordinates = SpaceTimeView.getXYFromID(sBoxId);
         let oBody1 = this.spaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
         if (oBody1) {
             oBody1.mass++;
@@ -246,6 +244,12 @@ class SpaceTimeView {
         if (!this.isTimerRunning) {
             this.startTimer.call(this);
         }
+    }
+
+    handleSpaceClick(event) {
+        const oTarget = event.currentTarget;
+        let sId = oTarget.id;
+        this.drawOnSpaceAtBoxId(sId);
     }
 
     spaceshipThrust() {

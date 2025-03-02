@@ -15,7 +15,15 @@ const oAppConfiguration = {
     thrustIcon: 'https://www.supertitle.org/up.png'
 };
 
+function getRandomStarBox() {
+    const starX = Math.random() < .5 ? 20 : oAppConfiguration.gridSize - 20;
+    const starY = Math.random() < .5 ? 20 : oAppConfiguration.gridSize - 20;
+    return `x${starX}y${starY}`;
+}
+
 const oSpaceTimeController = new SpaceTimeController(oAppConfiguration);
 const oSpaceTimeView = new SpaceTimeView(oAppConfiguration);
 oSpaceTimeView.makeSpaceGrid(oSpaceTimeController);
 oSpaceTimeView.makeSpaceTimeButtonBar();
+const sStarBoxId = getRandomStarBox();
+oSpaceTimeView.drawOnSpaceAtBoxId(sStarBoxId);
