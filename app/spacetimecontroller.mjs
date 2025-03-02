@@ -42,11 +42,9 @@ class SpaceTimeController {
         let oSpaceSnapshotCopy;
         if (oSpaceSnapshot) {
             oSpaceSnapshotCopy = SpaceTimeController.copySpaceSnapshot(oSpaceSnapshot);
-            if (!this.getSpaceSnapshot()) {
-                this.addSpaceSnapshot(oSpaceSnapshotCopy);
-                this.calculateAllGravity();
-                this.calculateAllPositions();
-            }
+            this.setSpaceSnapshotAt(this.time, oSpaceSnapshotCopy);
+            this.calculateAllGravity();
+            this.calculateAllPositions();
         }
     }
 
@@ -135,11 +133,11 @@ class SpaceTimeController {
     }
 
     setSpaceSnapshotAt(nTime, oSpaceSnapshot) {
-        this.spaceTimeModel[nTime] = oSpaceSnapshot;
+        this.spaceTimeModel[0] = oSpaceSnapshot;
     }
 
     getSpaceSnapshotAt(nTime) {
-        return this.spaceTimeModel[nTime];
+        return this.spaceTimeModel[0];
     }
 
     calculateAllGravity() {
