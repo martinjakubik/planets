@@ -141,10 +141,10 @@ div#spaceTime>div>div:hover {
   margin: 1em;
 }
 
-#buttonBar>button#timeFwdButton {
-  display: none;
-}
-
+#buttonBar>button#spaceshipTurnLeftButton,
+#buttonBar>button#spaceshipTurnRightButton,
+#buttonBar>button#spaceshipThrustButton,
+#buttonBar>button#timeFwdButton,
 #buttonBar>button#timeBackButton {
   display: none;
 }
@@ -226,10 +226,13 @@ input[type='file'] {
 }
 
 @media (width <= 480px), screen and (orientation: portrait) {
-  #buttonBar>button {
-    width: 2em;
-    margin: 1em;
+  #buttonBar>button#spaceshipTurnLeftButton,
+  #buttonBar>button#spaceshipTurnRightButton,
+  #buttonBar>button#spaceshipThrustButton {
+    display: initial;
   }
+
+
 }
 
 :root {
