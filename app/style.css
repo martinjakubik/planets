@@ -162,6 +162,7 @@ div#buttonBar>button {
   border-width: 2em;
   border-radius: 6em;
   padding: 3em;
+  touch-action: manipulation;
 }
 
 #buttonBar>button#spaceshipTurnLeftButton,
