@@ -450,9 +450,6 @@ class SpaceTimeView {
     makeSpaceGrid(oSpaceTimeController) {
         this.spaceTimeController = oSpaceTimeController;
         let numberOfRows = this.appConfiguration.gridSize;
-
-        let nSizeOfBox = Math.floor(720 / this.appConfiguration.gridSize);
-
         let numberOfColumns = numberOfRows;
 
         let y = numberOfRows - 1;
