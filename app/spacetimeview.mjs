@@ -3,6 +3,7 @@ import { createDiv, createButton, createParagraph } from './learnhypertext.mjs';
 
 const TIMER_INTERVAL = 70;
 const TIMER_INTERVAL_THRUST = 1000;
+const CSS_CLASS_ROW_BOX = 'rowBox';
 const CSS_CLASS_BODY_BOX = 'bodyBox';
 const CSS_CLASS_NEIGHBOR_BOX = 'neighborBox';
 const CSS_CLASS_TRAIL_BOX = 'trailBox';
@@ -468,6 +469,7 @@ class SpaceTimeView {
             rowBox = document.getElementById(`row${y}`);
             if (!rowBox) {
                 rowBox = createDiv(`row${y}`, spaceTimeBox);
+                rowBox.classList.add(CSS_CLASS_ROW_BOX);
             }
             while (x < numberOfColumns) {
                 sBoxId = SpaceTimeView.getIDFromXY(x, y);
