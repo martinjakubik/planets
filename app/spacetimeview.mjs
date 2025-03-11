@@ -453,7 +453,7 @@ class SpaceTimeView {
         let numberOfRows = this.appConfiguration.gridSize;
         let numberOfColumns = numberOfRows;
 
-        let y = numberOfRows - 1;
+        let y = 0;
         let x = 0;
         this.makeAppBox();
         let spaceTimeBox = document.getElementById('spaceTime');
@@ -464,7 +464,7 @@ class SpaceTimeView {
 
         let sBoxId = '';
         let box = null;
-        while (y >= 0) {
+        while (y < numberOfRows) {
             x = 0;
             rowBox = document.getElementById(`row${y}`);
             if (!rowBox) {
@@ -482,7 +482,7 @@ class SpaceTimeView {
                 x = x + 1;
             }
 
-            y = y - 1;
+            y = y + 1;
         }
         const nSpaceshipX = Math.floor(numberOfColumns / 2);
         const nSpaceshipY = Math.floor(numberOfRows / 2);
