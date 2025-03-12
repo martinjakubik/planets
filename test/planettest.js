@@ -31,7 +31,7 @@ const BODY_3 = {
     angle: 0
 };
 
-const NEIGHBOUR_1 = {
+const HORIZONTAL_NEIGHBOUR_1 = {
     id: '2:2',
     mass: 1,
     position: {
@@ -92,4 +92,4 @@ const compareSpaceSnaphshot = function (s1, s2) {
     return result;
 }
 
-export { BODY_1, BODY_2, BODY_3, NEIGHBOUR_1, duplicate, printBody, compareSpaceSnaphshot }
+export { BODY_1, BODY_2, BODY_3, HORIZONTAL_NEIGHBOUR_1, duplicate, printBody, compareSpaceSnaphshot }

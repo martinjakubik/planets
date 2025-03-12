@@ -12,7 +12,7 @@ QUnit.module('gravity');
 
 QUnit.test('calculate flat angle', assert => {
     const body = P.duplicate(P.BODY_1);
-    const neighbour = P.duplicate(P.NEIGHBOUR_1);
+    const neighbour = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
 
     body.force = 1;
     body.angle = 0;
@@ -29,7 +29,7 @@ QUnit.test('calculate flat angle', assert => {
 
 QUnit.test('calculate distance squared', assert => {
     const body = P.duplicate(P.BODY_1);
-    const neighbour = P.duplicate(P.NEIGHBOUR_1);
+    const neighbour = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
 
     neighbour.position.x = 10;
     neighbour.position.y = 20;
@@ -42,7 +42,7 @@ QUnit.test('calculate distance squared', assert => {
 
 QUnit.test('calculate angle to neighbour', assert => {
     const body = P.duplicate(P.BODY_1);
-    const neighbour = P.duplicate(P.NEIGHBOUR_1);
+    const neighbour = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
     const distanceSquared = 100;
 
     neighbour.position.x = 10;
@@ -57,17 +57,15 @@ QUnit.test('calculate angle to neighbour', assert => {
 
 QUnit.test('calculate vector sum with neighbour', assert => {
     const body = P.duplicate(P.BODY_1);
-    const neighbour = P.duplicate(P.NEIGHBOUR_1);
+    const neighbour = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
 
     body.force = 1;
-    body.angle = Math.PI / 2;
+    body.angle = 0;
 
     neighbour.force = 1;
-    neighbour.angle = -1 * Math.PI / 2;
-    neighbour.position.x = 10;
-    neighbour.position.y = 20;
+    neighbour.angle = Math.PI;
 
-    const expected = Math.PI / 2;
+    const expected = Math.PI;
     const actualNeighbourVector = addVectors(body, neighbour);
     const actual = actualNeighbourVector.angle;
 
@@ -76,7 +74,7 @@ QUnit.test('calculate vector sum with neighbour', assert => {
 
 QUnit.test('calculate vertical angle', assert => {
     const body = P.duplicate(P.BODY_1);
-    const neighbour = P.duplicate(P.NEIGHBOUR_1);
+    const neighbour = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
 
     neighbour.position.x = 10;
     neighbour.position.y = 20;
