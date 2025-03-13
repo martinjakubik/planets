@@ -54,30 +54,37 @@ QUnit.test('get model after time increment', assert => {
     const actualSpaceSnapshot = stc.getSpaceSnapshotAt(0);
     const actual = P.compareSpaceSnaphshot(actualSpaceSnapshot, expectedSpaceSnapshot);
 
-    assert.equal(actual, expected);
+    assert.deepEqual(actual, expected);
 });
 
-QUnit.test('update body after moved, expect present in space snapshot', assert => {
+QUnit.test('add two bodies with no time increment, expect initial snapshot', assert => {
     const body1 = P.duplicate(P.BODY_1);
     const body2 = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
     const expected = {
-        '11-10': {
-            'id': '1:2',
+        '10-10': {
+            'id': '1:1',
             'mass': 1,
             'position': {
-                'x': 11,
+                'x': 10,
                 'y': 10
             },
-            'force': 1,
+            'force': 0,
+            'angle': 0
+        },
+        '20-10': {
+            'id': '2:2',
+            'mass': 1,
+            'position': {
+                'x': 20,
+                'y': 10
+            },
+            'force': 0,
             'angle': 0
         }
     };
     const stc = new SpaceTimeController(P.TEST_APP_CONFIGURATION);
     stc.updateBodyAt(10, 10, body1);
     stc.updateBodyAt(20, 10, body2);
-    // stc.incrementTime();
-    stc.calculateAllGravity();
-    stc.calculateAllPositions();
 
     const actual = stc.getSpaceSnapshot();
 
@@ -100,4 +107,3 @@ QUnit.test('update body after moved, expect present', assert => {
 
     assert.equal(actual, expected);
 });
-
