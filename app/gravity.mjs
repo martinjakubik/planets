@@ -63,9 +63,17 @@ const invertVectorVertically = function (body) {
     return oBodyCopy;
 }
 
+const isLeftBoundaryCollision = function (body, oBoundary) {
+    let isLeftBoundaryCollision = false;
+    if (body.position.x <= 1 && body.angle > Math.PI / 2 || body.angle < Math.PI * -1 / 2) {
+        isLeftBoundaryCollision = true
+    }
+    return isLeftBoundaryCollision;
+}
+
 const updateBodyAfterCollisionWithBoundary = function (body, oBoundary) {
     let oBodyCopy = copyBody(body);
-    if (body.position.x <= 2 || body.position.x >= (oBoundary.w - 2)) {
+    if (isLeftBoundaryCollision(body, oBoundary) || body.position.x >= (oBoundary.w - 2)) {
         oBodyCopy = invertVectorHorizontally(oBodyCopy);
     }
     if (body.position.y <= 2 || body.position.y >= (oBoundary.h - 2)) {
@@ -129,4 +137,4 @@ const convertRadialVectorToCartesian = function (v) {
     };
 };
 
-export { createBody, calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector };
+export { createBody, calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector, isLeftBoundaryCollision };

@@ -1,4 +1,4 @@
-import { calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector } from '../app/gravity.mjs';
+import { calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector, isLeftBoundaryCollision } from '../app/gravity.mjs';
 import * as P from './planettest.js';
 
 QUnit.module('gravity');
@@ -104,5 +104,12 @@ QUnit.test('calculate position', assert => {
     };
     const actual = calculatePosition(body, 10000);
 
+    assert.equal(actual, expected);
+});
+
+QUnit.test('check left border collision', assert => {
+    const body = P.duplicate(P.BODY_1);
+    const expected = false;
+    const actual = isLeftBoundaryCollision(body);
     assert.equal(actual, expected);
 });
