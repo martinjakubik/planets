@@ -1,3 +1,8 @@
+const TEST_APP_CONFIGURATION = {
+    gridSize: 90,
+    maxSpaceTimeSize: 10 ** 6
+};
+
 const BODY_1 = {
     id: '1:1',
     mass: 1,
@@ -92,4 +97,4 @@ const compareSpaceSnaphshot = function (s1, s2) {
     return result;
 }
 
-export { BODY_1, BODY_2, BODY_3, HORIZONTAL_NEIGHBOUR_1, duplicate, printBody, compareSpaceSnaphshot }
+export { TEST_APP_CONFIGURATION, BODY_1, BODY_2, BODY_3, HORIZONTAL_NEIGHBOUR_1, duplicate, printBody, compareSpaceSnaphshot }
