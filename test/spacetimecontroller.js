@@ -57,6 +57,33 @@ QUnit.test('get model after time increment', assert => {
     assert.equal(actual, expected);
 });
 
+QUnit.test('update body after moved, expect present in space snapshot', assert => {
+    const body1 = P.duplicate(P.BODY_1);
+    const body2 = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
+    const expected = {
+        '11-10': {
+            'id': '1:2',
+            'mass': 1,
+            'position': {
+                'x': 11,
+                'y': 10
+            },
+            'force': 1,
+            'angle': 0
+        }
+    };
+    const stc = new SpaceTimeController(P.TEST_APP_CONFIGURATION);
+    stc.updateBodyAt(10, 10, body1);
+    stc.updateBodyAt(20, 10, body2);
+    // stc.incrementTime();
+    stc.calculateAllGravity();
+    stc.calculateAllPositions();
+
+    const actual = stc.getSpaceSnapshot();
+
+    assert.deepEqual(actual, expected);
+});
+
 QUnit.test('update body after moved, expect present', assert => {
     const body1 = P.duplicate(P.BODY_1);
     const body2 = P.duplicate(P.BODY_2);
@@ -69,7 +96,7 @@ QUnit.test('update body after moved, expect present', assert => {
     stc.calculateAllGravity();
     stc.calculateAllPositions();
 
-    const actual = stc.getBodyAt(10, 15);
+    const actual = stc.getBodyAt(15, 10);
 
     assert.equal(actual, expected);
 });
