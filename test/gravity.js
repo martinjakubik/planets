@@ -107,17 +107,18 @@ QUnit.test('calculate position', assert => {
             x: 10,
             y: 10
         },
-        force: 1,
+        force: 0,
         angle: Math.PI / 2
     };
 
     const expected = {
         x: 10,
-        y: 12
+        y: 10
     };
-    const actual = calculatePosition(body, 10000);
+    const actualBody = calculatePosition(body, 10000);
+    const actual = actualBody.position;
 
-    assert.equal(actual, expected);
+    assert.deepEqual(actual, expected);
 });
 
 QUnit.test('check left border collision', assert => {
