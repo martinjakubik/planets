@@ -3,11 +3,13 @@ import { createDiv, createButton, createParagraph } from './learnhypertext.mjs';
 
 const TIMER_INTERVAL = 70;
 const TIMER_INTERVAL_THRUST = 1000;
+const TIMER_INTERVAL_PHASER = 1000;
 const CSS_CLASS_ROW_BOX = 'rowBox';
 const CSS_CLASS_BODY_BOX = 'bodyBox';
 const CSS_CLASS_NEIGHBOR_BOX = 'neighborBox';
 const CSS_CLASS_TRAIL_BOX = 'trailBox';
 const CSS_CLASS_THRUST_BOX = 'thrustBox';
+const CSS_CLASS_PHASER_BOX = 'phaserBox';
 const TRAIL_LENGTH = 16;
 const SPACESHIP_THRUST_FORCE = 0.001;
 const E_BODY_TYPES = {
@@ -109,6 +111,30 @@ class SpaceTimeView {
         }
     }
 
+    static drawSpaceshipPhaser(position, orientationTick, currentPixels, gridSize) {
+        const aPhaserBoxes = [];
+        const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
+        const xoffset = Math.cos(radOrientationAngle);
+        const yoffset = Math.sin(radOrientationAngle);
+        SpaceTimeView.addBoxToDraw(aPhaserBoxes, position.x + 3 * xoffset, position.y - 3 * yoffset, gridSize);
+        aPhaserBoxes.forEach(boxPosition => {
+            const sElementID = SpaceTimeView.getIDFromXY(boxPosition.x, boxPosition.y);
+            let target = document.getElementById(sElementID);
+            target.classList.add(CSS_CLASS_PHASER_BOX);
+            currentPixels.push(sElementID);
+        });
+    }
+
+    static eraseSpaceshipPhaser(pixels) {
+        while (pixels.length > 0) {
+            const pixelElementID = pixels.pop();
+            let target = document.getElementById(pixelElementID);
+            if (target) {
+                target.classList.remove(CSS_CLASS_PHASER_BOX);
+            }
+        }
+    }
+
     static drawSparkle(position, isPenDown, gridSize) {
         const aNeighborBoxes = SpaceTimeView.getSparkleBoxes(position, 1, gridSize);
         aNeighborBoxes.forEach(neighborBoxPosition => {
@@ -145,11 +171,13 @@ class SpaceTimeView {
         this.timeFwdButton;
 
         this.thrustTimerTimeoutId = 1;
+        this.phaserTimerTimeoutId = 2;
 
         this.spaceship = {
             orientationTick: 0,
             pixels: [],
-            thrustPixels: []
+            thrustPixels: [],
+            phaserPixels: []
         };
 
         this.audioOn = false;
@@ -278,6 +306,16 @@ class SpaceTimeView {
         };
         SpaceTimeView.drawSpaceshipThrust(floorPosition, this.spaceship.orientationTick, this.spaceship.thrustPixels, this.appConfiguration.gridSize);
         this.thrustTimerTimeoutId = window.setTimeout(SpaceTimeView.eraseSpaceshipThrust, TIMER_INTERVAL_THRUST, this.spaceship.thrustPixels);
+    };
+
+    spaceshipPhaser() {
+        const oSpaceship = this.spaceTimeController.getSpaceship();
+        const floorPosition = {
+            x: Math.floor(oSpaceship.position.x),
+            y: Math.floor(oSpaceship.position.y)
+        };
+        SpaceTimeView.drawSpaceshipPhaser(floorPosition, this.spaceship.orientationTick, this.spaceship.phaserPixels, this.appConfiguration.gridSize);
+        this.phaserTimerTimeoutId = window.setTimeout(SpaceTimeView.eraseSpaceshipPhaser, TIMER_INTERVAL_PHASER, this.spaceship.phaserPixels);
     };
 
     spaceshipTurnRightClockwise() {
@@ -517,6 +555,14 @@ class SpaceTimeView {
         this.spaceshipThrustButton.onclick = this.spaceshipThrust.bind(this, SPACESHIP_THRUST_FORCE * 4);
     }
 
+    makeSpaceshipPhaserButton(parentBox) {
+        this.spaceshipPhaserButton = createButton('spaceshipPhaserButton', '', parentBox);
+        const oPhaserIcon = document.createElement('img');
+        oPhaserIcon.src = this.appConfiguration.phaserIcon;
+        this.spaceshipPhaserButton.appendChild(oPhaserIcon);
+        this.spaceshipPhaserButton.onclick = this.spaceshipPhaser.bind(this);
+    }
+
     makeSpaceshipTurnRightButton(parentBox) {
         this.spaceshipTurnRightButton = createButton('spaceshipTurnRightButton', '', parentBox);
         const oTurnRightIcon = document.createElement('img');
@@ -533,11 +579,16 @@ class SpaceTimeView {
         this.makeTimeFwdButton(this.buttonBar);
         this.makeSpaceshipTurnLeftButton(this.buttonBar);
         this.makeSpaceshipThrustButton(this.buttonBar);
+        this.makeSpaceshipPhaserButton(this.buttonBar);
         this.makeSpaceshipTurnRightButton(this.buttonBar);
     }
 
     upArrowPressed() {
         this.spaceshipThrust();
+    }
+
+    zPressed() {
+        this.spaceshipPhaser();
     }
 
     rightArrowPressed() {
@@ -557,6 +608,9 @@ class SpaceTimeView {
             this.moveTimeForward.call(this);
         } else if (keyCode === 38) {
             this.upArrowPressed();
+            event.preventDefault();
+        } else if (keyCode === 90) {
+            this.zPressed();
             event.preventDefault();
         } else if (keyCode === 37) {
             this.leftArrowPressed();

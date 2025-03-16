@@ -152,6 +152,10 @@ div#spaceTime>div>div.thrustBox {
   background-color: var(--spaceship-thrust-color);
 }
 
+div#spaceTime>div>div.phaserBox {
+  background-color: var(--spaceship-phaser-color);
+}
+
 div#spaceTime>div>div:hover {
   border: 1px dotted var(--bg-0-inverted-color);
   box-sizing: border-box;
@@ -174,6 +178,7 @@ div#buttonBar>button {
 #buttonBar>button#spaceshipTurnLeftButton,
 #buttonBar>button#spaceshipTurnRightButton,
 #buttonBar>button#spaceshipThrustButton,
+#buttonBar>button#spaceshipPhaserButton,
 #buttonBar>button#timeFwdButton,
 #buttonBar>button#timeBackButton {
   display: none;
@@ -285,6 +290,7 @@ input[type='file'] {
   --copy-column-width: 520px;
   --mass-spaceship-color: rgb(35, 147, 216);
   --spaceship-thrust-color: rgb(218, 137, 14);
+  --spaceship-phaser-color: rgb(14, 218, 17);
   --mass-m0-color: rgb(237, 237, 237);
   --mass-m1-color: rgb(222, 222, 222);
   --mass-m2-color: rgb(201, 201, 201);
