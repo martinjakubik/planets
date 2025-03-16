@@ -70,6 +70,21 @@ QUnit.test('calculate vector sum with neighbour', assert => {
     assert.equal(actual, expected);
 });
 
+QUnit.test.todo('calculate vector sum with near-zero net force', assert => {
+    const body = P.duplicate(P.BODY_1);
+    const neighbour = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
+    body.force = 10;
+    body.angle = 0;
+    neighbour.force = 10;
+    neighbour.angle = Math.PI;
+    const expected = Math.PI;
+
+    const actualNeighbourVector = addVectors(body, neighbour);
+    const actual = actualNeighbourVector.angle;
+
+    assert.equal(actual, expected);
+});
+
 QUnit.test('calculate vertical angle', assert => {
     const body = P.duplicate(P.BODY_1);
     const neighbour = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
