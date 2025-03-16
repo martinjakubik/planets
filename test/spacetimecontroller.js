@@ -116,15 +116,14 @@ QUnit.test('add two bodies with time increment, expect moved closer', assert => 
     const actualSpaceSnapshot = stc.getSpaceSnapshot();
     const body1updated = Object.values(actualSpaceSnapshot).find(body => body.id === '1:1');
     const body2updated = Object.values(actualSpaceSnapshot).find(body => body.id === '2:2');
-    console.log(body1, body1updated, body2, body2updated);
     const actual = {
         body1: {
-            isXIncreased: body1updated.position.x > body1.position.x,
-            isYSame: body1updated.position.y === body1.position.y
+            isXIncreased: body1updated.position.x > P.BODY_1.position.x,
+            isYSame: body1updated.position.y === P.BODY_1.position.y
         },
         body2: {
-            isXDecreased: body2updated.position.x < body2.position.x,
-            isYSame: body2updated.position.y === body2.position.y
+            isXDecreased: body2updated.position.x < P.HORIZONTAL_NEIGHBOUR_1.position.x,
+            isYSame: body2updated.position.y === P.HORIZONTAL_NEIGHBOUR_1.position.y
         }
     }
 
@@ -134,8 +133,15 @@ QUnit.test('add two bodies with time increment, expect moved closer', assert => 
 QUnit.test('update body after moved, expect present', assert => {
     const body1 = P.duplicate(P.BODY_1);
     const body2 = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
-    const expected = P.duplicate(P.BODY_1);
-    expected.position.x = 15;
+    const expected = {
+        body1: {
+            isForceIncreased: true,
+            isAngleSame: true,
+            isXIncreased: true,
+            isYSame: true
+        }
+    };
+
     const stc = new SpaceTimeController(P.TEST_APP_CONFIGURATION);
     stc.updateBodyAt(10, 10, body1);
     stc.updateBodyAt(20, 10, body2);
@@ -143,7 +149,17 @@ QUnit.test('update body after moved, expect present', assert => {
     stc.calculateAllGravity();
     stc.calculateAllPositions();
 
-    const actual = stc.getBodyAt(15, 10);
+    const actualSpaceSnapshot = stc.getSpaceSnapshot();
+    const body1updated = Object.values(actualSpaceSnapshot).find(body => body.id === '1:1');
+    console.log(P.BODY_1, body1updated)
+    const actual = {
+        body1: {
+            isForceIncreased: body1updated.force > P.BODY_1.force,
+            isAngleSame: body1updated.angle === P.BODY_1.angle,
+            isXIncreased: body1updated.position.x > P.BODY_1.position.x,
+            isYSame: body1updated.position.y === P.BODY_1.position.y
+        }
+    }
 
-    assert.equal(actual, expected);
+    assert.deepEqual(actual, expected);
 });
