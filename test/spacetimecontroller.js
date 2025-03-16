@@ -151,7 +151,6 @@ QUnit.test('update body after moved, expect present', assert => {
 
     const actualSpaceSnapshot = stc.getSpaceSnapshot();
     const body1updated = Object.values(actualSpaceSnapshot).find(body => body.id === '1:1');
-    console.log(P.BODY_1, body1updated)
     const actual = {
         body1: {
             isForceIncreased: body1updated.force > P.BODY_1.force,
