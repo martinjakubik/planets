@@ -65,7 +65,7 @@ const invertVectorVertically = function (body) {
 
 const isLeftBoundaryCollision = function (body, oBoundary) {
     let isLeftBoundaryCollision = false;
-    if ((body.position.x <= 1 && body.angle > Math.PI / 2 || body.angle < Math.PI * -1 / 2) ||
+    if ((body.position.x <= 1 && (body.angle > Math.PI / 2 || body.angle < Math.PI * -1 / 2)) ||
         (body.position.x <= 1 && body.force === 0)) {
         isLeftBoundaryCollision = true
     }
@@ -74,7 +74,7 @@ const isLeftBoundaryCollision = function (body, oBoundary) {
 
 const isRightBoundaryCollision = function (body, oBoundary) {
     let isRightBoundaryCollision = false;
-    if ((body.position.x >= oBoundary.w - 1 && body.angle > Math.PI / 2 || body.angle < Math.PI * -1 / 2) ||
+    if ((body.position.x >= oBoundary.w - 1 && (body.angle < Math.PI / 2 || body.angle > Math.PI * -1 / 2)) ||
         (body.position.x >= oBoundary.w - 1 && body.force === 0)) {
         isRightBoundaryCollision = true
     }
@@ -83,7 +83,7 @@ const isRightBoundaryCollision = function (body, oBoundary) {
 
 const updateBodyAfterCollisionWithBoundary = function (body, oBoundary) {
     let oBodyCopy = copyBody(body);
-    if (isLeftBoundaryCollision(body, oBoundary) || body.position.x >= (oBoundary.w - 2)) {
+    if (isLeftBoundaryCollision(body, oBoundary) || isRightBoundaryCollision(body, oBoundary)) {
         oBodyCopy = invertVectorHorizontally(oBodyCopy);
     }
     if (body.position.y <= 2 || body.position.y >= (oBoundary.h - 2)) {
