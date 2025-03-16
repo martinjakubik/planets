@@ -1,4 +1,4 @@
-import { calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector, isLeftBoundaryCollision } from '../app/gravity.mjs';
+import { calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector, isLeftBoundaryCollision, isRightBoundaryCollision } from '../app/gravity.mjs';
 import * as P from './planettest.js';
 
 QUnit.module('gravity');
@@ -121,17 +121,80 @@ QUnit.test('calculate position', assert => {
     assert.deepEqual(actual, expected);
 });
 
-QUnit.test('check left border collision', assert => {
+QUnit.test('check left border collision 0', assert => {
     const body = P.duplicate(P.BODY_1);
     const expected = false;
     const actual = isLeftBoundaryCollision(body);
     assert.equal(actual, expected);
 });
 
-QUnit.test('check left border collision', assert => {
+QUnit.test('check left border collision 1', assert => {
     const body = P.duplicate(P.BODY_1);
     body.position.x = 1;
     const expected = true;
     const actual = isLeftBoundaryCollision(body);
+    assert.equal(actual, expected);
+});
+
+QUnit.test('check left border collision 2', assert => {
+    const body = P.duplicate(P.BODY_1);
+    body.position.x = 1;
+    body.force = 10;
+    const expected = false;
+    const actual = isLeftBoundaryCollision(body);
+    assert.equal(actual, expected);
+});
+
+QUnit.test('check left border collision 3', assert => {
+    const body = P.duplicate(P.BODY_1);
+    body.position.x = 1;
+    body.force = 10;
+    body.angle = Math.PI / 2 + 0.00001;
+    const expected = true;
+    const actual = isLeftBoundaryCollision(body);
+    assert.equal(actual, expected);
+});
+
+QUnit.test('check right border collision 0', assert => {
+    const body = P.duplicate(P.BODY_1);
+    const oBoundary = { w: 100, h: 100 };
+    const expected = false;
+    const actual = isRightBoundaryCollision(body, oBoundary);
+    assert.equal(actual, expected);
+});
+
+QUnit.test('check right border collision 1', assert => {
+    const body = P.duplicate(P.BODY_1);
+    const oBoundary = { w: 100, h: 100 };
+    body.position.x = 100;
+    const expected = true;
+    const actual = isRightBoundaryCollision(body, oBoundary);
+    assert.equal(actual, expected);
+});
+
+QUnit.test('check right border collision 2', assert => {
+    const body = P.duplicate(P.BODY_1);
+    const oBoundary = { w: 100, h: 100 };
+    body.position.x = 99;
+    const expected = true;
+    const actual = isRightBoundaryCollision(body, oBoundary);
+    assert.equal(actual, expected);
+});
+
+QUnit.test('check right border collision 3', assert => {
+    const body = P.duplicate(P.BODY_1);
+    const oBoundary = { w: 100, h: 100 };
+    body.position.x = 99;
+    const expected = true;
+    const actual = isRightBoundaryCollision(body, oBoundary);
+    assert.equal(actual, expected);
+});
+
+QUnit.test('check right border collision 4', assert => {
+    const body = P.duplicate(P.BODY_1);
+    const oBoundary = { w: 100, h: 100 };
+    body.position.x = 98;
+    const expected = false;
+    const actual = isRightBoundaryCollision(body, oBoundary);
     assert.equal(actual, expected);
 });

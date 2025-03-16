@@ -72,6 +72,15 @@ const isLeftBoundaryCollision = function (body, oBoundary) {
     return isLeftBoundaryCollision;
 }
 
+const isRightBoundaryCollision = function (body, oBoundary) {
+    let isRightBoundaryCollision = false;
+    if ((body.position.x >= oBoundary.w - 1 && body.angle > Math.PI / 2 || body.angle < Math.PI * -1 / 2) ||
+        (body.position.x >= oBoundary.w - 1 && body.force === 0)) {
+        isRightBoundaryCollision = true
+    }
+    return isRightBoundaryCollision;
+}
+
 const updateBodyAfterCollisionWithBoundary = function (body, oBoundary) {
     let oBodyCopy = copyBody(body);
     if (isLeftBoundaryCollision(body, oBoundary) || body.position.x >= (oBoundary.w - 2)) {
@@ -138,4 +147,4 @@ const convertRadialVectorToCartesian = function (v) {
     };
 };
 
-export { createBody, calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector, isLeftBoundaryCollision };
+export { createBody, calculateGravity, calculatePosition, addVectors, getDistanceSquared, getNeighbourVector, isLeftBoundaryCollision, isRightBoundaryCollision };
