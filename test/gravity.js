@@ -58,14 +58,12 @@ QUnit.test('calculate angle to neighbour', assert => {
 QUnit.test('calculate vector sum with neighbour', assert => {
     const body = P.duplicate(P.BODY_1);
     const neighbour = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
-
-    body.force = 1;
+    body.force = 5;
     body.angle = 0;
-
-    neighbour.force = 1;
+    neighbour.force = 10;
     neighbour.angle = Math.PI;
-
     const expected = Math.PI;
+
     const actualNeighbourVector = addVectors(body, neighbour);
     const actual = actualNeighbourVector.angle;
 
