@@ -91,9 +91,49 @@ QUnit.test('add two bodies with no time increment, expect initial snapshot', ass
     assert.deepEqual(actual, expected);
 });
 
+QUnit.test('add two bodies with time increment, expect moved closer', assert => {
+    const body1 = P.duplicate(P.BODY_1);
+    const body2 = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
+    body1.mass = 100;
+    body2.mass = 100;
+    const expected = {
+        body1: {
+            isXIncreased: true,
+            isYSame: true
+        },
+        body2: {
+            isXDecreased: true,
+            isYSame: true
+        }
+    };
+    const stc = new SpaceTimeController(P.TEST_APP_CONFIGURATION);
+    stc.updateBodyAt(10, 10, body1);
+    stc.updateBodyAt(20, 10, body2);
+    stc.incrementTime();
+    stc.calculateAllGravity();
+    stc.calculateAllPositions();
+
+    const actualSpaceSnapshot = stc.getSpaceSnapshot();
+    const body1updated = Object.values(actualSpaceSnapshot).find(body => body.id === '1:1');
+    const body2updated = Object.values(actualSpaceSnapshot).find(body => body.id === '2:2');
+    console.log(body1, body1updated, body2, body2updated);
+    const actual = {
+        body1: {
+            isXIncreased: body1updated.position.x > body1.position.x,
+            isYSame: body1updated.position.y === body1.position.y
+        },
+        body2: {
+            isXDecreased: body2updated.position.x < body2.position.x,
+            isYSame: body2updated.position.y === body2.position.y
+        }
+    }
+
+    assert.deepEqual(actual, expected);
+});
+
 QUnit.test('update body after moved, expect present', assert => {
     const body1 = P.duplicate(P.BODY_1);
-    const body2 = P.duplicate(P.BODY_2);
+    const body2 = P.duplicate(P.HORIZONTAL_NEIGHBOUR_1);
     const expected = P.duplicate(P.BODY_1);
     expected.position.x = 15;
     const stc = new SpaceTimeController(P.TEST_APP_CONFIGURATION);
