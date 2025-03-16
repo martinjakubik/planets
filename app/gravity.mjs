@@ -65,7 +65,8 @@ const invertVectorVertically = function (body) {
 
 const isLeftBoundaryCollision = function (body, oBoundary) {
     let isLeftBoundaryCollision = false;
-    if (body.position.x <= 1 && body.angle > Math.PI / 2 || body.angle < Math.PI * -1 / 2) {
+    if ((body.position.x <= 1 && body.angle > Math.PI / 2 || body.angle < Math.PI * -1 / 2) ||
+        (body.position.x <= 1 && body.force === 0)) {
         isLeftBoundaryCollision = true
     }
     return isLeftBoundaryCollision;

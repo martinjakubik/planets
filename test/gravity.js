@@ -127,3 +127,11 @@ QUnit.test('check left border collision', assert => {
     const actual = isLeftBoundaryCollision(body);
     assert.equal(actual, expected);
 });
+
+QUnit.test('check left border collision', assert => {
+    const body = P.duplicate(P.BODY_1);
+    body.position.x = 1;
+    const expected = true;
+    const actual = isLeftBoundaryCollision(body);
+    assert.equal(actual, expected);
+});
