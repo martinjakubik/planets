@@ -3,7 +3,8 @@ import { createDiv, createButton, createParagraph } from './learnhypertext.mjs';
 
 const TIMER_INTERVAL = 70;
 const TIMER_INTERVAL_THRUST = 1000;
-const TIMER_INTERVAL_PHASER = 1000;
+const TIMER_INTERVAL_MOVE_PHASER = 70;
+const TIMER_INTERVAL_CLEAR_PHASER = 4000;
 const CSS_CLASS_ROW_BOX = 'rowBox';
 const CSS_CLASS_BODY_BOX = 'bodyBox';
 const CSS_CLASS_NEIGHBOR_BOX = 'neighborBox';
@@ -111,17 +112,19 @@ class SpaceTimeView {
         }
     }
 
-    static drawSpaceshipPhaser(position, orientationTick, currentPixels, gridSize) {
+    static drawSpaceshipPhaser(position, distance, orientationTick, currentPixels, gridSize) {
         const aPhaserBoxes = [];
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addBoxToDraw(aPhaserBoxes, position.x + 3 * xoffset, position.y - 3 * yoffset, gridSize);
+        SpaceTimeView.addBoxToDraw(aPhaserBoxes, position.x + distance * xoffset, position.y - distance * yoffset, gridSize);
         aPhaserBoxes.forEach(boxPosition => {
             const sElementID = SpaceTimeView.getIDFromXY(boxPosition.x, boxPosition.y);
             let target = document.getElementById(sElementID);
             target.classList.add(CSS_CLASS_PHASER_BOX);
-            currentPixels.push(sElementID);
+            if (currentPixels.indexOf(sElementID) < 0) {
+                currentPixels.push(sElementID);
+            }
         });
     }
 
@@ -133,6 +136,11 @@ class SpaceTimeView {
                 target.classList.remove(CSS_CLASS_PHASER_BOX);
             }
         }
+    }
+
+    static clearSpaceshipPhaser(clearPhaserInterval, pixels) {
+        window.clearInterval(clearPhaserInterval);
+        SpaceTimeView.eraseSpaceshipPhaser(pixels);
     }
 
     static drawSparkle(position, isPenDown, gridSize) {
@@ -172,6 +180,7 @@ class SpaceTimeView {
 
         this.thrustTimerTimeoutId = 1;
         this.phaserTimerTimeoutId = 2;
+        this.phaserIntervalId = 3;
 
         this.spaceship = {
             orientationTick: 0,
@@ -314,8 +323,9 @@ class SpaceTimeView {
             x: Math.floor(oSpaceship.position.x),
             y: Math.floor(oSpaceship.position.y)
         };
-        SpaceTimeView.drawSpaceshipPhaser(floorPosition, this.spaceship.orientationTick, this.spaceship.phaserPixels, this.appConfiguration.gridSize);
-        this.phaserTimerTimeoutId = window.setTimeout(SpaceTimeView.eraseSpaceshipPhaser, TIMER_INTERVAL_PHASER, this.spaceship.phaserPixels);
+        this.phaserIntervalId = window.setInterval(
+            SpaceTimeView.drawSpaceshipPhaser, TIMER_INTERVAL_MOVE_PHASER, floorPosition, 3, this.spaceship.orientationTick, this.spaceship.phaserPixels, this.appConfiguration.gridSize);
+        this.clearPhaserTimerTimeoutId = window.setTimeout(SpaceTimeView.clearSpaceshipPhaser, TIMER_INTERVAL_CLEAR_PHASER, this.phaserIntervalId, this.spaceship.phaserPixels);
     };
 
     spaceshipTurnRightClockwise() {
