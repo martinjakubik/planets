@@ -13,6 +13,7 @@ const CSS_CLASS_THRUST_BOX = 'thrustBox';
 const CSS_CLASS_PHASER_BOX = 'phaserBox';
 const TRAIL_LENGTH = 16;
 const SPACESHIP_THRUST_FORCE = 0.001;
+const SPACESHIP_PHASER_DISTANCE_PER_TICK = 3;
 const E_BODY_TYPES = {
     STAR: 'star',
     SPACESHIP: 'spaceship'
@@ -186,6 +187,7 @@ class SpaceTimeView {
             orientationTick: 0,
             pixels: [],
             thrustPixels: [],
+            phaserDistance: -1,
             phaserPixels: []
         };
 
@@ -317,14 +319,20 @@ class SpaceTimeView {
         this.thrustTimerTimeoutId = window.setTimeout(SpaceTimeView.eraseSpaceshipThrust, TIMER_INTERVAL_THRUST, this.spaceship.thrustPixels);
     };
 
+    drawSpaceshipPhaser(spaceshipPosition, spaceshipOrientationTick) {
+        console.log('draw phaser fired')
+        SpaceTimeView.eraseSpaceshipPhaser(this.spaceship.phaserPixels);
+        this.spaceship.phaserDistance = this.spaceship.phaserDistance + SPACESHIP_PHASER_DISTANCE_PER_TICK;
+        SpaceTimeView.drawSpaceshipPhaser(spaceshipPosition, this.spaceship.phaserDistance, spaceshipOrientationTick, this.spaceship.phaserPixels, this.appConfiguration.gridSize);
+    }
+
     spaceshipPhaser() {
         const oSpaceship = this.spaceTimeController.getSpaceship();
-        const floorPosition = {
+        const spaceshipPosition = {
             x: Math.floor(oSpaceship.position.x),
             y: Math.floor(oSpaceship.position.y)
         };
-        this.phaserIntervalId = window.setInterval(
-            SpaceTimeView.drawSpaceshipPhaser, TIMER_INTERVAL_MOVE_PHASER, floorPosition, 3, this.spaceship.orientationTick, this.spaceship.phaserPixels, this.appConfiguration.gridSize);
+        this.phaserIntervalId = window.setInterval(this.drawSpaceshipPhaser.bind(this), TIMER_INTERVAL_MOVE_PHASER, spaceshipPosition, this.spaceship.orientationTick);
         this.clearPhaserTimerTimeoutId = window.setTimeout(SpaceTimeView.clearSpaceshipPhaser, TIMER_INTERVAL_CLEAR_PHASER, this.phaserIntervalId, this.spaceship.phaserPixels);
     };
 
