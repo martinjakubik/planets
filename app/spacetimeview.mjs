@@ -320,7 +320,6 @@ class SpaceTimeView {
     };
 
     drawSpaceshipPhaser(spaceshipPosition, spaceshipOrientationTick) {
-        console.log('draw phaser fired')
         SpaceTimeView.eraseSpaceshipPhaser(this.spaceship.phaserPixels);
         this.spaceship.phaserDistance = this.spaceship.phaserDistance + SPACESHIP_PHASER_DISTANCE_PER_TICK;
         SpaceTimeView.drawSpaceshipPhaser(spaceshipPosition, this.spaceship.phaserDistance, spaceshipOrientationTick, this.spaceship.phaserPixels, this.appConfiguration.gridSize);
@@ -332,6 +331,8 @@ class SpaceTimeView {
             x: Math.floor(oSpaceship.position.x),
             y: Math.floor(oSpaceship.position.y)
         };
+        this.spaceship.phaserDistance = -1;
+        SpaceTimeView.clearSpaceshipPhaser(this.phaserIntervalId, this.spaceship.phaserPixels);
         this.phaserIntervalId = window.setInterval(this.drawSpaceshipPhaser.bind(this), TIMER_INTERVAL_MOVE_PHASER, spaceshipPosition, this.spaceship.orientationTick);
         this.clearPhaserTimerTimeoutId = window.setTimeout(SpaceTimeView.clearSpaceshipPhaser, TIMER_INTERVAL_CLEAR_PHASER, this.phaserIntervalId, this.spaceship.phaserPixels);
     };
