@@ -41,7 +41,8 @@ div.rowBox {
 }
 
 div#buttonBar.visible {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 div#buttonBar {
@@ -268,10 +269,21 @@ input[type='file'] {
 @media (width <= 480px), screen and (orientation: portrait) {
   #buttonBar>button#spaceshipTurnLeftButton,
   #buttonBar>button#spaceshipTurnRightButton,
+  #buttonBar>button#spaceshipPhaserButton,
   #buttonBar>button#spaceshipThrustButton {
-    display: flex;
+    display: initial;
   }
-
+  
+  #buttonBar>button#spaceshipPhaserButton {
+    grid-column: 2/3;
+    grid-row:1;
+  }
+  
+  #buttonBar>button#spaceshipTurnLeftButton,
+  #buttonBar>button#spaceshipTurnRightButton,
+  #buttonBar>button#spaceshipThrustButton {
+    grid-row: 2;
+  }
 
 }
 

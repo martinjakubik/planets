@@ -596,9 +596,9 @@ class SpaceTimeView {
 
         this.makeTimeBackButton(this.buttonBar);
         this.makeTimeFwdButton(this.buttonBar);
+        this.makeSpaceshipPhaserButton(this.buttonBar);
         this.makeSpaceshipTurnLeftButton(this.buttonBar);
         this.makeSpaceshipThrustButton(this.buttonBar);
-        this.makeSpaceshipPhaserButton(this.buttonBar);
         this.makeSpaceshipTurnRightButton(this.buttonBar);
     }
 

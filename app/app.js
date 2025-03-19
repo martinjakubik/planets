@@ -13,7 +13,7 @@ const oAppConfiguration = {
     turnRightIcon: 'https://www.supertitle.org/clockwise.png',
     turnLeftIcon: 'https://www.supertitle.org/counterclockwise.png',
     thrustIcon: 'https://www.supertitle.org/up.png',
-    phaserIcon: 'https://www.supertitle.org/up.png'
+    phaserIcon: 'https://www.supertitle.org/content/planets/app/phaser.png'
 };
 
 function getRandomStarBox() {
