@@ -42,12 +42,12 @@ div.rowBox {
 
 div#buttonBar.visible {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
 }
 
 div#buttonBar {
   display: none;
-  margin: 12em 0 0 0;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 2em 0 0 0;
 }
 
 @media (min-width: 600px) and (orientation:landscape) {
