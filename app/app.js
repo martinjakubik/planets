@@ -1,19 +1,48 @@
 import { SpaceTimeView } from './spacetimeview.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
+const getSiteRoot = function () {
+    return 'https://www.supertitle.org';
+}
+
 const oAppConfiguration = {
     gridSize: 90,
     maxSpaceTimeSize: 10 ** 6,
-    hoverSound: 'https://www.supertitle.org/chirp.mp3',
-    volumeIcon: {
-        on: 'https://www.supertitle.org/volume-on.png',
-        off: 'https://www.supertitle.org/volume-off.png'
+    resources: {
+        hoverSound: 'chirp.mp3',
+        volumeIconOn: 'volume-on.png',
+        volumeIconOff: 'volume-off.png',
+        settingsIcon: 'settings.png',
+        turnRightIcon: 'clockwise.png',
+        turnLeftIcon: 'counterclockwise.png',
+        thrustIcon: 'up.png',
+        phaserIcon: 'content/planets/app/phaser.png'
     },
-    settingsIcon: 'https://www.supertitle.org/settings.png',
-    turnRightIcon: 'https://www.supertitle.org/clockwise.png',
-    turnLeftIcon: 'https://www.supertitle.org/counterclockwise.png',
-    thrustIcon: 'https://www.supertitle.org/up.png',
-    phaserIcon: 'https://www.supertitle.org/content/planets/app/phaser.png'
+
+    getResource: function (sResourceKey) {
+        const aResourceKeys = Object.keys(this.resources);
+        if (aResourceKeys.indexOf(sResourceKey) < 0) {
+            return null;
+        }
+        const sSiteRoot = getSiteRoot();
+        const sResourceValue = this.resources[sResourceKey];
+        let sResourcePath = '';
+        switch (sResourceKey) {
+            case 'hoverSound':
+            case 'volumeIconOn':
+            case 'volumeIconOff':
+            case 'settingsIcon':
+            case 'turnRightIcon':
+            case 'turnLeftIcon':
+            case 'thrustIcon':
+            case 'phaserIcon':
+                sResourcePath = `${sSiteRoot}/${sResourceValue}`;
+                break;
+            default:
+                return null;
+        }
+        return sResourcePath;
+    }
 };
 
 function getRandomStarBox() {
