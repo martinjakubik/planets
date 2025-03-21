@@ -51,88 +51,88 @@ class SpaceTimeView {
         target.classList.add(`m${sSanitizedMassId}`);
     }
 
-    static addBoxToDraw(boxes, x, y, gridSize) {
+    static addPixelToDraw(boxes, x, y, gridSize) {
         if (Math.round(x) >= 0 && Math.round(y) >= 0 && Math.round(x) < gridSize && Math.round(y) < gridSize) {
             boxes.push({ x: Math.round(x), y: Math.round(y) });
         }
     }
 
-    static drawSpaceshipWingPixels(aNeighborBoxes, currentPixels) {
-        aNeighborBoxes.forEach(neighborBoxPosition => {
-            const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
+    static drawSpaceshipWingPixels(pixels, currentElementIDs) {
+        pixels.forEach(pixel => {
+            const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let target = document.getElementById(sElementID);
             target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
-            currentPixels.push(sElementID);
+            currentElementIDs.push(sElementID);
         });
     }
 
-    static eraseSpaceshipWingPixels(pixels) {
-        while (pixels.length > 0) {
-            const pixelElementID = pixels.pop();
-            let target = document.getElementById(pixelElementID);
+    static eraseSpaceshipWingPixels(currentElementIDs) {
+        while (currentElementIDs.length > 0) {
+            const sElementID = currentElementIDs.pop();
+            let target = document.getElementById(sElementID);
             if (target) {
                 target.classList.remove(CSS_CLASS_NEIGHBOR_BOX);
             }
         }
     }
 
-    static drawSpaceshipWings(position, isPenDown, orientationTick, currentPixels, gridSize) {
-        const aNeighborBoxes = [];
+    static drawSpaceshipWings(position, isPenDown, orientationTick, currentElementIDs, gridSize) {
+        const pixels = [];
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addBoxToDraw(aNeighborBoxes, position.x - xoffset, position.y + yoffset, gridSize);
+        SpaceTimeView.addPixelToDraw(pixels, position.x - xoffset, position.y + yoffset, gridSize);
         if (isPenDown) {
-            SpaceTimeView.drawSpaceshipWingPixels(aNeighborBoxes, currentPixels);
+            SpaceTimeView.drawSpaceshipWingPixels(pixels, currentElementIDs);
         } else {
-            SpaceTimeView.eraseSpaceshipWingPixels(currentPixels);
+            SpaceTimeView.eraseSpaceshipWingPixels(currentElementIDs);
         }
     }
 
-    static drawSpaceshipThrust(position, orientationTick, currentPixels, gridSize) {
-        const aThrustBoxes = [];
+    static drawSpaceshipThrust(position, orientationTick, currentElementIDs, gridSize) {
+        const pixels = [];
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addBoxToDraw(aThrustBoxes, position.x - 3 * xoffset, position.y + 3 * yoffset, gridSize);
-        aThrustBoxes.forEach(boxPosition => {
-            const sElementID = SpaceTimeView.getIDFromXY(boxPosition.x, boxPosition.y);
+        SpaceTimeView.addPixelToDraw(pixels, position.x - 3 * xoffset, position.y + 3 * yoffset, gridSize);
+        pixels.forEach(pixel => {
+            const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let target = document.getElementById(sElementID);
             target.classList.add(CSS_CLASS_THRUST_BOX);
-            currentPixels.push(sElementID);
+            currentElementIDs.push(sElementID);
         });
     }
 
-    static eraseSpaceshipThrust(pixels) {
-        while (pixels.length > 0) {
-            const pixelElementID = pixels.pop();
-            let target = document.getElementById(pixelElementID);
+    static eraseSpaceshipThrust(currentElementIDs) {
+        while (currentElementIDs.length > 0) {
+            const sElementID = currentElementIDs.pop();
+            let target = document.getElementById(sElementID);
             if (target) {
                 target.classList.remove(CSS_CLASS_THRUST_BOX);
             }
         }
     }
 
-    static drawSpaceshipPhaser(position, distance, orientationTick, currentPixels, gridSize) {
-        const aPhaserBoxes = [];
+    static drawSpaceshipPhaser(position, distance, orientationTick, currentElementIDs, gridSize) {
+        const pixels = [];
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addBoxToDraw(aPhaserBoxes, position.x + distance * xoffset, position.y - distance * yoffset, gridSize);
-        aPhaserBoxes.forEach(boxPosition => {
-            const sElementID = SpaceTimeView.getIDFromXY(boxPosition.x, boxPosition.y);
+        SpaceTimeView.addPixelToDraw(pixels, position.x + distance * xoffset, position.y - distance * yoffset, gridSize);
+        pixels.forEach(pixel => {
+            const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let target = document.getElementById(sElementID);
             target.classList.add(CSS_CLASS_PHASER_BOX);
-            if (currentPixels.indexOf(sElementID) < 0) {
-                currentPixels.push(sElementID);
+            if (currentElementIDs.indexOf(sElementID) < 0) {
+                currentElementIDs.push(sElementID);
             }
         });
     }
 
-    static eraseSpaceshipPhaser(pixels) {
-        while (pixels.length > 0) {
-            const pixelElementID = pixels.pop();
-            let target = document.getElementById(pixelElementID);
+    static eraseSpaceshipPhaser(currentElementIDs) {
+        while (currentElementIDs.length > 0) {
+            const sElementID = currentElementIDs.pop();
+            let target = document.getElementById(sElementID);
             if (target) {
                 target.classList.remove(CSS_CLASS_PHASER_BOX);
             }
@@ -145,9 +145,9 @@ class SpaceTimeView {
     }
 
     static drawSparkle(position, isPenDown, gridSize) {
-        const aNeighborBoxes = SpaceTimeView.getSparkleBoxes(position, 1, gridSize);
-        aNeighborBoxes.forEach(neighborBoxPosition => {
-            const sElementID = SpaceTimeView.getIDFromXY(neighborBoxPosition.x, neighborBoxPosition.y);
+        const pixels = SpaceTimeView.getSparkleBoxes(position, 1, gridSize);
+        pixels.forEach(pixel => {
+            const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let target = document.getElementById(sElementID);
             if (isPenDown) {
                 target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
@@ -158,12 +158,12 @@ class SpaceTimeView {
     }
 
     static getSparkleBoxes(position, radius, gridSize) {
-        const aSparkleBoxes = [];
-        SpaceTimeView.addBoxToDraw(aSparkleBoxes, position.x - radius, position.y, gridSize);
-        SpaceTimeView.addBoxToDraw(aSparkleBoxes, position.x, position.y - radius, gridSize);
-        SpaceTimeView.addBoxToDraw(aSparkleBoxes, position.x + radius, position.y, gridSize);
-        SpaceTimeView.addBoxToDraw(aSparkleBoxes, position.x, position.y + radius, gridSize);
-        return aSparkleBoxes;
+        const pixels = [];
+        SpaceTimeView.addPixelToDraw(pixels, position.x - radius, position.y, gridSize);
+        SpaceTimeView.addPixelToDraw(pixels, position.x, position.y - radius, gridSize);
+        SpaceTimeView.addPixelToDraw(pixels, position.x + radius, position.y, gridSize);
+        SpaceTimeView.addPixelToDraw(pixels, position.x, position.y + radius, gridSize);
+        return pixels;
     }
 
     constructor(oAppConfiguration) {
@@ -517,25 +517,25 @@ class SpaceTimeView {
         if (!spaceTimeBox) {
             spaceTimeBox = createDiv('spaceTime', this.appBox);
         }
-        let rowBox;
+        let row;
 
-        let sBoxId = '';
-        let box = null;
+        let sElementID = '';
+        let pixel = null;
         while (y < numberOfRows) {
             x = 0;
-            rowBox = document.getElementById(`row${y}`);
-            if (!rowBox) {
-                rowBox = createDiv(`row${y}`, spaceTimeBox);
-                rowBox.classList.add(CSS_CLASS_ROW_BOX);
+            row = document.getElementById(`row${y}`);
+            if (!row) {
+                row = createDiv(`row${y}`, spaceTimeBox);
+                row.classList.add(CSS_CLASS_ROW_BOX);
             }
             while (x < numberOfColumns) {
-                sBoxId = SpaceTimeView.getIDFromXY(x, y);
-                box = document.getElementById(sBoxId);
-                if (!box) {
-                    box = createDiv(sBoxId, rowBox);
+                sElementID = SpaceTimeView.getIDFromXY(x, y);
+                pixel = document.getElementById(sElementID);
+                if (!pixel) {
+                    pixel = createDiv(sElementID, row);
                 }
-                box.onclick = this.handleSpaceClick.bind(this);
-                box.onmouseenter = this.playChirp.bind(this);
+                pixel.onclick = this.handleSpaceClick.bind(this);
+                pixel.onmouseenter = this.playChirp.bind(this);
                 x = x + 1;
             }
 
