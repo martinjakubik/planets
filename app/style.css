@@ -140,7 +140,7 @@ div#spaceTime>div>div.m15 {
   background-color: var(--mass-m15-color);
 }
 
-div#spaceTime>div>div.neighborBox {
+div#spaceTime>div>div.sparkleBox {
   border: 1px solid black;
   box-sizing: border-box;
 }

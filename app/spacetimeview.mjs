@@ -7,7 +7,7 @@ const TIMER_INTERVAL_MOVE_PHASER = 70;
 const TIMER_INTERVAL_CLEAR_PHASER = 4000;
 const CSS_CLASS_ROW_BOX = 'rowBox';
 const CSS_CLASS_BODY_BOX = 'bodyBox';
-const CSS_CLASS_NEIGHBOR_BOX = 'neighborBox';
+const CSS_CLASS_SPARKLE_BOX = 'sparkleBox';
 const CSS_CLASS_TRAIL_BOX = 'trailBox';
 const CSS_CLASS_THRUST_BOX = 'thrustBox';
 const CSS_CLASS_PHASER_BOX = 'phaserBox';
@@ -61,7 +61,7 @@ class SpaceTimeView {
         pixels.forEach(pixel => {
             const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let target = document.getElementById(sElementID);
-            target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
+            target.classList.add(CSS_CLASS_SPARKLE_BOX);
             currentElementIDs.push(sElementID);
         });
     }
@@ -71,7 +71,7 @@ class SpaceTimeView {
             const sElementID = currentElementIDs.pop();
             let target = document.getElementById(sElementID);
             if (target) {
-                target.classList.remove(CSS_CLASS_NEIGHBOR_BOX);
+                target.classList.remove(CSS_CLASS_SPARKLE_BOX);
             }
         }
     }
@@ -150,9 +150,9 @@ class SpaceTimeView {
             const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let target = document.getElementById(sElementID);
             if (isPenDown) {
-                target.classList.add(CSS_CLASS_NEIGHBOR_BOX);
+                target.classList.add(CSS_CLASS_SPARKLE_BOX);
             } else {
-                target.classList.remove(CSS_CLASS_NEIGHBOR_BOX);
+                target.classList.remove(CSS_CLASS_SPARKLE_BOX);
             }
         });
     }
