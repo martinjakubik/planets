@@ -264,8 +264,8 @@ class SpaceTimeView {
         return oSpaceship;
     }
 
-    drawOnSpaceAtElementId(sBoxId) {
-        let oCoordinates = SpaceTimeView.getXYFromID(sBoxId);
+    drawOnSpaceAtElementId(sElementID) {
+        let oCoordinates = SpaceTimeView.getXYFromID(sElementID);
         let oBody1 = this.spaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
         if (oBody1) {
             oBody1.mass++;
