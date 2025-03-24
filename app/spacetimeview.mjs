@@ -487,7 +487,7 @@ class SpaceTimeView {
         });
     }
 
-    makeAppBox() {
+    makeAppElement() {
         this.appElement = document.getElementById('app');
         if (!this.appElement) {
             const oContainer = document.getElementById('container');
@@ -512,7 +512,7 @@ class SpaceTimeView {
 
         let y = 0;
         let x = 0;
-        this.makeAppBox();
+        this.makeAppElement();
         let spaceTimeBox = document.getElementById('spaceTime');
         if (!spaceTimeBox) {
             spaceTimeBox = createDiv('spaceTime', this.appElement);
