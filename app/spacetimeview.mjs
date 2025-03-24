@@ -167,6 +167,13 @@ class SpaceTimeView {
         return pixels;
     }
 
+    static eraseTrailPixel(position) {
+        const sElementID = SpaceTimeView.getIDFromXY(position.x, position.y);
+        const element = document.getElementById(sElementID);
+        element.classList.remove(CSS_CLASS_BODY_ELEMENT);
+        element.classList.remove(CSS_CLASS_TRAIL_ELEMENT);
+    }
+
     constructor(oAppConfiguration) {
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
 
@@ -383,13 +390,6 @@ class SpaceTimeView {
         this.moveTimeBackward.call(this);
     }
 
-    erasePixel(position) {
-        const sElementID = SpaceTimeView.getIDFromXY(position.x, position.y);
-        const element = document.getElementById(sElementID);
-        element.classList.remove(CSS_CLASS_BODY_ELEMENT);
-        element.classList.remove(CSS_CLASS_TRAIL_ELEMENT);
-    }
-
     initializeTrail(sKey, position) {
         if (!this.trails[sKey]) {
             if (position) {
@@ -466,7 +466,7 @@ class SpaceTimeView {
                 if (isPenDown) {
                     this.drawTrail(sKey);
                 } else {
-                    this.erasePixel(aTrail[aTrail.length - 1]);
+                    SpaceTimeView.eraseTrailPixel(aTrail[aTrail.length - 1]);
                 }
                 if (!this.spaceTimeController.getBodyWithId(sKey)) {
                     this.trimTrail(sKey);
