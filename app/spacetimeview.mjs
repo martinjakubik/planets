@@ -271,7 +271,7 @@ class SpaceTimeView {
         return oSpaceship;
     }
 
-    drawOnSpaceAtElementId(sElementID) {
+    spaceClickedAtElementId(sElementID) {
         let oCoordinates = SpaceTimeView.getXYFromID(sElementID);
         let oBody1 = this.spaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
         if (oBody1) {
@@ -298,7 +298,7 @@ class SpaceTimeView {
     handleSpaceClick(event) {
         const element = event.currentTarget;
         let sElementId = element.id;
-        this.drawOnSpaceAtElementId(sElementId);
+        this.spaceClickedAtElementId(sElementId);
     }
 
     spaceshipThrust(nForce = SPACESHIP_THRUST_FORCE) {
