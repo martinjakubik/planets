@@ -1,6 +1,12 @@
-import { calculateGravity, calculatePosition } from './gravity.mjs';
+import { createBody, calculateGravity, calculatePosition } from './gravity.mjs';
+
 
 class SpaceTimeController {
+    static BODY_UPDATE_TYPE = {
+        CREATE_OR_UPDATE: 'BODY_UPDATE_TYPE_CREATE_OR_UPDATE',
+        DELETE: 'BODY_UPDATE_TYPE_DELETE'
+    }
+
     static copySpaceSnapshot(oSpaceSnapshot) {
         let oSpaceSnapshotCopy = {};
         Object.keys(oSpaceSnapshot).forEach(sKey => {
@@ -95,6 +101,29 @@ class SpaceTimeController {
         if (aSpaceSnapshot && aSpaceSnapshot[sKey]) {
             delete aSpaceSnapshot[sKey];
         }
+    }
+
+    createUpdateOrDeleteBodyAt(dx, dy) {
+        let oBodyUpdate = {
+            updateType: SpaceTimeController.BODY_UPDATE_TYPE.CREATE_OR_UPDATE,
+            mass: 0,
+        };
+        let oBody1 = this.getBodyAt(dx, dy);
+        if (oBody1) {
+            oBody1.mass++;
+        } else {
+            oBody1 = createBody(this.getTime(), dx, dy);
+        }
+
+        if (oBody1.mass < 16) {
+            this.updateBodyAt(dx, dy, oBody1);
+            oBodyUpdate.mass = oBody1.mass;
+        } else {
+            this.deleteBodyAt(dx, dy);
+            oBodyUpdate.updateType = SpaceTimeController.BODY_UPDATE_TYPE.DELETE;
+        }
+
+        return oBodyUpdate;
     }
 
     getSpaceTimeModel() {

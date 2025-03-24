@@ -1,5 +1,6 @@
 import { addVectors, createBody } from './gravity.mjs';
 import { createDiv, createButton, createParagraph } from './learnhypertext.mjs';
+import { SpaceTimeController } from './spacetimecontroller.mjs';
 
 const TIMER_INTERVAL = 70;
 const TIMER_INTERVAL_THRUST = 1000;
@@ -174,14 +175,13 @@ class SpaceTimeView {
         element.classList.remove(CSS_CLASS_TRAIL_ELEMENT);
     }
 
-    constructor(oAppConfiguration) {
+    constructor(oAppConfiguration, oSpaceTimeController) {
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
 
         this.appConfiguration = oAppConfiguration;
+        this.spaceTimeController = oSpaceTimeController;
 
         this.appElement;
-
-        this.spaceTimeController;
 
         this.timerIntervalId = 0;
         this.isTimerRunning = false;
@@ -254,13 +254,6 @@ class SpaceTimeView {
         this.timeFwdButton.innerText = '>';
     }
 
-    createBody(time, x, y) {
-        const sBodyKey = `${time}:${x}:${y}`;
-        const oPosition = { x: x, y: y };
-        this.initializeTrail(sBodyKey, oPosition);
-        return createBody(time, x, y);
-    }
-
     createSpaceship(x, y) {
         const oSpaceship = createBody(0, x, y);
         const nMass = 0.1;
@@ -273,23 +266,10 @@ class SpaceTimeView {
 
     spaceClickedAtElementId(sElementID) {
         let oCoordinates = SpaceTimeView.getXYFromID(sElementID);
-        let oBody1 = this.spaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
-        if (oBody1) {
-            oBody1.mass++;
-        } else {
-            oBody1 = this.createBody(this.spaceTimeController.getTime(), oCoordinates.x, oCoordinates.y);
-        }
-
-        let bIsPenDown = true;
-        if (oBody1.mass < 16) {
-            this.spaceTimeController.updateBodyAt(oCoordinates.x, oCoordinates.y, oBody1);
-        } else {
-            this.spaceTimeController.deleteBodyAt(oCoordinates.x, oCoordinates.y);
-            oBody1 = null;
-            bIsPenDown = false;
-        }
-        const nMass = oBody1 ? oBody1.mass : 0;
-        this.drawBody(oCoordinates, E_BODY_TYPES.STAR, bIsPenDown, nMass, this.appConfiguration.gridSize);
+        let oBodyUpdate = this.spaceTimeController.createUpdateOrDeleteBodyAt(oCoordinates.x, oCoordinates.y);
+        const nMass1 = oBodyUpdate.mass;
+        const isPenDown = oBodyUpdate.updateType === SpaceTimeController.BODY_UPDATE_TYPE.CREATE_OR_UPDATE ? true : false;
+        this.drawBody(oCoordinates, E_BODY_TYPES.STAR, isPenDown, nMass1, this.appConfiguration.gridSize);
         if (!this.isTimerRunning) {
             this.startTimer.call(this);
         }
@@ -505,8 +485,7 @@ class SpaceTimeView {
         }
     }
 
-    makeSpaceGrid(oSpaceTimeController) {
-        this.spaceTimeController = oSpaceTimeController;
+    makeSpaceGrid() {
         let numberOfRows = this.appConfiguration.gridSize;
         let numberOfColumns = numberOfRows;
 

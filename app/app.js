@@ -52,8 +52,8 @@ function getRandomStarElement() {
 }
 
 const oSpaceTimeController = new SpaceTimeController(oAppConfiguration);
-const oSpaceTimeView = new SpaceTimeView(oAppConfiguration);
-oSpaceTimeView.makeSpaceGrid(oSpaceTimeController);
+const oSpaceTimeView = new SpaceTimeView(oAppConfiguration, oSpaceTimeController);
+oSpaceTimeView.makeSpaceGrid();
 oSpaceTimeView.makeSpaceTimeButtonBar();
 const sStarElementId = getRandomStarElement();
-oSpaceTimeView.drawOnSpaceAtElementId(sStarElementId);
+oSpaceTimeView.spaceClickedAtElementId(sStarElementId);
