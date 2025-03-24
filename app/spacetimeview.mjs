@@ -5,12 +5,12 @@ const TIMER_INTERVAL = 70;
 const TIMER_INTERVAL_THRUST = 1000;
 const TIMER_INTERVAL_MOVE_PHASER = 70;
 const TIMER_INTERVAL_CLEAR_PHASER = 4000;
-const CSS_CLASS_ROW_BOX = 'rowBox';
-const CSS_CLASS_BODY_BOX = 'bodyBox';
-const CSS_CLASS_SPARKLE_BOX = 'sparkleBox';
-const CSS_CLASS_TRAIL_BOX = 'trailBox';
-const CSS_CLASS_THRUST_BOX = 'thrustBox';
-const CSS_CLASS_PHASER_BOX = 'phaserBox';
+const CSS_CLASS_ROW_ELEMENT = 'rowElement';
+const CSS_CLASS_BODY_ELEMENT = 'bodyElement';
+const CSS_CLASS_SPARKLE_ELEMENT = 'sparkleElement';
+const CSS_CLASS_TRAIL_ELEMENT = 'trailElement';
+const CSS_CLASS_THRUST_ELEMENT = 'thrustElement';
+const CSS_CLASS_PHASER_ELEMENT = 'phaserElement';
 const TRAIL_LENGTH = 16;
 const SPACESHIP_THRUST_FORCE = 0.001;
 const SPACESHIP_PHASER_DISTANCE_PER_TICK = 3;
@@ -41,11 +41,11 @@ class SpaceTimeView {
     static eraseBody(element, mass) {
         const sSanitizedMassId = (mass + '').replace('.', '_');
         element.classList.remove(`m${sSanitizedMassId}`);
-        element.classList.remove(CSS_CLASS_BODY_BOX);
+        element.classList.remove(CSS_CLASS_BODY_ELEMENT);
     }
 
     static drawBodyWithMass(element, mass) {
-        element.classList.add(CSS_CLASS_BODY_BOX);
+        element.classList.add(CSS_CLASS_BODY_ELEMENT);
         const nPreviousMass = SpaceTimeView.modulo((mass - 1), 16);
         const sSanitizedMassId = (mass + '').replace('.', '_');
         element.classList.remove(`m${nPreviousMass}`);
@@ -62,7 +62,7 @@ class SpaceTimeView {
         pixels.forEach(pixel => {
             const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let element = document.getElementById(sElementID);
-            element.classList.add(CSS_CLASS_SPARKLE_BOX);
+            element.classList.add(CSS_CLASS_SPARKLE_ELEMENT);
             currentElementIDs.push(sElementID);
         });
     }
@@ -72,7 +72,7 @@ class SpaceTimeView {
             const sElementID = currentElementIDs.pop();
             let element = document.getElementById(sElementID);
             if (element) {
-                element.classList.remove(CSS_CLASS_SPARKLE_BOX);
+                element.classList.remove(CSS_CLASS_SPARKLE_ELEMENT);
             }
         }
     }
@@ -99,7 +99,7 @@ class SpaceTimeView {
         pixels.forEach(pixel => {
             const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let element = document.getElementById(sElementID);
-            element.classList.add(CSS_CLASS_THRUST_BOX);
+            element.classList.add(CSS_CLASS_THRUST_ELEMENT);
             currentElementIDs.push(sElementID);
         });
     }
@@ -109,7 +109,7 @@ class SpaceTimeView {
             const sElementID = currentElementIDs.pop();
             let element = document.getElementById(sElementID);
             if (element) {
-                element.classList.remove(CSS_CLASS_THRUST_BOX);
+                element.classList.remove(CSS_CLASS_THRUST_ELEMENT);
             }
         }
     }
@@ -123,7 +123,7 @@ class SpaceTimeView {
         pixels.forEach(pixel => {
             const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let element = document.getElementById(sElementID);
-            element.classList.add(CSS_CLASS_PHASER_BOX);
+            element.classList.add(CSS_CLASS_PHASER_ELEMENT);
             if (currentElementIDs.indexOf(sElementID) < 0) {
                 currentElementIDs.push(sElementID);
             }
@@ -135,7 +135,7 @@ class SpaceTimeView {
             const sElementID = currentElementIDs.pop();
             let element = document.getElementById(sElementID);
             if (element) {
-                element.classList.remove(CSS_CLASS_PHASER_BOX);
+                element.classList.remove(CSS_CLASS_PHASER_ELEMENT);
             }
         }
     }
@@ -151,9 +151,9 @@ class SpaceTimeView {
             const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let element = document.getElementById(sElementID);
             if (isPenDown) {
-                element.classList.add(CSS_CLASS_SPARKLE_BOX);
+                element.classList.add(CSS_CLASS_SPARKLE_ELEMENT);
             } else {
-                element.classList.remove(CSS_CLASS_SPARKLE_BOX);
+                element.classList.remove(CSS_CLASS_SPARKLE_ELEMENT);
             }
         });
     }
@@ -386,8 +386,8 @@ class SpaceTimeView {
     eraseBox(position) {
         const sElementID = SpaceTimeView.getIDFromXY(position.x, position.y);
         const element = document.getElementById(sElementID);
-        element.classList.remove(CSS_CLASS_BODY_BOX);
-        element.classList.remove(CSS_CLASS_TRAIL_BOX);
+        element.classList.remove(CSS_CLASS_BODY_ELEMENT);
+        element.classList.remove(CSS_CLASS_TRAIL_ELEMENT);
     }
 
     initializeTrail(sKey, position) {
@@ -431,8 +431,8 @@ class SpaceTimeView {
             let position = aTrail[i];
             const sElementID = SpaceTimeView.getIDFromXY(position.x, position.y);
             let element = document.getElementById(sElementID);
-            element.classList.add(CSS_CLASS_BODY_BOX);
-            element.classList.add(CSS_CLASS_TRAIL_BOX);
+            element.classList.add(CSS_CLASS_BODY_ELEMENT);
+            element.classList.add(CSS_CLASS_TRAIL_ELEMENT);
         }
     }
 
@@ -526,7 +526,7 @@ class SpaceTimeView {
             row = document.getElementById(`row${y}`);
             if (!row) {
                 row = createDiv(`row${y}`, spaceTimeBox);
-                row.classList.add(CSS_CLASS_ROW_BOX);
+                row.classList.add(CSS_CLASS_ROW_ELEMENT);
             }
             while (x < numberOfColumns) {
                 sElementID = SpaceTimeView.getIDFromXY(x, y);

@@ -35,7 +35,7 @@ div#spaceTime {
   background-color: var(--bg-0-color);
 }
 
-div.rowBox {
+div.rowElement {
   display: flex;
   flex-direction: row;
 }
@@ -140,20 +140,20 @@ div#spaceTime>div>div.m15 {
   background-color: var(--mass-m15-color);
 }
 
-div#spaceTime>div>div.sparkleBox {
+div#spaceTime>div>div.sparkleElement {
   border: 1px solid black;
   box-sizing: border-box;
 }
 
-div#spaceTime>div>div.trailBox {
+div#spaceTime>div>div.trailElement {
   background-color: var(--bg-1-color);
 }
 
-div#spaceTime>div>div.thrustBox {
+div#spaceTime>div>div.thrustElement {
   background-color: var(--spaceship-thrust-color);
 }
 
-div#spaceTime>div>div.phaserBox {
+div#spaceTime>div>div.phaserElement {
   background-color: var(--spaceship-phaser-color);
 }
 
