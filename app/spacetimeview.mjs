@@ -172,7 +172,7 @@ class SpaceTimeView {
 
         this.appConfiguration = oAppConfiguration;
 
-        this.appBox;
+        this.appElement;
 
         this.spaceTimeController;
 
@@ -264,7 +264,7 @@ class SpaceTimeView {
         return oSpaceship;
     }
 
-    drawOnSpaceAtBoxId(sBoxId) {
+    drawOnSpaceAtElementId(sBoxId) {
         let oCoordinates = SpaceTimeView.getXYFromID(sBoxId);
         let oBody1 = this.spaceTimeController.getBodyAt(oCoordinates.x, oCoordinates.y);
         if (oBody1) {
@@ -291,7 +291,7 @@ class SpaceTimeView {
     handleSpaceClick(event) {
         const element = event.currentTarget;
         let sElementId = element.id;
-        this.drawOnSpaceAtBoxId(sElementId);
+        this.drawOnSpaceAtElementId(sElementId);
     }
 
     spaceshipThrust(nForce = SPACESHIP_THRUST_FORCE) {
@@ -488,14 +488,14 @@ class SpaceTimeView {
     }
 
     makeAppBox() {
-        this.appBox = document.getElementById('app');
-        if (!this.appBox) {
+        this.appElement = document.getElementById('app');
+        if (!this.appElement) {
             const oContainer = document.getElementById('container');
             let oParentElement = document.body;
             if (oContainer) {
                 oParentElement = oContainer;
             }
-            this.appBox = createDiv('app', oParentElement);
+            this.appElement = createDiv('app', oParentElement);
         }
     }
 
@@ -515,7 +515,7 @@ class SpaceTimeView {
         this.makeAppBox();
         let spaceTimeBox = document.getElementById('spaceTime');
         if (!spaceTimeBox) {
-            spaceTimeBox = createDiv('spaceTime', this.appBox);
+            spaceTimeBox = createDiv('spaceTime', this.appElement);
         }
         let row;
 
@@ -591,7 +591,7 @@ class SpaceTimeView {
     }
 
     makeSpaceTimeButtonBar() {
-        this.buttonBar = createDiv('buttonBar', this.appBox);
+        this.buttonBar = createDiv('buttonBar', this.appElement);
         this.buttonBar.classList.add('visible');
 
         this.makeTimeBackButton(this.buttonBar);
