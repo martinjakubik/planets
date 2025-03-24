@@ -52,9 +52,9 @@ class SpaceTimeView {
         target.classList.add(`m${sSanitizedMassId}`);
     }
 
-    static validateAndAddPixel(boxes, x, y, gridSize) {
+    static validateAndAddPixel(pixels, x, y, gridSize) {
         if (Math.round(x) >= 0 && Math.round(y) >= 0 && Math.round(x) < gridSize && Math.round(y) < gridSize) {
-            boxes.push({ x: Math.round(x), y: Math.round(y) });
+            pixels.push({ x: Math.round(x), y: Math.round(y) });
         }
     }
 
@@ -146,7 +146,7 @@ class SpaceTimeView {
     }
 
     static drawSparkle(position, isPenDown, gridSize) {
-        const pixels = SpaceTimeView.getSparkleBoxes(position, 1, gridSize);
+        const pixels = SpaceTimeView.getSparklePixels(position, 1, gridSize);
         pixels.forEach(pixel => {
             const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let target = document.getElementById(sElementID);
@@ -158,7 +158,7 @@ class SpaceTimeView {
         });
     }
 
-    static getSparkleBoxes(position, radius, gridSize) {
+    static getSparklePixels(position, radius, gridSize) {
         const pixels = [];
         SpaceTimeView.validateAndAddPixel(pixels, position.x - radius, position.y, gridSize);
         SpaceTimeView.validateAndAddPixel(pixels, position.x, position.y - radius, gridSize);
