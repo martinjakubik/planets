@@ -383,7 +383,7 @@ class SpaceTimeView {
         this.moveTimeBackward.call(this);
     }
 
-    eraseBox(position) {
+    erasePixel(position) {
         const sElementID = SpaceTimeView.getIDFromXY(position.x, position.y);
         const element = document.getElementById(sElementID);
         element.classList.remove(CSS_CLASS_BODY_ELEMENT);
@@ -466,7 +466,7 @@ class SpaceTimeView {
                 if (isPenDown) {
                     this.drawTrail(sKey);
                 } else {
-                    this.eraseBox(aTrail[aTrail.length - 1]);
+                    this.erasePixel(aTrail[aTrail.length - 1]);
                 }
                 if (!this.spaceTimeController.getBodyWithId(sKey)) {
                     this.trimTrail(sKey);
@@ -546,19 +546,19 @@ class SpaceTimeView {
         this.createSpaceship(nSpaceshipX, nSpaceshipY);
     }
 
-    makeTimeFwdButton(parentBox) {
-        this.timeFwdButton = createButton('timeFwdButton', '>', parentBox);
+    makeTimeFwdButton(parentElement) {
+        this.timeFwdButton = createButton('timeFwdButton', '>', parentElement);
         this.timeFwdButton.onclick = this.handleTimeFwdButtonClick.bind(this);
     }
 
-    makeTimeBackButton(parentBox) {
-        this.oTimeBackButton = createButton('timeBackButton', '<', parentBox);
+    makeTimeBackButton(parentElement) {
+        this.oTimeBackButton = createButton('timeBackButton', '<', parentElement);
         this.oTimeBackButton.onclick = this.handleTimeBackButtonClick.bind(this);
         this.oTimeBackButton.disabled = true;
     }
 
-    makeSpaceshipTurnLeftButton(parentBox) {
-        this.spaceshipTurnLeftButton = createButton('spaceshipTurnLeftButton', '', parentBox);
+    makeSpaceshipTurnLeftButton(parentElement) {
+        this.spaceshipTurnLeftButton = createButton('spaceshipTurnLeftButton', '', parentElement);
         const oTurnLeftIcon = document.createElement('img');
         oTurnLeftIcon.src = this.appConfiguration.getResource('turnLeftIcon');
         this.spaceshipTurnLeftButton.appendChild(oTurnLeftIcon);
@@ -566,24 +566,24 @@ class SpaceTimeView {
         this.spaceshipTurnLeftButton.onclick = this.spaceshipTurnLeftCounterclockwise.bind(this);
     }
 
-    makeSpaceshipThrustButton(parentBox) {
-        this.spaceshipThrustButton = createButton('spaceshipThrustButton', '', parentBox);
+    makeSpaceshipThrustButton(parentElement) {
+        this.spaceshipThrustButton = createButton('spaceshipThrustButton', '', parentElement);
         const oThrustIcon = document.createElement('img');
         oThrustIcon.src = this.appConfiguration.getResource('thrustIcon');
         this.spaceshipThrustButton.appendChild(oThrustIcon);
         this.spaceshipThrustButton.onclick = this.spaceshipThrust.bind(this, SPACESHIP_THRUST_FORCE * 4);
     }
 
-    makeSpaceshipPhaserButton(parentBox) {
-        this.spaceshipPhaserButton = createButton('spaceshipPhaserButton', '', parentBox);
+    makeSpaceshipPhaserButton(parentElement) {
+        this.spaceshipPhaserButton = createButton('spaceshipPhaserButton', '', parentElement);
         const oPhaserIcon = document.createElement('img');
         oPhaserIcon.src = this.appConfiguration.getResource('phaserIcon');
         this.spaceshipPhaserButton.appendChild(oPhaserIcon);
         this.spaceshipPhaserButton.onclick = this.spaceshipPhaser.bind(this);
     }
 
-    makeSpaceshipTurnRightButton(parentBox) {
-        this.spaceshipTurnRightButton = createButton('spaceshipTurnRightButton', '', parentBox);
+    makeSpaceshipTurnRightButton(parentElement) {
+        this.spaceshipTurnRightButton = createButton('spaceshipTurnRightButton', '', parentElement);
         const oTurnRightIcon = document.createElement('img');
         oTurnRightIcon.src = this.appConfiguration.getResource('turnRightIcon');
         this.spaceshipTurnRightButton.appendChild(oTurnRightIcon);
