@@ -51,7 +51,7 @@ class SpaceTimeView {
         target.classList.add(`m${sSanitizedMassId}`);
     }
 
-    static addPixelToDraw(boxes, x, y, gridSize) {
+    static validateAndAddPixel(boxes, x, y, gridSize) {
         if (Math.round(x) >= 0 && Math.round(y) >= 0 && Math.round(x) < gridSize && Math.round(y) < gridSize) {
             boxes.push({ x: Math.round(x), y: Math.round(y) });
         }
@@ -81,7 +81,7 @@ class SpaceTimeView {
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addPixelToDraw(pixels, position.x - xoffset, position.y + yoffset, gridSize);
+        SpaceTimeView.validateAndAddPixel(pixels, position.x - xoffset, position.y + yoffset, gridSize);
         if (isPenDown) {
             SpaceTimeView.drawSpaceshipWingPixels(pixels, currentElementIDs);
         } else {
@@ -94,7 +94,7 @@ class SpaceTimeView {
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addPixelToDraw(pixels, position.x - 3 * xoffset, position.y + 3 * yoffset, gridSize);
+        SpaceTimeView.validateAndAddPixel(pixels, position.x - 3 * xoffset, position.y + 3 * yoffset, gridSize);
         pixels.forEach(pixel => {
             const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let target = document.getElementById(sElementID);
@@ -118,7 +118,7 @@ class SpaceTimeView {
         const radOrientationAngle = 2 * Math.PI / 12 * orientationTick;
         const xoffset = Math.cos(radOrientationAngle);
         const yoffset = Math.sin(radOrientationAngle);
-        SpaceTimeView.addPixelToDraw(pixels, position.x + distance * xoffset, position.y - distance * yoffset, gridSize);
+        SpaceTimeView.validateAndAddPixel(pixels, position.x + distance * xoffset, position.y - distance * yoffset, gridSize);
         pixels.forEach(pixel => {
             const sElementID = SpaceTimeView.getIDFromXY(pixel.x, pixel.y);
             let target = document.getElementById(sElementID);
@@ -159,10 +159,10 @@ class SpaceTimeView {
 
     static getSparkleBoxes(position, radius, gridSize) {
         const pixels = [];
-        SpaceTimeView.addPixelToDraw(pixels, position.x - radius, position.y, gridSize);
-        SpaceTimeView.addPixelToDraw(pixels, position.x, position.y - radius, gridSize);
-        SpaceTimeView.addPixelToDraw(pixels, position.x + radius, position.y, gridSize);
-        SpaceTimeView.addPixelToDraw(pixels, position.x, position.y + radius, gridSize);
+        SpaceTimeView.validateAndAddPixel(pixels, position.x - radius, position.y, gridSize);
+        SpaceTimeView.validateAndAddPixel(pixels, position.x, position.y - radius, gridSize);
+        SpaceTimeView.validateAndAddPixel(pixels, position.x + radius, position.y, gridSize);
+        SpaceTimeView.validateAndAddPixel(pixels, position.x, position.y + radius, gridSize);
         return pixels;
     }
 
