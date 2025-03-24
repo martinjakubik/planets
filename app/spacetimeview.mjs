@@ -513,9 +513,9 @@ class SpaceTimeView {
         let y = 0;
         let x = 0;
         this.makeAppElement();
-        let spaceTimeBox = document.getElementById('spaceTime');
-        if (!spaceTimeBox) {
-            spaceTimeBox = createDiv('spaceTime', this.appElement);
+        let spaceTimeElement = document.getElementById('spaceTime');
+        if (!spaceTimeElement) {
+            spaceTimeElement = createDiv('spaceTime', this.appElement);
         }
         let row;
 
@@ -525,7 +525,7 @@ class SpaceTimeView {
             x = 0;
             row = document.getElementById(`row${y}`);
             if (!row) {
-                row = createDiv(`row${y}`, spaceTimeBox);
+                row = createDiv(`row${y}`, spaceTimeElement);
                 row.classList.add(CSS_CLASS_ROW_ELEMENT);
             }
             while (x < numberOfColumns) {
