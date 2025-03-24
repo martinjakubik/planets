@@ -45,7 +45,7 @@ const oAppConfiguration = {
     }
 };
 
-function getRandomStarBox() {
+function getRandomStarElement() {
     const starX = Math.random() < .5 ? 20 : oAppConfiguration.gridSize - 20;
     const starY = Math.random() < .5 ? 20 : oAppConfiguration.gridSize - 20;
     return `x${starX}y${starY}`;
@@ -55,5 +55,5 @@ const oSpaceTimeController = new SpaceTimeController(oAppConfiguration);
 const oSpaceTimeView = new SpaceTimeView(oAppConfiguration);
 oSpaceTimeView.makeSpaceGrid(oSpaceTimeController);
 oSpaceTimeView.makeSpaceTimeButtonBar();
-const sStarBoxId = getRandomStarBox();
-oSpaceTimeView.drawOnSpaceAtBoxId(sStarBoxId);
+const sStarElementId = getRandomStarElement();
+oSpaceTimeView.drawOnSpaceAtElementId(sStarElementId);
