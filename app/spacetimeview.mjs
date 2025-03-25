@@ -265,8 +265,8 @@ class SpaceTimeView {
     }
 
     spaceClickedAtElementId(sElementID) {
-        let oCoordinates = SpaceTimeView.getXYFromID(sElementID);
-        let oBodyUpdate = this.spaceTimeController.createUpdateOrDeleteBodyAt(oCoordinates.x, oCoordinates.y);
+        const oCoordinates = SpaceTimeView.getXYFromID(sElementID);
+        const oBodyUpdate = this.spaceTimeController.createUpdateOrDeleteBodyAt(oCoordinates.x, oCoordinates.y);
         const nMass1 = oBodyUpdate.mass;
         const isPenDown = oBodyUpdate.updateType === SpaceTimeController.BODY_UPDATE_TYPE.CREATE_OR_UPDATE ? true : false;
         this.drawBody(oCoordinates, E_BODY_TYPES.STAR, isPenDown, nMass1, this.appConfiguration.gridSize);
