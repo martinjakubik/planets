@@ -1,4 +1,4 @@
-import { addVectors, createBody } from './gravity.mjs';
+import { createBody } from './gravity.mjs';
 import { createDiv, createButton, createParagraph } from './learnhypertext.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
@@ -283,22 +283,7 @@ class SpaceTimeView {
 
     spaceshipThrust(nForce = SPACESHIP_THRUST_FORCE) {
         const radOrientationAngle = -2 * Math.PI * this.spaceship.orientationTick / 12;
-        const thrustVector = {
-            force: nForce,
-            angle: radOrientationAngle
-        };
-        const oSpaceship = this.spaceTimeController.getSpaceship();
-        const spaceshipVector = oSpaceship ? {
-            force: oSpaceship.force,
-            angle: oSpaceship.angle
-        } : {
-            force: 0,
-            angle: 0
-        };
-        const resultantVector = addVectors(spaceshipVector, thrustVector);
-        oSpaceship.force = resultantVector.magnitude;
-        oSpaceship.angle = resultantVector.angle;
-        this.spaceTimeController.updateSpaceship(oSpaceship);
+        const oSpaceship = this.spaceTimeController.updateSpaceship(nForce, radOrientationAngle);
         const floorPosition = {
             x: Math.floor(oSpaceship.position.x),
             y: Math.floor(oSpaceship.position.y)

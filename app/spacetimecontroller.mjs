@@ -1,5 +1,4 @@
-import { createBody, calculateGravity, calculatePosition } from './gravity.mjs';
-
+import { addVectors, createBody, calculateGravity, calculatePosition } from './gravity.mjs';
 
 class SpaceTimeController {
     static BODY_UPDATE_TYPE = {
@@ -90,8 +89,24 @@ class SpaceTimeController {
         }
     }
 
-    updateSpaceship(oBody) {
-        this.updateBodyAt(45, 45, oBody);
+    updateSpaceship(nForce, radOrientationAngle) {
+        const thrustVector = {
+            force: nForce,
+            angle: radOrientationAngle
+        };
+        const oSpaceship = this.getSpaceship();
+        const spaceshipVector = oSpaceship ? {
+            force: oSpaceship.force,
+            angle: oSpaceship.angle
+        } : {
+            force: 0,
+            angle: 0
+        };
+        const resultantVector = addVectors(spaceshipVector, thrustVector);
+        oSpaceship.force = resultantVector.magnitude;
+        oSpaceship.angle = resultantVector.angle;
+        this.updateBodyAt(45, 45, oSpaceship);
+        return oSpaceship;
     }
 
     deleteBodyAt(dx, dy) {
