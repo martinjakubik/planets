@@ -1,4 +1,3 @@
-import { createBody } from './gravity.mjs';
 import { createDiv, createButton, createParagraph } from './learnhypertext.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
@@ -255,13 +254,13 @@ class SpaceTimeView {
     }
 
     createSpaceship(x, y) {
-        const oSpaceship = createBody(0, x, y);
+        const oBodyUpdate = this.spaceTimeController.createUpdateOrDeleteBodyAt(x, y);
         const nMass = 0.1;
         const bIsPenDown = true;
+        const oSpaceship = oBodyUpdate.body;
         oSpaceship.mass = nMass;
         this.spaceTimeController.updateBodyAt(x, y, oSpaceship);
         this.drawBody({ x: x, y: y }, E_BODY_TYPES.SPACESHIP, bIsPenDown, nMass, this.appConfiguration.gridSize);
-        return oSpaceship;
     }
 
     spaceClickedAtElementId(sElementID) {

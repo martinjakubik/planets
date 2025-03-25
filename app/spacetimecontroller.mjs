@@ -122,6 +122,7 @@ class SpaceTimeController {
         let oBodyUpdate = {
             updateType: SpaceTimeController.BODY_UPDATE_TYPE.CREATE_OR_UPDATE,
             mass: 0,
+            body: null
         };
         let oBody1 = this.getBodyAt(dx, dy);
         if (oBody1) {
@@ -133,6 +134,7 @@ class SpaceTimeController {
         if (oBody1.mass < 16) {
             this.updateBodyAt(dx, dy, oBody1);
             oBodyUpdate.mass = oBody1.mass;
+            oBodyUpdate.body = oBody1;
         } else {
             this.deleteBodyAt(dx, dy);
             oBodyUpdate.updateType = SpaceTimeController.BODY_UPDATE_TYPE.DELETE;
