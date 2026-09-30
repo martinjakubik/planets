@@ -50,6 +50,19 @@ oFs.mkdir(sApplicationDistributionPath, oMkDirOptions)
             .catch((oError) => {
                 console.log(`  [error] details: ${oError}`);
             });
+
+        // copies resources to app directory
+        oFs.cp(
+            sApplicationResourceSourcePath,
+            sApplicationDistributionPath,
+            oSrcToDistCopyOptions,
+        )
+            .then((oResult) => {
+                console.log(`[success] copied dir ${sApplicationResourceSourcePath}`);
+            })
+            .catch((oError) => {
+                console.log(`  [error] details: ${oError}`);
+            });
     })
     .catch((oError) => {
         console.log(`  [error] details: ${oError}`);
