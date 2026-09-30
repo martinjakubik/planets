@@ -7,3 +7,5 @@ lib/**
 package.sh
 
 app
+
+resources/*.png
