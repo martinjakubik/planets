@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
-    "test": "qunit",
-    "postinstall": "node postinstall.js"
+    "build": "node build.js",
+    "test": "qunit"
   },
   "repository": {
     "type": "git",
