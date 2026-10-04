@@ -12,6 +12,7 @@ const oMkDirOptions = {
 };
 
 const aFilesToExcludeFromApp = [
+    '.DS_Store',
     'source-file-1.js',
     'dont-include-me-2.js',
     'dont-include-me-3.html',
@@ -34,6 +35,27 @@ const oSrcToDistCopyOptions = {
     filter: filterFiles,
 };
 
+// filters the content to copy
+const filterResourceFiles = function (sPathToFile) {
+    if (sPathToFile == './resources') {
+        console.log(`checking file: ✔︎     copying '${sPathToFile}'`);
+        return true;
+    }
+    const nIndexOfParentDirInPath = sPathToFile.indexOf('resources/');
+    const sFileToCheck = nIndexOfParentDirInPath > -1 ? sPathToFile.substring(nIndexOfParentDirInPath + 10) : '';
+    if (sFileToCheck.toLowerCase().includes('.png')) {
+        console.log(`checking file: ✔︎     copying '${sFileToCheck}'`);
+        return true;
+    }
+    console.log(`checking file: ✗ not copying '${sFileToCheck}'`);
+    return false;
+};
+
+const oResourceToDistMoveOptions = {
+    recursive: true,
+    filter: filterResourceFiles
+}
+
 oFs.mkdir(sApplicationDistributionPath, oMkDirOptions)
     .then((oResult) => {
         console.log(`[success] mkdir ${sApplicationDistributionPath}`);
@@ -46,19 +68,6 @@ oFs.mkdir(sApplicationDistributionPath, oMkDirOptions)
         )
             .then((oResult) => {
                 console.log(`[success] copied dir ${sApplicationSourcePath}`);
-            })
-            .catch((oError) => {
-                console.log(`  [error] details: ${oError}`);
-            });
-
-        // copies resources to app directory
-        oFs.cp(
-            sApplicationResourceSourcePath,
-            sApplicationDistributionPath,
-            oSrcToDistCopyOptions,
-        )
-            .then((oResult) => {
-                console.log(`[success] copied dir ${sApplicationResourceSourcePath}`);
             })
             .catch((oError) => {
                 console.log(`  [error] details: ${oError}`);
@@ -93,6 +102,18 @@ const execFile = oPromisify(oChildProcess.execFile);
 execFile('scripts/build-images.sh').then((oResult) => {
     console.log('generated images with the following result');
     console.log(oResult);
+    // moves resources/*.png to app directory
+    oFs.cp(
+        sApplicationResourceSourcePath,
+        sApplicationDistributionPath,
+        oResourceToDistMoveOptions,
+    )
+        .then((oResult) => {
+            console.log(`[success] moved dir ${sApplicationResourceSourcePath}`);
+        })
+        .catch((oError) => {
+            console.log(`  [error] details: ${oError}`);
+        });
 }).catch((oError) => {
     console.log(oError);
 })
