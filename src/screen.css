@@ -10,6 +10,14 @@ div.navigation>button.controlButton>img {
   width: 4em;
 }
 
+button#navigateHome {
+    border: .2em solid var(--bg-0-inverted-color);
+    color: var(--text-0-fg-color);
+    font-weight: bold;
+    background-color: var(--bg-0-color);
+    border-radius: .4em;
+}
+
 div#dataView {
   display: flex;
   flex-flow: column;
@@ -41,7 +49,7 @@ div.rowElement {
 }
 
 div#buttonBar.visible {
-  display: grid;
+  display: none;
 }
 
 div#buttonBar {
@@ -162,8 +170,8 @@ div#spaceTime>div>div:hover {
   box-sizing: border-box;
 }
 
-div.navigation>button.controlButton#volumeControlButton,
-div.navigation>button.controlButton#settingsControlButton {
+button.controlButton#volumeControlButton,
+button.controlButton#settingsControlButton {
   display: none;
 }
 
@@ -267,18 +275,25 @@ input[type='file'] {
 }
 
 @media (width <= 480px), screen and (orientation: portrait) {
+    button#navigateHome {
+        height: 3em;
+        width: 100%;
+        font-size: 2em;
+        color: var(--bg-0-inverted-color);
+    }
+
   #buttonBar>button#spaceshipTurnLeftButton,
   #buttonBar>button#spaceshipTurnRightButton,
   #buttonBar>button#spaceshipPhaserButton,
   #buttonBar>button#spaceshipThrustButton {
     display: initial;
   }
-  
+
   #buttonBar>button#spaceshipPhaserButton {
     grid-column: 2/3;
     grid-row:1;
   }
-  
+
   #buttonBar>button#spaceshipTurnLeftButton,
   #buttonBar>button#spaceshipTurnRightButton,
   #buttonBar>button#spaceshipThrustButton {
