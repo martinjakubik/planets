@@ -1,8 +1,8 @@
 import { SpaceTimeView } from './spacetimeview.mjs';
 import { SpaceTimeController } from './spacetimecontroller.mjs';
 
-const getSiteRoot = function () {
-    return 'https://www.supertitle.org';
+const getAppRoot = function () {
+    return '.';
 }
 
 const oAppConfiguration = {
@@ -16,7 +16,7 @@ const oAppConfiguration = {
         turnRightIcon: 'clockwise.png',
         turnLeftIcon: 'counterclockwise.png',
         thrustIcon: 'up.png',
-        phaserIcon: 'content/planets/app/phaser.png'
+        phaserIcon: 'phaser.png'
     },
 
     getResource: function (sResourceKey) {
@@ -24,7 +24,7 @@ const oAppConfiguration = {
         if (aResourceKeys.indexOf(sResourceKey) < 0) {
             return null;
         }
-        const sSiteRoot = getSiteRoot();
+        const sAppRoot = getAppRoot();
         const sResourceValue = this.resources[sResourceKey];
         let sResourcePath = '';
         switch (sResourceKey) {
@@ -36,7 +36,7 @@ const oAppConfiguration = {
             case 'turnLeftIcon':
             case 'thrustIcon':
             case 'phaserIcon':
-                sResourcePath = `${sSiteRoot}/${sResourceValue}`;
+                sResourcePath = `${sAppRoot}/${sResourceValue}`;
                 break;
             default:
                 return null;

@@ -114,6 +114,14 @@ execFile('scripts/build-images.sh').then((oResult) => {
         .catch((oError) => {
             console.log(`  [error] details: ${oError}`);
         });
+
+    oFs.glob(`${sApplicationResourceSourcePath}/*.png`, (oError, aMatches) => {
+        console.log(`matches: "${aMatches}"`);
+        if (oError) throw oError;
+        aMatches.forEach((oMatch) => {
+            oFs.copyFile(oMatch, `${sApplicationDistributionPath}/${oMatch.replace('planets-', '')}`);
+        });
+    });
 }).catch((oError) => {
     console.log(oError);
 })

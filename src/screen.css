@@ -48,12 +48,7 @@ div.rowElement {
   flex-direction: row;
 }
 
-div#buttonBar.visible {
-  display: none;
-}
-
 div#buttonBar {
-  display: none;
   grid-template-columns: repeat(3, 1fr);
   margin: 2em 0 0 0;
 }
